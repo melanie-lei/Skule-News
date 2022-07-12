@@ -1,0 +1,22 @@
+{
+  "projects": {
+    "default": "quizerica-be083"
+  },
+  "targets": {
+    "quizerica-be083": {
+      "hosting": {
+        "admin": [
+          "music-app-admin",
+          "zedge-admin-panel"
+        ]
+      }
+    },
+    "musicy-46533": {
+      "hosting": {
+        "admin": [
+          "zedge-admin-panel"
+        ]
+      }
+    }
+  }
+}
