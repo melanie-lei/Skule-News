@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
+import 'package:music_streaming_admin_panel/screens/misc/reported_authors.dart';
 
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey(); // Create a key
@@ -107,7 +108,10 @@ class _MainScreenState extends State<MainScreen> {
         return const SupportRequests();
       case MenuType.reportAbusedBlogs:
         // do something else
-        return const ReportedRingtones();
+        return const ReportedBlogPost();
+      case MenuType.reportAbusedAuthors:
+      // do something else
+        return const ReportedAuthors();
       case MenuType.changePassword:
         // do something else
         return const ChangePassword();

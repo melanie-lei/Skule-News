@@ -2,19 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
 
-class PostCard extends StatefulWidget {
-  final NewsModel model;
+class BlogPostCard extends StatefulWidget {
+  final BlogPostModel model;
 
-  const PostCard({
+  const BlogPostCard({
     Key? key,
     required this.model,
   }) : super(key: key);
 
   @override
-  State<PostCard> createState() => _PostCardState();
+  State<BlogPostCard> createState() => _BlogPostCardState();
 }
 
-class _PostCardState extends State<PostCard> {
+class _BlogPostCardState extends State<BlogPostCard> {
   final PostCardController postcardController = Get.find();
 
   @override
@@ -40,7 +40,7 @@ class _PostCardState extends State<PostCard> {
               child: Stack(
                 children: [
                   CachedNetworkImage(
-                    imageUrl: widget.model.coverImage,
+                    imageUrl: widget.model.thumbnailImage,
                     fit: BoxFit.cover,
                     placeholder: (context, url) =>
                     const CircularProgressIndicator(),
@@ -48,7 +48,7 @@ class _PostCardState extends State<PostCard> {
                     width: double.infinity,
                     height: double.infinity,
                   ).round(10).ripple(() {
-                    Get.to(() => NewsFullDetail(model: widget.model));
+                    Get.to(() => BlogPostFullDetail(model: widget.model));
                   }),
                   Positioned(
                       left: 0,
@@ -68,7 +68,7 @@ class _PostCardState extends State<PostCard> {
                           ),
                         ),
                       ).round(10).ripple(() {
-                        Get.to(() => NewsFullDetail(model: widget.model));
+                        Get.to(() => BlogPostFullDetail(model: widget.model));
                       })
                           : Container()),
                 ],
@@ -87,7 +87,7 @@ class _PostCardState extends State<PostCard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.model.shortContent,
+        Text(widget.model.title,
             maxLines: 2, style: Theme.of(context).textTheme.bodyLarge)
             .vP16,
         widget.model.hashtags.isNotEmpty
@@ -101,7 +101,7 @@ class _PostCardState extends State<PostCard> {
                   '#$hashTag',
                   style: Theme.of(context).textTheme.bodyLarge,
                 ).p4.ripple(() {
-                  Get.to(() => HashtagsPosts(hashtag: hashTag));
+                  Get.to(() => HashtagDetail(hashTagName: hashTag));
                 }),
               ).round(5),
           ],
@@ -126,10 +126,10 @@ class _PostCardState extends State<PostCard> {
   }
 
   Widget userInfo() {
-    return FutureBuilder<NewsSourceModel>(
+    return FutureBuilder<AuthorModel>(
       future: loadSourceInfo(widget.model.authorId),
       // a previously-obtained Future<String> or null
-      builder: (BuildContext ctx, AsyncSnapshot<NewsSourceModel> snapshot) {
+      builder: (BuildContext ctx, AsyncSnapshot<AuthorModel> snapshot) {
         if (snapshot.hasData) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -171,15 +171,15 @@ class _PostCardState extends State<PostCard> {
     );
   }
 
-  Future<NewsSourceModel> loadSourceInfo(String id) async {
-    NewsSourceModel? detail;
-    await getIt<FirebaseManager>().getSourceDetail(id).then((value) {
+  Future<AuthorModel> loadSourceInfo(String id) async {
+    AuthorModel? detail;
+    await getIt<FirebaseManager>().getAuthorDetail(id).then((value) {
       detail = value!;
     });
     return detail!;
   }
 
-  showActionSheet(NewsModel news) {
+  showActionSheet(BlogPostModel news) {
     showModalBottomSheet(
         context: context,
         backgroundColor: Colors.transparent,
@@ -277,6 +277,6 @@ class _PostCardState extends State<PostCard> {
   }
 
   void openProfile(String id) async {
-    Get.to(() => NewsSourceDetail(userId: id));
+    Get.to(() => AuthorDetail(userId: id));
   }
 }

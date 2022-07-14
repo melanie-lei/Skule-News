@@ -3,7 +3,7 @@ import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
 
 class RecommendedSourceSection extends StatefulWidget {
-  final List<NewsSourceModel> items;
+  final List<AuthorModel> items;
 
   const RecommendedSourceSection({
     Key? key,
@@ -32,18 +32,19 @@ class _RecommendedSourceSectionState extends State<RecommendedSourceSection> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             headingType6(
-              title: LocalizationString.recommendedSources,
-              subTitle: LocalizationString.recommendedSourcesInfo,
-              context: context
+                title: LocalizationString.recommendedSources,
+                subTitle: LocalizationString.recommendedSourcesInfo,
+                context: context),
+            const SizedBox(
+              height: 10,
             ),
-            const SizedBox(height: 10,),
             Expanded(
               child: ListView.separated(
                   padding: EdgeInsets.zero,
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.items.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return newsSourceCard(widget.items[index], index);
+                    return authorCard(widget.items[index], index);
                   },
                   separatorBuilder: (BuildContext context, int index) {
                     return const SizedBox(
@@ -55,7 +56,7 @@ class _RecommendedSourceSectionState extends State<RecommendedSourceSection> {
         )).hP16;
   }
 
-  Widget newsSourceCard(NewsSourceModel item, int index) {
+  Widget authorCard(AuthorModel item, int index) {
     return SizedBox(
       height: double.infinity,
       width: 125,
@@ -64,23 +65,22 @@ class _RecommendedSourceSectionState extends State<RecommendedSourceSection> {
           Expanded(
             child: AspectRatio(
               aspectRatio: 1,
-              child:
-              CachedNetworkImage(
+              child: CachedNetworkImage(
                 imageUrl: item.image,
                 fit: BoxFit.cover,
                 placeholder: (context, url) =>
-                const CircularProgressIndicator(),
+                    const CircularProgressIndicator(),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
-
               ).circular.p8.ripple(() {
-                Get.to(() => NewsSourceDetail(userId: item.id));
+                Get.to(() => AuthorDetail(userId: item.id));
               }),
             ),
           ),
           Text(
             item.name,
             style: Theme.of(context).textTheme.titleMedium,
-          ).vP4.ripple(() {
+            textAlign: TextAlign.center,
+          ).hP4.vP4.ripple(() {
             //onItemCallBack(item,index);
           }),
           SizedBox(
@@ -104,7 +104,7 @@ class _RecommendedSourceSectionState extends State<RecommendedSourceSection> {
           ).tP4
         ],
       ).vP8,
-    ).borderWithRadius(value: 0.2, radius: 0,context: context);
+    ).borderWithRadius(value: 0.2, radius: 0, context: context);
   }
 }
 
@@ -139,11 +139,12 @@ class _RecommendedProfilesSectionState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             headingType6(
-              title: LocalizationString.recommendedForYou,
-              subTitle: LocalizationString.recommendedProfile,
-              context: context
+                title: LocalizationString.recommendedForYou,
+                subTitle: LocalizationString.recommendedProfile,
+                context: context),
+            const SizedBox(
+              height: 10,
             ),
-            const SizedBox(height: 10,),
             Expanded(
               child: ListView.separated(
                   padding: EdgeInsets.zero,
@@ -175,9 +176,8 @@ class _RecommendedProfilesSectionState
                 imageUrl: item.image!,
                 fit: BoxFit.cover,
                 placeholder: (context, url) =>
-                const CircularProgressIndicator(),
+                    const CircularProgressIndicator(),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
-
               ).circular.p8.ripple(() {
                 Get.to(() => UserDetail(userId: item.id));
               }),
@@ -210,7 +210,7 @@ class _RecommendedProfilesSectionState
           ).tP4
         ],
       ).vP8,
-    ).borderWithRadius(value: 0.2, radius: 5,context: context);
+    ).borderWithRadius(value: 0.2, radius: 5, context: context);
   }
 }
 
@@ -239,17 +239,17 @@ class _RecommendedHashtagSectionState extends State<RecommendedHashtagSection> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 220,
+        height: 180,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             headingType6(
-              title: LocalizationString.recomendedHashtags,
-              subTitle: LocalizationString.recomendedHashtagsForYou,
-              context: context
+                title: LocalizationString.recomendedHashtags,
+                subTitle: LocalizationString.recomendedHashtagsForYou,
+                context: context),
+            const SizedBox(
+              height: 10,
             ),
-            const SizedBox(height: 10,),
-
             Expanded(
               child: ListView.separated(
                   padding: EdgeInsets.zero,
@@ -274,27 +274,27 @@ class _RecommendedHashtagSectionState extends State<RecommendedHashtagSection> {
       width: 125,
       child: Column(
         children: [
-          Expanded(
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: CachedNetworkImage(
-                imageUrl: item.image,
-                fit: BoxFit.cover,
-                placeholder: (context, url) =>
-                const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+          const Spacer(),
 
-              ).circular.p8.ripple(() {
-                Get.to(() => HashtagDetail(hashTag: item));
-              }),
+          SizedBox(
+            height: 60,
+            child: Center(
+              child: Text(
+                '#${item.name}',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(color: Theme.of(context).primaryColor),
+              ),
             ),
-          ),
-          Text(
-            item.name,
-            style: Theme.of(context).textTheme.titleMedium,
-          ).vP4.ripple(() {
-            //onItemCallBack(item,index);
+          ).ripple(() {
+            Get.to(() => HashtagDetail(hashTag: item));
           }),
+          const Spacer(),
+          // Text(
+          //   item.name,
+          //   style: Theme.of(context).textTheme.titleMedium,
+          // ).vP4,
           SizedBox(
             height: 30,
             width: 90,
@@ -315,7 +315,7 @@ class _RecommendedHashtagSectionState extends State<RecommendedHashtagSection> {
           ).tP4
         ],
       ).vP8,
-    ).borderWithRadius(value: 0.2, radius: 5,context: context);
+    ).borderWithRadius(value: 0.2, radius: 5, context: context);
   }
 }
 

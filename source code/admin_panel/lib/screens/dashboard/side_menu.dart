@@ -312,6 +312,20 @@ class _SideMenuState extends State<SideMenu> {
                       selectionHandler(MenuType.reportAbusedBlogs);
                       sideMenuContainer.selectMenu(MenuType.reportAbusedBlogs);
                     }),
+                    DrawerListItem(
+                      icon: ThemeIconWidget(
+                        ThemeIcon.report,
+                        color: Theme.of(context).iconTheme.color,
+                        size: 20,
+                      ),
+                      title: LocalizationString.reportedAuthors,
+                      isSelected: sideMenuContainer.selectedMenu.value ==
+                          MenuType.reportAbusedAuthors,
+                    ).ripple(() {
+                      scaffoldKey.currentState!.openEndDrawer();
+                      selectionHandler(MenuType.reportAbusedAuthors);
+                      sideMenuContainer.selectMenu(MenuType.reportAbusedAuthors);
+                    }),
                   ], title: LocalizationString.report),
                   DrawerListItemGroup(items: [
                     DrawerListItem(

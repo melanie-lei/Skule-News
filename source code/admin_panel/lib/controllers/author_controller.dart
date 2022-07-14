@@ -64,7 +64,7 @@ class AuthorController extends GetxController {
     String? reporterId,
   }) {
     BlogPostSearchParamModel searchParamModel =
-        BlogPostSearchParamModel(userId: reporterId);
+        BlogPostSearchParamModel(userId: reporterId, approvedStatus: 1);
     getIt<FirebaseManager>()
         .searchPosts(
       searchModel: searchParamModel,
@@ -86,10 +86,37 @@ class AuthorController extends GetxController {
     });
   }
 
-  deleteUser(AuthorsModel model){
+  deleteUser(AuthorsModel model) {
     getIt<FirebaseManager>().deleteAuthor(model);
     authors.remove(model);
     update();
   }
 
+  getReportedAuthors() {
+    EasyLoading.show(status: LocalizationString.loading);
+    getIt<FirebaseManager>().getAllReportedAuthors().then((result) {
+      EasyLoading.dismiss();
+      authors.value = result;
+      update();
+    });
+  }
+
+  deleteRequestForAuthor(AuthorsModel modal) {
+    authors.removeWhere((element) => element.id == modal.id);
+    update();
+
+    getIt<FirebaseManager>().deleteAuthorReport(modal).then((value) {});
+    update();
+  }
+
+  deactivateAuthor(AuthorsModel modal) {
+    authors.removeWhere((element) => element.id == modal.id);
+
+    update();
+
+    getIt<FirebaseManager>().deleteAuthor(modal).then((value) {
+      deleteRequestForAuthor(modal);
+    });
+    update();
+  }
 }

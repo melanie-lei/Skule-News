@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:music_streaming_admin_panel/controllers/reported_blogs_controller.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
 
-class ReportedRingtones extends StatefulWidget {
-  const ReportedRingtones({Key? key}) : super(key: key);
+class ReportedBlogPost extends StatefulWidget {
+  const ReportedBlogPost({Key? key}) : super(key: key);
 
   @override
-  _ReportedRingtonesState createState() => _ReportedRingtonesState();
+  _ReportedBlogPostState createState() => _ReportedBlogPostState();
 }
 
-class _ReportedRingtonesState extends State<ReportedRingtones> {
+class _ReportedBlogPostState extends State<ReportedBlogPost> {
   final BlogsController blogsController = Get.find();
   final ReportedBlogsController reportedBlogsController = Get.find();
 
@@ -35,7 +34,7 @@ class _ReportedRingtonesState extends State<ReportedRingtones> {
             child: GetBuilder<BlogsController>(
                 init: blogsController,
                 builder: (ctx) {
-                  return ListView.separated(
+                  return blogsController.activeBlogs.isNotEmpty ? ListView.separated(
                     padding: EdgeInsets.zero,
                     itemCount: blogsController.activeBlogs.length,
                     itemBuilder: (BuildContext ctx, int index) {
@@ -61,7 +60,7 @@ class _ReportedRingtonesState extends State<ReportedRingtones> {
                               ).p8,
                             ).round(10).ripple(() {
                               reportedBlogsController.deleteRequestForBlog(
-                                  reportedBlogsController.blogs[index]);
+                                  blogsController.activeBlogs[index]);
                             }),
                             const SizedBox(
                               width: 10,
@@ -72,14 +71,14 @@ class _ReportedRingtonesState extends State<ReportedRingtones> {
                               width: 100,
                               child: Center(
                                 child: Text(
-                                  LocalizationString.deActivateAlbum,
+                                  LocalizationString.deActivateBlog,
                                   style: Theme.of(context).textTheme.bodyLarge,
                                   textAlign: TextAlign.center,
                                 ),
                               ).p8,
                             ).round(10).ripple(() {
                               reportedBlogsController.deactivateBlog(
-                                  reportedBlogsController.blogs[index]);
+                                  blogsController.activeBlogs[index]);
                             }),
                             const SizedBox(
                               width: 20,
@@ -94,7 +93,7 @@ class _ReportedRingtonesState extends State<ReportedRingtones> {
                         height: 20,
                       );
                     },
-                  ).hP25;
+                  ).hP25 : noDataFound(context);
                 }),
           ),
         ],

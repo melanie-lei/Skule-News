@@ -18,7 +18,7 @@ class BlogsController extends GetxController {
 
   getLatestBlogs() {
     getIt<FirebaseManager>()
-        .searchPosts(searchModel: BlogPostSearchParamModel(isRecent: true))
+        .searchPosts(searchModel: BlogPostSearchParamModel(isRecent: true,approvedStatus: 1))
         .then((response) {
       activeBlogs.value = response;
       update();
@@ -30,7 +30,7 @@ class BlogsController extends GetxController {
     searchParamModel.categoryId = selectedCategory.value?.id;
     searchParamModel.searchText =
         (searchText ?? '').isNotEmpty ? searchText : null;
-    searchParamModel.approved = true;
+    searchParamModel.approvedStatus = 1;
     searchParamModel.status = 1;
 
     getIt<FirebaseManager>()
@@ -48,7 +48,7 @@ class BlogsController extends GetxController {
     searchParamModel.categoryId = selectedCategory.value?.id;
     searchParamModel.searchText =
         (searchText ?? '').isNotEmpty ? searchText : null;
-    searchParamModel.approved = true;
+    // searchParamModel.approved = true;
     searchParamModel.status = 0;
 
     getIt<FirebaseManager>()
@@ -66,7 +66,7 @@ class BlogsController extends GetxController {
     searchParamModel.categoryId = selectedCategory.value?.id;
     searchParamModel.searchText =
         (searchText ?? '').isNotEmpty ? searchText : null;
-    searchParamModel.approved = false;
+    searchParamModel.approvedStatus = 0;
     searchParamModel.status = 1;
 
     getIt<FirebaseManager>()
@@ -84,7 +84,7 @@ class BlogsController extends GetxController {
     searchParamModel.categoryId = selectedCategory.value?.id;
     searchParamModel.searchText =
         (searchText ?? '').isNotEmpty ? searchText : null;
-    searchParamModel.approved = true;
+    searchParamModel.approvedStatus = 1;
     searchParamModel.status = 1;
     searchParamModel.featured = true;
 
@@ -124,6 +124,4 @@ class BlogsController extends GetxController {
     getIt<FirebaseManager>().addOrRemoveFromPremium(blogPost);
     update();
   }
-
-
 }

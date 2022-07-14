@@ -19,7 +19,6 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
   TextEditingController confirmPassword = TextEditingController();
 
   final loginController = Get.put(LoginController());
-  final TextEditingController _textFieldController = TextEditingController();
 
   String emailText = '';
 
@@ -183,7 +182,9 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                     width: 50,
                   ),
                 ],
-              ),
+              ).ripple((){
+                getIt<UserProfileManager>().loginAnonymously();
+              }),
               const SizedBox(
                 height: 50,
               )
@@ -268,7 +269,13 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
             if (credentials?.additionalUserInfo?.isNewUser == true) {
               Get.offAll(() => const ChooseCategories());
             } else {
-              Get.offAll(() => const MainScreen());
+              if (getIt<UserProfileManager>().user!.status == 1) {
+                Get.offAll(() => const MainScreen());
+              } else {
+                getIt<UserProfileManager>().logout();
+                AppUtil.showToast(
+                    message: LocalizationString.accountDeleted, isSuccess: false);
+              }
             }
           } else {
             showMessage(error, true);

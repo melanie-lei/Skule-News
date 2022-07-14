@@ -2,7 +2,7 @@ import 'package:music_streaming_admin_panel/helper/pub_imports.dart';
 
 class LocalizationString {
   static String appTagline =
-  'Music is everything, Start streaming music with MUSICY'.tr();
+      'Music is everything, Start streaming music with MUSICY'.tr();
 
   static String success = 'Success'.tr();
   static String error = 'Error'.tr();
@@ -42,6 +42,8 @@ class LocalizationString {
   static String comments = 'Comments'.tr();
   static String writeComment = 'Write comment'.tr();
 
+  static String noDataFound = 'No data found'.tr();
+
   static String similar = 'Similar'.tr();
   static String reviewsStr = 'Reviews'.tr();
   static String seeAll = 'See All'.tr();
@@ -55,12 +57,12 @@ class LocalizationString {
 
   static String selectLangauge = 'Select language'.tr();
   static String canChangeLangFromSetting =
-  'You can change it from settings anytime'.tr();
+      'You can change it from settings anytime'.tr();
   static String termsOfUse = 'Terms of use'.tr();
 
   static String recomendedHashtags = 'Recommended hashtags'.tr();
   static String recomendedHashtagsForYou =
-  'Recommended hashtags trending over world'.tr();
+      'Recommended hashtags trending over world'.tr();
 
   static String followedProfile = 'Followed profiles'.tr();
   static String followedProfileByYou = 'Followed profiles by you'.tr();
@@ -68,21 +70,21 @@ class LocalizationString {
   static String recommendedForYou = 'Recommended for you'.tr();
 
   static String recommendedProfile =
-  'Recommended profile for you to explore'.tr();
+      'Recommended profile for you to explore'.tr();
 
   static String recommendedSources = 'Recommended sources'.tr();
 
   static String recommendedSourcesInfo =
-  'Recommended sources for you to explore'.tr();
+      'Recommended sources for you to explore'.tr();
 
   static String recommended = 'Recommended'.tr();
 
   static String recomendedLocation = 'Recommended locations'.tr();
   static String recommendedLocationsForYou =
-  'Recommended locations for you to explore'.tr();
+      'Recommended locations for you to explore'.tr();
 
   static String noInternet =
-  'Please check your internet connection and try again.'.tr();
+      'Please check your internet connection and try again.'.tr();
 
   static String no = 'No'.tr();
   static String yes = 'Yes'.tr();
@@ -109,12 +111,11 @@ class LocalizationString {
 
   static String loginWithNumber = 'Login with number'.tr();
   static String loginWithNumberMessage =
-  'Your number wil be safe with us. We won\'t share your details with anyone'
-      .tr();
+      'Your number wil be safe with us. We won\'t share your details with anyone'
+          .tr();
 
   static String enterOtpMessage =
-  'Please enter 6 digit Code sent to you phone number'
-      .tr();
+      'Please enter 6 digit Code sent to you phone number'.tr();
 
   static String signIn = 'Sign in'.tr();
   static String login = 'Login'.tr();
@@ -124,7 +125,8 @@ class LocalizationString {
   static String loginAnotherAccount = 'Login another account'.tr();
   static String yourEmail = 'Your Email'.tr();
   static String forgotPwd = 'Forgot Password?'.tr();
-  static String forgotPwdSubtitle = 'Enter your email, we will send you and email to reset password'.tr();
+  static String forgotPwdSubtitle =
+      'Enter your email, we will send you and email to reset password'.tr();
 
   static String passwordIsEmpty = 'Please enter password'.tr();
   static String emailPwdIsIncorrect = 'Email or password is incorrect'.tr();
@@ -183,7 +185,7 @@ class LocalizationString {
 
   static String pleaseSelectCategory = 'Please select category'.tr();
   static String pleaseSelectSomeCategories =
-  'Please select some categories'.tr();
+      'Please select some categories'.tr();
 
   static String pleaseSelectLanguage = 'Please select language'.tr();
 
@@ -195,7 +197,7 @@ class LocalizationString {
   static String wallpaperUpdated = 'Wallpaper updated successfully'.tr();
   static String pleaseSelectArtist = 'Please select artist'.tr();
   static String pleaseSelectWallpaperImage =
-  'Please select wallpaper Image'.tr();
+      'Please select wallpaper Image'.tr();
   static String pleaseSelectWallpaper = 'Please select wallpaper'.tr();
   static String pleaseSelectWallpapers = 'Please select wallpaper'.tr();
   static String pleaseSelectPlaylist = 'Please select playlist'.tr();
@@ -208,6 +210,7 @@ class LocalizationString {
   static String recentBlogs = 'Recent Blogs'.tr();
 
   static String deActivatedBlogs = 'De-Activated Blogs'.tr();
+  static String deActivateBlog = 'De-Activate Blog'.tr();
   static String featuredBlogs = 'Featured Blogs'.tr();
 
   static String addedOn = 'Added on'.tr();
@@ -219,6 +222,7 @@ class LocalizationString {
   static String authors = 'Authors'.tr();
   static String activeAuthors = 'Active Authors'.tr();
   static String deactivatedAuthors = 'De-Activated Authors'.tr();
+  static String deActivateAuthor = 'De-Activate Author'.tr();
 
   static String searchUser = 'Search users'.tr();
   static String searchAuthor = 'Search authors'.tr();
@@ -228,7 +232,8 @@ class LocalizationString {
   static String blogContent = 'Blog Content(HTML supported)'.tr();
 
   static String hashTags = 'Hashtags'.tr();
-  static String commaSeparatedHashtags = 'Hashtags (Add comma separated hashtags)'.tr();
+  static String commaSeparatedHashtags =
+      'Hashtags (Add comma separated hashtags)'.tr();
 
   static String locations = 'Locations'.tr();
 
@@ -247,14 +252,14 @@ class LocalizationString {
 
   static String pleaseEnterPassword = 'Please enter password'.tr();
   static String pleaseEnterConfirmPassword =
-  'Please enter confirm password'.tr();
+      'Please enter confirm password'.tr();
   static String passwordsDoesNotMatched = 'Password does not matched'.tr();
   static String createAccountForTopPicks =
-  'Create an account to our top picks for you!'.tr();
+      'Create an account to our top picks for you!'.tr();
   static String pleaseEnterUserName = 'Please enter user name'.tr();
   static String pleaseEnterPlaylistName = 'Please enter playlist name'.tr();
   static String pleaseEnterPlaylistDesc =
-  'Please enter playlist description'.tr();
+      'Please enter playlist description'.tr();
   static String pleaseEnterWallpaperName = 'Please enter wallpaper name'.tr();
 
   static String pleaseEnterAlbumName = 'Please enter album name'.tr();
@@ -272,7 +277,7 @@ class LocalizationString {
   static String pleaseSelectColor = 'Please select color'.tr();
 
   static String userNameOrPasswordIsWrong =
-  'User name or password is wrong'.tr();
+      'User name or password is wrong'.tr();
   static String invalidPhoneNumber = 'Please enter a valid phone number'.tr();
 
   static String home = 'Home'.tr();
@@ -291,8 +296,10 @@ class LocalizationString {
   static String iosInAppId = 'iOS in app purchase Id'.tr();
   static String androidInAppId = 'Android in app purchase Id'.tr();
   static String pleaseEnterPackageName = 'Please enter package name'.tr();
-  static String pleaseEnterIOSInAppId = 'Please enter iOS in app purchase id'.tr();
-  static String pleaseEnterAndroidInAppId = 'Please enter Android in app purchase id'.tr();
+  static String pleaseEnterIOSInAppId =
+      'Please enter iOS in app purchase id'.tr();
+  static String pleaseEnterAndroidInAppId =
+      'Please enter Android in app purchase id'.tr();
 
   static String categories = 'Categories'.tr();
   static String categoryName = 'Category Name'.tr();
@@ -302,7 +309,7 @@ class LocalizationString {
   static String requestSent = 'Request sent'.tr();
 
   static String errorMessage =
-  'There is some problem, Please try again later'.tr();
+      'There is some problem, Please try again later'.tr();
 
   static String wallpaperImage = 'Wallpaper image'.tr();
 
@@ -370,7 +377,7 @@ class LocalizationString {
   static String subscriptionValidTill = 'subscription active till'.tr();
 
   static String subscribed =
-  'Congratulations, you are subscribed successfully'.tr();
+      'Congratulations, you are subscribed successfully'.tr();
 
   static String premiumAccess = 'PREMIUM ACCESS'.tr();
   static String thisIsPremiumBlog = 'This is a premium blog'.tr();
@@ -392,7 +399,7 @@ class LocalizationString {
 
   static String createNewPwd = 'Create new password'.tr();
   static String createNewPwdCondition =
-  'Your new password must be  different from last password'.tr();
+      'Your new password must be  different from last password'.tr();
 
   static String oldPwdStr = 'Old password'.tr();
   static String newPwdStr = 'New password'.tr();
@@ -401,30 +408,31 @@ class LocalizationString {
   static String pwdChanged = 'Password changed'.tr();
   static String pwdRule = 'Password rules'.tr();
   static String passwordRule =
-  'Your password must be 8 or more characters long'.tr();
+      'Your password must be 8 or more characters long'.tr();
 
   static String resetPwd = 'Reset password'.tr();
   static String pleaseEnterPostTitle = 'Please enter title'.tr();
-  static String pleaseEnterPostDescription= 'Please enter post content'.tr();
+  static String pleaseEnterPostDescription = 'Please enter post content'.tr();
 
   static String pleaseEnterValidEmail = 'Please enter valid email address'.tr();
   static String pleaseUploadImage = 'Please upload image'.tr();
-  static String pleaseUploadThumbnailImage = 'Please upload thumbnail image'.tr();
+  static String pleaseUploadThumbnailImage =
+      'Please upload thumbnail image'.tr();
   static String pleaseUploadVideo = 'Please upload Video'.tr();
 
   static String pleaseUploadWallpaper = 'Please upload wallpaper'.tr();
   static String pleaseUploadWallpaperCover =
-  'Please upload wallpaper cover image'.tr();
+      'Please upload wallpaper cover image'.tr();
 
   static String emailAddress = 'Email Address'.tr();
   static String resetPwdLinkSent =
-  'Reset password link is sent to your email address'.tr();
+      'Reset password link is sent to your email address'.tr();
   static String resetPwdLinkWillBeSent =
-  'Reset password link will be sent to your email address'.tr();
+      'Reset password link will be sent to your email address'.tr();
   static String emailDoesNotExist = 'Email does not exists'.tr();
   static String joined = 'Joined'.tr();
   static String willWillEmailToRecoverPassword =
-  'We will send you an email to recover password'.tr();
+      'We will send you an email to recover password'.tr();
 
   static String keepUpdated = 'Keep updated'.tr();
 
@@ -432,6 +440,8 @@ class LocalizationString {
 
   static String phoneNumber = 'Phone number'.tr();
   static String update = 'Update'.tr();
+  static String updateProfile = 'Update profile'.tr();
+  static String profileUpdated = 'Profile is updated successfully'.tr();
 
   static String goPremium = 'Go Premium'.tr();
   static String restorePurchase = 'Restore in app purchases'.tr();
@@ -463,8 +473,8 @@ class LocalizationString {
   static String sourceReported = 'News source reported successfully'.tr();
 
   static String getPersonalisedExperience =
-  'Get a personalised experience, and access all wallpaper and ringtones'
-      .tr();
+      'Get a personalised experience, and access all wallpaper and ringtones'
+          .tr();
   static String installApp = 'To create your account, install Zedgy app'.tr();
 
   static String wallpaperNotSaved = 'Wallpaper not saved'.tr();
@@ -480,10 +490,14 @@ class LocalizationString {
   static String reject = 'Reject'.tr();
   static String reportedBlogs = 'Reported Blogs'.tr();
 
-  static String areYourSure = 'Are you sure?'.tr();
-  static String wantToRemoveFromFeatured = 'Do you want to remove this blog from premium list?'.tr();
-  static String wantToAddToFeatured = 'Do you want to featured this blog?'.tr();
-  static String wantToRemoveFromPremium = 'Do you want to remove this blog from premium list?'.tr();
-  static String wantToAddToPremium = 'Do you want to add this blog to premium blogs?'.tr();
+  static String reportedAuthors= 'Reported Authors'.tr();
 
+  static String areYourSure = 'Are you sure?'.tr();
+  static String wantToRemoveFromFeatured =
+      'Do you want to remove this blog from premium list?'.tr();
+  static String wantToAddToFeatured = 'Do you want to featured this blog?'.tr();
+  static String wantToRemoveFromPremium =
+      'Do you want to remove this blog from premium list?'.tr();
+  static String wantToAddToPremium =
+      'Do you want to add this blog to premium blogs?'.tr();
 }

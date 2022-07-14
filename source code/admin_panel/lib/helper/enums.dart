@@ -33,6 +33,8 @@ enum MenuType {
   settings,
   supportRequests,
   reportAbusedBlogs,
+  reportAbusedAuthors,
+
   changePassword,
 }
 

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_streaming_admin_panel/components/user_tile.dart';
-import 'package:music_streaming_admin_panel/controllers/users_controller.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
 
@@ -67,7 +65,7 @@ class _UsersListState extends State<UsersList> {
           child: GetBuilder<UsersController>(
               init: userController,
               builder: (ctx) {
-                return ListView.separated(
+                return userController.users.isNotEmpty ? ListView.separated(
                   itemCount: userController.users.length,
                   itemBuilder: (BuildContext ctx, int index) {
                     return UserTile(
@@ -84,7 +82,7 @@ class _UsersListState extends State<UsersList> {
                       width: double.infinity,
                     ).vP8;
                   },
-                ).vP25;
+                ).vP25 : noDataFound(context);
               }),
         ),
       ],

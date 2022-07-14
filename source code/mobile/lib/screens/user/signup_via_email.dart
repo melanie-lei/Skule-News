@@ -17,7 +17,6 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
   TextEditingController signUpPassword = TextEditingController();
 
   final loginController = Get.put(LoginController());
-  final TextEditingController _textFieldController = TextEditingController();
 
   String emailText = '';
 
@@ -185,7 +184,9 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
                     width: 50,
                   ),
                 ],
-              ),
+              ).ripple((){
+                getIt<UserProfileManager>().loginAnonymously();
+              }),
               const SizedBox(
                 height: 50,
               )

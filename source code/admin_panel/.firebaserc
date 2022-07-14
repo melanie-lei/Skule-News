@@ -8,6 +8,9 @@
         "admin": [
           "music-app-admin",
           "zedge-admin-panel"
+        ],
+        "adminPanel": [
+          "blogmaster-admin-panel"
         ]
       }
     },
@@ -15,6 +18,9 @@
       "hosting": {
         "admin": [
           "zedge-admin-panel"
+        ],
+        "adminPanel": [
+          "blogmaster-admin-panel"
         ]
       }
     }

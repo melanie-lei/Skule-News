@@ -29,7 +29,7 @@ void main() async {
   Get.put(NewsDetailController());
   Get.put(SeeAllPostsController());
   Get.put(HashtagController());
-  Get.put(SourceController());
+  Get.put(AuthorController());
   // Get.put(LocationController());
   Get.put(FollowingController());
   Get.put(MyAccountController());

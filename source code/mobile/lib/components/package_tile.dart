@@ -45,7 +45,6 @@ class PackageTile extends StatelessWidget {
           //     isSuccess: false);
         }
       } else {
-        print('not available');
         packageController.updatedSubscriptionStatus();
         // AppUtil.showToast(
         //     message: LocalizationString.storeIsNotAvailable,

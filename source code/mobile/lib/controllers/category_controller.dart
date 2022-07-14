@@ -27,8 +27,14 @@ class CategoryController extends GetxController {
   handleCategoryTap({required int index, required bool isVideo}) {
     selectedCategoryIndex.value = index;
     if (categories[index].id.isEmpty) {
-      dashboardController.prepareSearchQuery();
-      dashboardController.loadPosts(callBack: () {});
+      if(categories[index].name == LocalizationString.following){
+        dashboardController.prepareSearchQueryWithFollowers();
+        dashboardController.loadFollowingUsersPosts(callBack: (){});
+      }
+      else{
+        dashboardController.prepareSearchQuery();
+        dashboardController.loadPosts(callBack: () {});
+      }
     } else {
       dashboardController
           .prepareSearchQueryWithCategoryId(categories[index].id);
@@ -49,9 +55,12 @@ class CategoryController extends GetxController {
         .searchCategories(searchText: searchText)
         .then((result) {
       if (needDefaultCategory == true) {
-        CategoryModel defaultCategory =
+        CategoryModel defaultCategory1 =
             CategoryModel(id: '', name: LocalizationString.forYou, status: 1);
-        result.insert(0, defaultCategory);
+        CategoryModel defaultCategory2 =
+        CategoryModel(id: '', name: LocalizationString.following, status: 1);
+        result.insert(0, defaultCategory1);
+        result.insert(1, defaultCategory2);
       }
       categories.value = result;
 

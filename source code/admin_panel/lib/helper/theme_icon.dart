@@ -668,6 +668,12 @@ class ThemeIconWidget extends StatelessWidget {
           size: size ?? 20,
           color: color ?? Theme.of(context).iconTheme.color,
         );
+      case ThemeIcon.noData:
+        return Icon(
+          Icons.no_backpack,
+          size: size ?? 20,
+          color: color ?? Theme.of(context).iconTheme.color,
+        );
     }
   }
 }

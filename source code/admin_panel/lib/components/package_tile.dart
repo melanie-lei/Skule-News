@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
-import 'package:get/get.dart';
 
 class PackageTile extends StatelessWidget {
   final PackageModel package;

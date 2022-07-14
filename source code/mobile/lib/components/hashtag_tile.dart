@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
-import 'package:get/get.dart';
 
 class HashtagTile extends StatelessWidget {
   final Hashtag model;
@@ -16,17 +14,24 @@ class HashtagTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CachedNetworkImage(
-            imageUrl: model.image,
-            fit: BoxFit.cover,
-            placeholder: (context, url) =>
-            const CircularProgressIndicator(),
-            errorWidget: (context, url, error) => const Icon(Icons.error),
-            height: 50,
-            width: 50,
-          ).round(10).ripple(() {
-            Get.to(() => NewsSourceDetail(userId: model.id));
-          }),
+          Text(
+            '#${model.name}',
+            style: Theme.of(context)
+                .textTheme
+                .displaySmall!
+                .copyWith(color: Theme.of(context).primaryColor),
+          ).p8,
+          // CachedNetworkImage(
+          //   imageUrl: model.image,
+          //   fit: BoxFit.cover,
+          //   placeholder: (context, url) =>
+          //   const CircularProgressIndicator(),
+          //   errorWidget: (context, url, error) => const Icon(Icons.error),
+          //   height: 50,
+          //   width: 50,
+          // ).round(10).ripple(() {
+          //   Get.to(() => NewsSourceDetail(userId: model.id));
+          // }),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,

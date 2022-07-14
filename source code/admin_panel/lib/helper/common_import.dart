@@ -90,4 +90,5 @@ export 'package:music_streaming_admin_panel/controllers/login_controller.dart';
 export 'package:music_streaming_admin_panel/controllers/support_requests_controller.dart';
 export 'package:music_streaming_admin_panel/controllers/dashboard_controller.dart';
 export 'package:music_streaming_admin_panel/controllers/side_menu_container.dart';
-
+export 'package:music_streaming_admin_panel/controllers/user_controller.dart';
+export 'package:music_streaming_admin_panel/components/user_tile.dart';

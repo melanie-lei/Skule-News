@@ -3,7 +3,10 @@ import 'package:music_streaming_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
 
 class PendingApprovalsBlogs extends StatefulWidget {
-  const PendingApprovalsBlogs({Key? key}) : super(key: key);
+  final BlogStatusType statusType;
+
+  const PendingApprovalsBlogs({Key? key, required this.statusType})
+      : super(key: key);
 
   @override
   _PendingApprovalsBlogsState createState() => _PendingApprovalsBlogsState();
@@ -19,8 +22,15 @@ class _PendingApprovalsBlogsState extends State<PendingApprovalsBlogs> {
   @override
   void initState() {
     // TODO: implement initState
-    pendingBlogsController.getPendingBlogs();
+    pendingBlogsController.getPendingBlogs(widget.statusType);
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant PendingApprovalsBlogs oldWidget) {
+    // TODO: implement didUpdateWidget
+    pendingBlogsController.getPendingBlogs(widget.statusType);
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -64,7 +74,7 @@ class _PendingApprovalsBlogsState extends State<PendingApprovalsBlogs> {
                     builder: (BuildContext context) =>
                         SelectCategory(callback: (category) {
                       pendingBlogsController.selectCategory(category);
-                      pendingBlogsController.getPendingBlogs();
+                      pendingBlogsController.getPendingBlogs(widget.statusType);
                     }),
                   );
                 })),
@@ -83,34 +93,39 @@ class _PendingApprovalsBlogsState extends State<PendingApprovalsBlogs> {
           hintText: LocalizationString.searchBlog,
           onChanged: (text) {
             pendingBlogsController.searchTextChanged(text);
-            pendingBlogsController.getPendingBlogs();
+            pendingBlogsController.getPendingBlogs(widget.statusType);
           },
         ).shadow(context: context).setPadding(top: 25),
         Expanded(
           child: GetBuilder<PendingBlogsController>(
               init: pendingBlogsController,
               builder: (ctx) {
-                return ListView.separated(
-                  itemCount: pendingBlogsController.pendingApprovalBlogs.length,
-                  itemBuilder: (BuildContext ctx, int index) {
-                    return PendingBlogPostTile(
-                      model: pendingBlogsController.pendingApprovalBlogs[index],
-                      viewCallback: () {
-                        Get.to(() => BlogPreview(
-                            model: pendingBlogsController
-                                .pendingApprovalBlogs[index]));
-                      },
-
-                    );
-                  },
-                  separatorBuilder: (BuildContext ctx, int index) {
-                    return Container(
-                      height: 0.2,
-                      color: Theme.of(context).dividerColor,
-                      width: double.infinity,
-                    ).vP8;
-                  },
-                ).vP25;
+                return pendingBlogsController.pendingApprovalBlogs.isNotEmpty
+                    ? ListView.separated(
+                        itemCount:
+                            pendingBlogsController.pendingApprovalBlogs.length,
+                        itemBuilder: (BuildContext ctx, int index) {
+                          return Container(
+                              color:
+                                  Theme.of(context).backgroundColor.darken(0.1),
+                              child: PendingBlogPostTile(
+                                model: pendingBlogsController
+                                    .pendingApprovalBlogs[index],
+                              )).round(10).ripple(() {
+                            Get.to(() => BlogPreview(
+                                model: pendingBlogsController
+                                    .pendingApprovalBlogs[index]));
+                          });
+                        },
+                        separatorBuilder: (BuildContext ctx, int index) {
+                          return Container(
+                            height: 0.2,
+                            color: Theme.of(context).dividerColor,
+                            width: double.infinity,
+                          ).vP8;
+                        },
+                      ).vP25
+                    : noDataFound(context);
               }),
         ),
       ],

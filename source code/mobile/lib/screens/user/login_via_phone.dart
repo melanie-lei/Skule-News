@@ -192,7 +192,9 @@ class LoginViaPhoneState extends State<LoginViaPhone> {
                     width: 50,
                   ),
                 ],
-              ),
+              ).ripple((){
+                getIt<UserProfileManager>().loginAnonymously();
+              }),
               const SizedBox(
                 height: 50,
               )

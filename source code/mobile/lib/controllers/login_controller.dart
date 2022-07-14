@@ -8,7 +8,6 @@ class LoginController extends GetxController {
   String? errorMessage;
   bool showLoginView = true;
 
-  FirebaseManager manager = FirebaseManager();
   ConfirmationResult? confirmationResult;
 
   sendOTP(
@@ -48,7 +47,7 @@ class LoginController extends GetxController {
       {required String email,
       required String password,
       required Function(String?, UserCredential?) callback}) {
-    manager.loginViaEmail(email: email, password: password).then((response) {
+    getIt<FirebaseManager>().loginViaEmail(email: email, password: password).then((response) {
       EasyLoading.dismiss();
       if (response.status == true) {
         callback(null, response.credential);
@@ -64,7 +63,7 @@ class LoginController extends GetxController {
       required String password,
       required String name,
       required Function(String?) completion}) {
-    manager
+    getIt<FirebaseManager>()
         .signUpViaEmail(email: email, password: password, name: name)
         .then((response) {
       EasyLoading.dismiss();

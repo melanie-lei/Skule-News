@@ -134,24 +134,31 @@ class _SocialLoginState extends State<SocialLogin> {
       {required UserCredential credentials,
       required String userId,
       String? name,
-      String? email}) {
-    FirebaseManager()
-        .insertUser(id: userId, name: name, email: email)
-        .then((response) {
-      if (response.status == true) {
-        SharedPrefs().setUserLoggedIn(true);
-        UserProfileManager().refreshProfile();
+      String? email}) async {
+    if (credentials.additionalUserInfo!.isNewUser == true) {
+      getIt<FirebaseManager>()
+          .insertUser(id: userId, name: name, email: email)
+          .then((response) {
+        if (response.status == true) {
+          getIt<UserProfileManager>().refreshProfile();
 
-        if (credentials.additionalUserInfo!.isNewUser == true) {
           Get.offAll(() => const ChooseCategories());
         } else {
-          Get.offAll(() => const MainScreen());
+          AppUtil.showToast(
+              message: LocalizationString.errorMessage, isSuccess: false);
         }
+      });
+    } else {
+      await getIt<UserProfileManager>().refreshProfile();
+
+      if (getIt<UserProfileManager>().user!.status == 1) {
+        Get.offAll(() => const MainScreen());
       } else {
+        getIt<UserProfileManager>().logout();
         AppUtil.showToast(
-            message: LocalizationString.errorMessage, isSuccess: false);
+            message: LocalizationString.accountDeleted, isSuccess: false);
       }
-    });
+    }
   }
 
   Future<void> _handleAppleSignIn() async {

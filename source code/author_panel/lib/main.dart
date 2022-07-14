@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+
+  await FacebookAuth.i.webInitialize(
+    appId: AppConfig.facebookAppId,
+    cookie: true,
+    xfbml: true,
+    version: "v13.0",
+  );
+
   await Firebase.initializeApp(
     // Replace with actual values
     options: const FirebaseOptions(
@@ -35,6 +44,10 @@ void main() async{
   Get.put(ChangePasswordController());
   Get.put(LoginController());
   Get.put(SideMenuContainer());
+  Get.put(UserController());
+  Get.put(MainScreenContainer());
+
+  setPathUrlStrategy();
 
   runApp(
     EasyLocalization(
@@ -68,7 +81,7 @@ class MainApp extends StatelessWidget{
       supportedLocales: context.supportedLocales,
       locale: context.locale,
       builder: EasyLoading.init(),
-      home: FirebaseAuth.instance.currentUser?.uid == null ? const LoginScreen() : const MainScreen(),
+      home: FirebaseAuth.instance.currentUser?.uid == null ? const AskForLogin() : const MainScreen(),
       // home:  const MainScreen(),
 
     );

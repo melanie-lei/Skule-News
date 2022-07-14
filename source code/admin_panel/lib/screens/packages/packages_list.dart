@@ -46,7 +46,7 @@ class _PackagesListState extends State<PackagesList> {
                 child: GetBuilder<PackageController>(
                     init: packageController,
                     builder: (ctx) {
-                      return ListView.separated(
+                      return packageController.packages.isNotEmpty ? ListView.separated(
                           shrinkWrap: true,
                           padding: EdgeInsets.zero,
                           itemCount: packageController.packages.length,
@@ -66,7 +66,7 @@ class _PackagesListState extends State<PackagesList> {
                             return const SizedBox(
                               height: 20,
                             );
-                          }).p25;
+                          }).p25 : noDataFound(context);
                     }),
               ).round(20),
             ),

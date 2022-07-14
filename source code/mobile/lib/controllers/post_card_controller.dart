@@ -25,7 +25,7 @@ class PostCardController extends GetxController {
   //   }
   // }
 
-  void likeUnlikePost(NewsModel model) {
+  void likeUnlikePost(BlogPostModel model) {
     if (getIt<UserProfileManager>().isLogin() == false) {
       Get.to(() => const AskForLogin());
       return;
@@ -61,7 +61,7 @@ class PostCardController extends GetxController {
     update();
   }
 
-  void saveOrDeletePost(NewsModel model) {
+  void saveOrDeletePost(BlogPostModel model) {
     if (getIt<UserProfileManager>().isLogin() == false) {
       Get.to(() => const AskForLogin());
       return;
@@ -96,13 +96,13 @@ class PostCardController extends GetxController {
     update();
   }
 
-  reportPost(NewsModel post) {
+  reportPost(BlogPostModel post) {
     if (getIt<UserProfileManager>().isLogin() == false) {
       Get.to(() => const AskForLogin());
       return;
     }
     getIt<FirebaseManager>()
-        .reportAbuse(post.id, post.title, DataType.news)
+        .reportAbuse(post.id, post.title, DataType.blogPost)
         .then((value) {
       // AppUtil.showToast(
       //     message: LocalizationString.newsReported, isSuccess: true, context: null);

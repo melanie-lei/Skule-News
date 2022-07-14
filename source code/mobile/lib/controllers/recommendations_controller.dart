@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
 
 class RecommendationController extends GetxController {
-  RxList<NewsModel> posts = <NewsModel>[].obs;
-  RxList<NewsSourceModel> sources = <NewsSourceModel>[].obs;
+  RxList<BlogPostModel> posts = <BlogPostModel>[].obs;
+  RxList<AuthorModel> sources = <AuthorModel>[].obs;
 
   // RxList<UserModel> profiles = <UserModel>[].obs;
   RxList<Hashtag> hashtags = <Hashtag>[].obs;
@@ -52,8 +52,9 @@ class RecommendationController extends GetxController {
         .searchPosts(
       searchModel: searchParamModel,
     )
-        .then((result) {
-      posts.value = result;
+        .then((response) {
+      posts.value = response.result as List<BlogPostModel>;
+
       isLoadingPosts.value = false;
       update();
     });
@@ -73,7 +74,7 @@ class RecommendationController extends GetxController {
   loadHashtags({String? searchText}) {
     isLoadingHashtags.value = true;
     getIt<FirebaseManager>()
-        .searchHashtags(searchText: searchText)
+        .searchHashtags(searchText: searchText,isTrending: true)
         .then((result) {
       hashtags = RxList(result);
       isLoadingHashtags.value = false;
@@ -82,7 +83,7 @@ class RecommendationController extends GetxController {
   }
 
   void followUnfollowSourceAndUser(
-      {NewsSourceModel? newsSource, UserModel? user, required bool isSource}) {
+      {AuthorModel? newsSource, UserModel? user, required bool isSource}) {
     if (getIt<UserProfileManager>().isLogin() == false) {
       Get.to(() => const AskForLogin());
       return;
@@ -123,7 +124,7 @@ class RecommendationController extends GetxController {
     AppUtil.checkInternet().then((value) async {
       if (value) {
         if (isFollowing) {
-          getIt<FirebaseManager>().followUser(id: objectId, isSource: isSource);
+          getIt<FirebaseManager>().followUser(id: objectId, isAuthor: isSource);
         } else {
           getIt<FirebaseManager>()
               .unFollowUser(id: objectId, isSource: isSource);
@@ -146,11 +147,11 @@ class RecommendationController extends GetxController {
     bool isFollowing = false;
 
     if (hashtag.isFollowing() == true) {
-      getIt<UserProfileManager>().user!.followingHashtags.remove(hashtag.id);
+      getIt<UserProfileManager>().user!.followingHashtags.remove(hashtag.name);
       hashtag.totalFollowers -= 1;
       isFollowing = false;
     } else {
-      getIt<UserProfileManager>().user!.followingHashtags.add(hashtag.id);
+      getIt<UserProfileManager>().user!.followingHashtags.add(hashtag.name);
       hashtag.totalFollowers += 1;
       isFollowing = true;
     }
@@ -160,9 +161,9 @@ class RecommendationController extends GetxController {
     AppUtil.checkInternet().then((value) async {
       if (value) {
         if (isFollowing) {
-          getIt<FirebaseManager>().followHashtag(id: hashtag.id);
+          getIt<FirebaseManager>().followHashtag(hashtag: hashtag);
         } else {
-          getIt<FirebaseManager>().unFollowHashtag(id: hashtag.id);
+          getIt<FirebaseManager>().unFollowHashtag(hashtag: hashtag);
         }
       } else {
         // AppUtil.showToast(
@@ -257,11 +258,11 @@ class RecommendationController extends GetxController {
     update();
   }
 
-  searchedPostOpened(NewsModel model) {
+  searchedPostOpened(BlogPostModel model) {
     getIt<FirebaseManager>().increasePostSearchCount(model);
   }
 
-  searchedSourceOpened(NewsSourceModel model) {
+  searchedSourceOpened(AuthorModel model) {
     getIt<FirebaseManager>().increaseSourceSearchCount(model);
   }
 }

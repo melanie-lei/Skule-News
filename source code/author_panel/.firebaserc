@@ -15,6 +15,9 @@
       "hosting": {
         "admin": [
           "zedge-admin-panel"
+        ],
+        "authorPanel": [
+          "blogmaster-author-panel"
         ]
       }
     }

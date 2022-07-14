@@ -18,10 +18,13 @@ enum MenuType {
   activeBlogs,
   featuredBlogs,
   pendingApprovalBlogs,
+  rejectedBlogs,
   deactivatedBlogs,
   addBlog,
 
   changePassword,
+  updateProfile,
+
 }
 
 enum AccountStatusType {
@@ -34,6 +37,8 @@ enum BlogStatusType {
   all,
   active,
   deactivated,
+  pending,
+  rejected,
   featured,
 }
 

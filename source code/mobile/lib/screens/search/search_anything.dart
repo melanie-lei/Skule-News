@@ -38,7 +38,7 @@ class _SearchAnythingState extends State<SearchAnything> {
                 selectedTextStyle: Theme.of(context)
                     .textTheme
                     .titleMedium!
-                    .copyWith(color: Theme.of(context).primaryColor),
+                    .copyWith(color: Theme.of(context).primaryColor,fontWeight: FontWeight.w600),
                 textStyle: Theme.of(context).textTheme.titleMedium,
                 onSegmentChange: (segment) {
                   recommendationController.segmentChanged(segment);

@@ -1,14 +1,14 @@
 import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class NewsModel {
+class BlogPostModel {
   String id;
   String title;
-  String shortContent;
+  // String shortContent;
   List<String> hashtags;
 
   String content;
-  String coverImage;
+  String thumbnailImage;
   String? videoUrl;
 
   String authorId;
@@ -18,7 +18,7 @@ class NewsModel {
   String authorPicture;
   String category;
   String categoryId;
-  String locationId;
+  // String locationId;
 
   int totalLikes;
   int totalComments;
@@ -26,21 +26,21 @@ class NewsModel {
   int contentType;
   bool? isPremium;
 
-  NewsModel({
+  BlogPostModel({
     required this.id,
     required this.title,
     required this.content,
-    required this.coverImage,
+    required this.thumbnailImage,
     this.videoUrl,
     required this.createdAt,
-    required this.shortContent,
+    // required this.shortContent,
     required this.hashtags,
     required this.authorId,
     required this.authorName,
     required this.authorPicture,
     required this.category,
     required this.categoryId,
-    required this.locationId,
+    // required this.locationId,
     required this.totalLikes,
     required this.totalComments,
     required this.totalSaved,
@@ -48,13 +48,13 @@ class NewsModel {
     this.isPremium,
   });
 
-  factory NewsModel.fromJson(Map<String, dynamic> json) => NewsModel(
+  factory BlogPostModel.fromJson(Map<String, dynamic> json) => BlogPostModel(
     id: json["id"],
     title: json["title"],
     content: json["content"],
-    coverImage: json["coverImage"],
+    thumbnailImage: json["thumbnailImage"],
     videoUrl: json["videoUrl"],
-    shortContent: json["shortContent"],
+    // shortContent: json["shortContent"],
     hashtags: (json['hashtags'] as List<dynamic>)
         .map((e) => e.toString())
         .toList(),
@@ -69,7 +69,7 @@ class NewsModel {
     totalComments: json["totalComments"],
     category: json["category"],
     categoryId: json["categoryId"],
-    locationId: json["locationId"],
+    // locationId: json["locationId"],
     createdAt: json["createdAt"] == null
         ? DateTime.now()
         : json["createdAt"].toDate(),

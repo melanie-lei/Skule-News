@@ -3,7 +3,7 @@ import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
 
 class PostTile extends StatefulWidget {
-  final NewsModel model;
+  final BlogPostModel model;
   final VoidCallback? tapHandler;
 
   const PostTile({
@@ -44,7 +44,7 @@ class _PostTileState extends State<PostTile> {
               Stack(
                 children: [
                   CachedNetworkImage(
-                    imageUrl: widget.model.coverImage,
+                    imageUrl: widget.model.thumbnailImage,
                     fit: BoxFit.cover,
                     // placeholder: (context, url) =>
                     // const CircularProgressIndicator(),
@@ -76,7 +76,7 @@ class _PostTileState extends State<PostTile> {
               // divider(context: context).vP16,
             ],
           ).ripple(() {
-            Get.to(() => NewsFullDetail(model: widget.model));
+            Get.to(() => BlogPostFullDetail(model: widget.model));
             if(widget.tapHandler != null){
               widget.tapHandler!();
             }
@@ -125,7 +125,7 @@ class _PostTileState extends State<PostTile> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         userInfo(),
-        Text(widget.model.shortContent,
+        Text(widget.model.title,
             maxLines: 2, style: Theme.of(context).textTheme.titleMedium!
                 .copyWith(fontWeight: FontWeight.w600)),
       ],
@@ -133,16 +133,16 @@ class _PostTileState extends State<PostTile> {
   }
 
   Widget userInfo() {
-    return FutureBuilder<NewsSourceModel>(
+    return FutureBuilder<AuthorModel>(
       future: loadSourceInfo(widget.model.authorId),
-      builder: (BuildContext ctx, AsyncSnapshot<NewsSourceModel> snapshot) {
+      builder: (BuildContext ctx, AsyncSnapshot<AuthorModel> snapshot) {
         if (snapshot.hasData) {
           return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AvatarView(
                 url: snapshot.data!.image,
-                size: 20,
+                size: 28,
               ).ripple(() {
                 openProfile(snapshot.data!.id);
               }),
@@ -150,10 +150,10 @@ class _PostTileState extends State<PostTile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(widget.model.authorName,
-                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600)),
+                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600)),
                   Text(
                       '${snapshot.data!.totalFollowers} ${LocalizationString.followers.toLowerCase()}',
-                      style: Theme.of(context).textTheme.bodySmall),
+                      style: Theme.of(context).textTheme.bodyMedium),
                 ],
               ).lP8.ripple(() {
                 openProfile(snapshot.data!.id);
@@ -174,15 +174,15 @@ class _PostTileState extends State<PostTile> {
     );
   }
 
-  Future<NewsSourceModel> loadSourceInfo(String id) async {
-    NewsSourceModel? detail;
-    await getIt<FirebaseManager>().getSourceDetail(id).then((value) {
+  Future<AuthorModel> loadSourceInfo(String id) async {
+    AuthorModel? detail;
+    await getIt<FirebaseManager>().getAuthorDetail(id).then((value) {
       detail = value!;
     });
     return detail!;
   }
 
   void openProfile(String id) async {
-    Get.to(() => NewsSourceDetail(userId: id));
+    Get.to(() => AuthorDetail(userId: id));
   }
 }

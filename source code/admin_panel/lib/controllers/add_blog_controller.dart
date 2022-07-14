@@ -18,7 +18,7 @@ class AddBlogController extends GetxController {
   RxInt contentType = 1.obs;
 
   RxString categoryId = ''.obs;
-  RxString categoryName  = ''.obs;
+  RxString categoryName = ''.obs;
 
   RxBool isPremium = false.obs;
 
@@ -87,11 +87,6 @@ class AddBlogController extends GetxController {
           isSuccess: false);
 
       return;
-    } else if (categoryName == null) {
-      AppUtil.showToast(
-          message: LocalizationString.pleaseSelectCategory, isSuccess: false);
-
-      return;
     }
 
     EasyLoading.show(status: LocalizationString.loading);
@@ -140,6 +135,7 @@ class AddBlogController extends GetxController {
         categoryName.value = '';
         postTitle.value.text = '';
         postDescription.value.text = '';
+        hashtags.value.text = '';
 
         categoryId.value = '';
 
@@ -172,7 +168,7 @@ class AddBlogController extends GetxController {
     String songFilePath = '';
 
     await getIt<FirebaseManager>()
-        .uploadBlogFile(
+        .uploadBlogVideo(
             uniqueId: postId,
             bytes: videoFileBytes!,
             fileName: postFile.value.text)

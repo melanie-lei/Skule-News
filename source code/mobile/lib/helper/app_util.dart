@@ -18,7 +18,7 @@ class AppUtil {
             : LocalizationString.error,
         message,
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: isSuccess == true ? Colors.green : Colors.red,
+        backgroundColor: isSuccess == true ? Colors.green.withOpacity(0.2) : Colors.red.withOpacity(0.2),
         icon: const Icon(Icons.error, color: Colors.white));
   }
 

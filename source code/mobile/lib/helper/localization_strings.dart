@@ -308,6 +308,7 @@ class LocalizationString {
   static String close = 'Close'.tr();
   static String remove = 'Remove'.tr();
 
+  static String accountDeleted = 'Account is deleted';
   static String deleteRequest = 'Delete Request'.tr();
   static String deActivateWallpaper = 'De-Activate Wallpaper'.tr();
   static String deActivateAlbum = 'De-Activate Album'.tr();
@@ -408,6 +409,7 @@ class LocalizationString {
 
   static String phoneNumber = 'Phone number'.tr();
   static String update = 'Update'.tr();
+  static String updateProfile = 'Update profile'.tr();
 
   static String goPremium = 'Go Premium'.tr();
   static String restorePurchase = 'Restore in app purchases'.tr();
@@ -440,4 +442,6 @@ class LocalizationString {
   static String wallpaperNotSaved = 'Wallpaper not saved'.tr();
   static String wallpaperSaved = 'Wallpaper saved'.tr();
   static String ringtoneSaved = 'Ringtone saved'.tr();
+  static String noDataFound = 'No data found'.tr();
+
 }

@@ -44,7 +44,20 @@ class CategoryTile extends StatelessWidget {
                 .headlineSmall!
                 .copyWith(color: Colors.white),
           ),
-        )
+        ),
+        category.isAdminCategory
+            ? const Positioned(
+                left: 10,
+                right: 10,
+                bottom: 10,
+                top: 0,
+                child: ThemeIconWidget(
+                  ThemeIcon.lock,
+                  color: Colors.white,
+                  size: 80,
+                ),
+              )
+            : Container()
       ],
     );
   }
@@ -53,7 +66,8 @@ class CategoryTile extends StatelessWidget {
 class CategoryHorizontalTile extends StatelessWidget {
   final CategoryModel genre;
 
-  const CategoryHorizontalTile({Key? key, required this.genre}) : super(key: key);
+  const CategoryHorizontalTile({Key? key, required this.genre})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

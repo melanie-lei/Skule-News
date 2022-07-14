@@ -10,23 +10,4 @@ class BlogPostDetailController extends GetxController {
     model.value = post;
   }
 
-  loadSimilarPosts({
-    String? categoryId,
-    List<String>? hashtags,
-  }) {
-    isLoading = true;
-
-    BlogPostSearchParamModel postSearchModel =
-    BlogPostSearchParamModel(categoryId: categoryId, hashtags: hashtags);
-    getIt<FirebaseManager>()
-        .searchPosts(
-      searchModel: postSearchModel,
-    )
-        .then((result) {
-      isLoading = false;
-      similarNews.value = result;
-      update();
-    });
-  }
-
 }

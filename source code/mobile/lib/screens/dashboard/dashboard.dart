@@ -53,9 +53,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.dispose();
   }
 
-  void _onRefresh() async {
+  void loadData() async {
     dashboardController.loadPosts(callBack: () {
       _refreshController.refreshCompleted();
+      _refreshController.loadComplete();
     });
   }
 
@@ -157,7 +158,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ).addPullToRefresh(
               refreshController: _refreshController,
-              onRefresh: _onRefresh,
+              onRefresh: loadData,
+              onLoading: (){}
             ),
           ),
         ],

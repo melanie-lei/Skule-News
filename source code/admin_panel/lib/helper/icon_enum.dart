@@ -121,6 +121,7 @@ enum ThemeIcon {
 
   featured,
   author,
+  noData,
 
   packages
 }

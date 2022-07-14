@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
+import 'package:get/get.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey(); // Create a key
 
@@ -11,7 +12,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  MenuType menuType = MenuType.dashboard;
+  final MainScreenContainer mainScreenContainer = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +20,15 @@ class _MainScreenState extends State<MainScreen> {
       key: scaffoldKey,
       backgroundColor: Theme.of(context).backgroundColor,
       drawer: Responsive.isMobile(context)
-          ? SideMenu(
-              selectionHandler: (menu) {
-                menuType = menu;
-                setState(() {});
-              },
-            )
+          ? GetBuilder<MainScreenContainer>(
+              init: mainScreenContainer,
+              builder: (ctx) {
+                return SideMenu(
+                  selectionHandler: (menu) {
+                    mainScreenContainer.selectMenu(menu);
+                  },
+                );
+              })
           : null,
       appBar: Responsive.isMobile(context)
           ? AppBar(
@@ -46,17 +50,24 @@ class _MainScreenState extends State<MainScreen> {
                     flex: Responsive.isMobile(context) ? 2 : 1,
                     child: Container(
                       color: Theme.of(context).primaryColor.withOpacity(0.2),
-                      child: SideMenu(
-                        selectionHandler: (menu) {
-                          menuType = menu;
-                          setState(() {});
-                        },
-                      ),
+                      child: GetBuilder<MainScreenContainer>(
+                          init: mainScreenContainer,
+                          builder: (ctx) {
+                            return SideMenu(
+                              selectionHandler: (menu) {
+                                mainScreenContainer.selectMenu(menu);
+                              },
+                            );
+                          }),
                     ).round(20).setPadding(top: 25, bottom: 25, left: 16))
                 : Container(),
             Expanded(
                 flex: Responsive.isDesktop(context) ? 5 : 4,
-                child: loadScreen(menuType))
+                child: GetBuilder<MainScreenContainer>(
+                    init: mainScreenContainer,
+                    builder: (ctx) {
+                      return loadScreen(mainScreenContainer.menuType.value);
+                    }))
           ],
         ),
       ),
@@ -70,10 +81,14 @@ class _MainScreenState extends State<MainScreen> {
         return const Dashboard();
       case MenuType.categories:
         // do something else
-        return const CategoriesList(statusType: CategoryStatusType.active,);
+        return const CategoriesList(
+          statusType: CategoryStatusType.active,
+        );
       case MenuType.deactivatedCategories:
         // do something else
-        return const CategoriesList(statusType: CategoryStatusType.deactivated,);
+        return const CategoriesList(
+          statusType: CategoryStatusType.deactivated,
+        );
       case MenuType.addCategory:
         // do something else
         return const AddNewCategory();
@@ -85,7 +100,10 @@ class _MainScreenState extends State<MainScreen> {
         return const BlogsList(statusType: BlogStatusType.featured);
       case MenuType.pendingApprovalBlogs:
         // do something else
-        return const PendingApprovalsBlogs();
+        return const PendingApprovalsBlogs(statusType: BlogStatusType.pending,);
+      case MenuType.rejectedBlogs:
+      // do something else
+        return const PendingApprovalsBlogs(statusType: BlogStatusType.rejected);
       case MenuType.deactivatedBlogs:
         // do something else
         return const BlogsList(statusType: BlogStatusType.deactivated);
@@ -95,6 +113,9 @@ class _MainScreenState extends State<MainScreen> {
       case MenuType.changePassword:
         // do something else
         return const ChangePassword();
+      case MenuType.updateProfile:
+        // do something else
+        return const UpdateProfile();
     }
   }
 }

@@ -20,11 +20,11 @@ class PendingBlogsController extends GetxController {
     searchParamModel.categoryId = selectedCategory.value?.id;
     searchParamModel.searchText =
         (searchText ?? '').isNotEmpty ? searchText : null;
-    searchParamModel.approved = false;
+    searchParamModel.approvedStatus = 0;
     searchParamModel.status = 1;
 
     getIt<FirebaseManager>()
-        .searchPendingApprovalPosts(
+        .searchPosts(
       searchModel: searchParamModel,
     )
         .then((result) {

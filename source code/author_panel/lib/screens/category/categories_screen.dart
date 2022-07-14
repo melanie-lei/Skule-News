@@ -12,21 +12,19 @@ class CategoriesList extends StatefulWidget {
 }
 
 class _CategoriesListState extends State<CategoriesList> {
-  TextEditingController search = TextEditingController();
   final CategoryController categoryController = Get.find();
 
   @override
   void initState() {
     // TODO: implement initState
     loadData();
-    categoryController.getCategories();
     super.initState();
   }
 
   loadData() {
     categoryController
         .setStatusType(widget.statusType == CategoryStatusType.active ? 1 : 0);
-    categoryController.getCategories();
+    categoryController.getAllCategories();
   }
 
   @override
@@ -55,23 +53,25 @@ class _CategoriesListState extends State<CategoriesList> {
             Row(
               children: [
                 Obx(() => Text(
-                      '${categoryController.categories.length} ${LocalizationString.category.toLowerCase()}',
-                      style: Theme.of(context).textTheme.bodyLarge,
+                      '${categoryController.categories.length} ${LocalizationString.categories}',
+                      style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.w900),
                     )),
                 const Spacer(),
-                Expanded(
-                  child: InputField(
-                    controller: search,
-                    hintText: LocalizationString.searchCategory,
-                    onChanged: (text) {
-                      categoryController.searchTextChanged(text);
-                      categoryController.getCategories();
-                    },
-                  ).shadow(shadowOpacity: 0.2, context: context),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
+                // Expanded(
+                //   child: InputField(
+                //     controller: search,
+                //     hintText: LocalizationString.searchCategory,
+                //     onChanged: (text) {
+                //       categoryController.searchTextChanged(text);
+                //       categoryController.getAllCategories();
+                //     },
+                //   ).shadow(shadowOpacity: 0.2, context: context),
+                // ),
+                // const SizedBox(
+                //   width: 10,
+                // ),
               ],
             ),
             const Divider(
@@ -83,29 +83,37 @@ class _CategoriesListState extends State<CategoriesList> {
                 child: GetBuilder<CategoryController>(
                     init: categoryController,
                     builder: (ctx) {
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        itemCount: categoryController.categories.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisSpacing: 20,
-                            mainAxisSpacing: 20,
-                            crossAxisCount: Responsive.isDesktop(context)
-                                ? 5
-                                : Responsive.isTablet(context)
-                                    ? 4
-                                    : 3),
-                        itemBuilder: (BuildContext context, int index) {
-                          return CategoryTile(
-                                  category:
-                                      categoryController.categories[index])
-                              .ripple(() {
-                            Get.to(() => AddNewCategory(
-                                category:
-                                    categoryController.categories[index]));
-                          });
-                        },
-                      ).p25;
+                      return categoryController.categories.isNotEmpty
+                          ? GridView.builder(
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              itemCount: categoryController.categories.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisSpacing: 20,
+                                      mainAxisSpacing: 20,
+                                      crossAxisCount:
+                                          Responsive.isDesktop(context)
+                                              ? 5
+                                              : Responsive.isTablet(context)
+                                                  ? 4
+                                                  : 3),
+                              itemBuilder: (BuildContext context, int index) {
+                                return CategoryTile(
+                                        category: categoryController
+                                            .categories[index])
+                                    .ripple(() {
+                                  if (categoryController
+                                          .categories[index].isAdminCategory ==
+                                      false) {
+                                    Get.to(() => AddNewCategory(
+                                        category: categoryController
+                                            .categories[index]));
+                                  }
+                                });
+                              },
+                            ).p25
+                          : noDataFound(context);
                     }),
               ).round(20),
             ),

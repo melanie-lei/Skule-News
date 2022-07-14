@@ -51,8 +51,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     SizeConfig().init(context);
     double width = SizeConfig.screenW!;
     double height = SizeConfig.screenH!;
-    double blockH = SizeConfig.blockH!;
-    double blockV = SizeConfig.blockV!;
+
 
     return Scaffold(
       backgroundColor: colors[_currentPage],

@@ -3,7 +3,7 @@ import 'package:music_streaming_mobile/helper/common_import.dart';
 
 class HashtagController extends GetxController {
   List sections = [].obs;
-  RxList<NewsModel> posts = <NewsModel>[].obs;
+  RxList<BlogPostModel> posts = <BlogPostModel>[].obs;
 
   Rx<Hashtag?> hashtag = Rx<Hashtag?>(null);
 
@@ -15,12 +15,19 @@ class HashtagController extends GetxController {
     hashtag.value = value;
   }
 
-  loadPosts() {
+  loadHashtagDetail(String hashtagName){
+    getIt<FirebaseManager>().getHashtagDetail(hashtagName).then((value) {
+      hashtag.value = value;
+    });
+  }
+
+  loadPosts(String? hashtagName) {
     getIt<FirebaseManager>()
         .searchPosts(
-            searchModel: PostSearchParamModel(hashtags: [hashtag.value!.name]))
-        .then((result) {
-      posts.value = result;
+            searchModel: PostSearchParamModel(
+                hashtags: [hashtagName ?? hashtag.value!.name]))
+        .then((response) {
+      posts.value = response.result as List<BlogPostModel>;
       update();
     });
   }
@@ -33,11 +40,11 @@ class HashtagController extends GetxController {
     bool isFollowing = false;
 
     if (hashtag.isFollowing() == true) {
-      getIt<UserProfileManager>().user!.followingHashtags.remove(hashtag.id);
+      getIt<UserProfileManager>().user!.followingHashtags.remove(hashtag.name);
       hashtag.totalFollowers -= 1;
       isFollowing = false;
     } else {
-      getIt<UserProfileManager>().user!.followingHashtags.add(hashtag.id);
+      getIt<UserProfileManager>().user!.followingHashtags.add(hashtag.name);
       hashtag.totalFollowers += 1;
       isFollowing = true;
     }
@@ -47,9 +54,9 @@ class HashtagController extends GetxController {
     AppUtil.checkInternet().then((value) async {
       if (value) {
         if (isFollowing) {
-          getIt<FirebaseManager>().followHashtag(id: hashtag.id);
+          getIt<FirebaseManager>().followHashtag(hashtag: hashtag);
         } else {
-          getIt<FirebaseManager>().unFollowHashtag(id: hashtag.id);
+          getIt<FirebaseManager>().unFollowHashtag(hashtag: hashtag);
         }
       } else {
         // AppUtil.showToast(

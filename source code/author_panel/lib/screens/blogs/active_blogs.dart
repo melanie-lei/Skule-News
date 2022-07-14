@@ -111,7 +111,7 @@ class _BlogsListState extends State<BlogsList> {
           child: GetBuilder<BlogsController>(
               init: blogsController,
               builder: (ctx) {
-                return ListView.separated(
+                return blogsController.activeBlogs.isNotEmpty ? ListView.separated(
                   itemCount: blogsController.activeBlogs.length,
                   itemBuilder: (BuildContext ctx, int index) {
                     return Container(
@@ -128,7 +128,7 @@ class _BlogsListState extends State<BlogsList> {
                       width: double.infinity,
                     ).vP8;
                   },
-                ).vP25;
+                ).vP25 : noDataFound(context);
               }),
         ),
       ],

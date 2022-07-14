@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
-import 'package:music_streaming_mobile/screens/user/ask_for_login.dart';
-import 'package:music_streaming_mobile/screens/user/social_login.dart';
 
 class ChangePassword extends StatefulWidget {
   const ChangePassword({Key? key}) : super(key: key);

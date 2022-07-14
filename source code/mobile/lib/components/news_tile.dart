@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
 
-class NewsTile extends StatelessWidget {
-  final NewsModel model;
+class BlogPostTile extends StatelessWidget {
+  final BlogPostModel model;
   final VoidCallback? onDelete;
 
-  const NewsTile({Key? key, required this.model, this.onDelete})
+  const BlogPostTile({Key? key, required this.model, this.onDelete})
       : super(key: key);
 
   @override
@@ -20,10 +20,10 @@ class NewsTile extends StatelessWidget {
           Stack(
             children: [
               CachedNetworkImage(
-                imageUrl: model.coverImage,
+                imageUrl: model.thumbnailImage,
                 fit: BoxFit.cover,
                 placeholder: (context, url) =>
-                const CircularProgressIndicator(),
+                    const CircularProgressIndicator(),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
                 height: 120,
                 width: 120,
@@ -47,29 +47,16 @@ class NewsTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(model.title.toUpperCase(),
-                        maxLines: 1, style: Theme.of(context).textTheme.bodySmall)
+                        maxLines: 1,
+                        style: Theme.of(context).textTheme.bodyLarge)
                     .vP8,
-                Text(model.shortContent,
-                        maxLines: 2, style: Theme.of(context).textTheme.titleSmall)
+                Text(model.content,
+                        maxLines: 2,
+                        style: Theme.of(context).textTheme.titleMedium)
                     .vP4,
                 const Spacer(),
-                Row(
-                  children: [
-                    Row(
-                      children: [
-                        AvatarView(
-                          url: model.authorPicture,
-                          size: 25,
-                        ),
-                        Text(model.authorName,
-                                style: Theme.of(context).textTheme.bodyLarge)
-                            .hP8,
-                      ],
-                    ),
-                    const Spacer(),
-                    Text(model.date, style: Theme.of(context).textTheme.bodySmall),
-                  ],
-                ).vP8
+                Text(model.date, style: Theme.of(context).textTheme.bodySmall)
+                    .vP8
               ],
             ).hP16,
           )

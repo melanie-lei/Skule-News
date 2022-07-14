@@ -15,7 +15,6 @@ class _FollowingState extends State<Following> {
   List<String> filters = [
     LocalizationString.newsSources,
     LocalizationString.hashTags,
-    // LocalizationString.locations,
   ];
 
   final FollowingController followingController = Get.find();
@@ -23,6 +22,8 @@ class _FollowingState extends State<Following> {
   @override
   void initState() {
     // TODO: implement initState
+
+    followingController.searchData();
     super.initState();
   }
 
@@ -45,7 +46,7 @@ class _FollowingState extends State<Following> {
                 selectedTextStyle: Theme.of(context)
                     .textTheme
                     .titleMedium!
-                    .copyWith(color: Theme.of(context).primaryColor),
+                    .copyWith(color: Theme.of(context).primaryColor,fontWeight: FontWeight.w600),
                 textStyle: Theme.of(context).textTheme.titleMedium,
                 onSegmentChange: (segment) {
                   followingController.segmentChanged(segment);

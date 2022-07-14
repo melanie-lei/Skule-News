@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 
 class AuthorTile extends StatelessWidget {
   final AuthorsModel model;
-  final VoidCallback deleteHandler;
+  final VoidCallback? deleteHandler;
 
-  const AuthorTile({Key? key, required this.model, required this.deleteHandler})
+  const AuthorTile({Key? key, required this.model, this.deleteHandler})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).backgroundColor.darken(0.1),
+      // color: Theme.of(context).backgroundColor.darken(0.1),
       child: Row(
         children: [
           AvatarView(
@@ -23,10 +23,11 @@ class AuthorTile extends StatelessWidget {
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 model.name,
-                style: Theme.of(context).textTheme.titleSmall,
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w900),
               ),
               const SizedBox(
                 height: 5,
@@ -39,7 +40,7 @@ class AuthorTile extends StatelessWidget {
           ),
           const Spacer(),
 
-          model.status == 1 ?
+          model.status == 1 && deleteHandler != null?
           Container(
             height: 40,
             width: 40,
@@ -50,7 +51,7 @@ class AuthorTile extends StatelessWidget {
               color: Colors.white,
             ),
           ).round(8).ripple(() {
-            deleteHandler();
+            deleteHandler!();
           }) : Container()
         ],
       ).p16,

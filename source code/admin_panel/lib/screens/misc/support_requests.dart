@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_streaming_admin_panel/controllers/support_requests_controller.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
 
@@ -35,7 +34,7 @@ class _SupportRequestsState extends State<SupportRequests> {
             child: GetBuilder<SupportRequestsController>(
                 init: supportRequestsController,
                 builder: (ctx) {
-                  return ListView.separated(
+                  return supportRequestsController.supportRequests.isNotEmpty ? ListView.separated(
                     itemCount: supportRequestsController.supportRequests.length,
                     itemBuilder: (ctx, index) {
                       return Container(
@@ -133,7 +132,7 @@ class _SupportRequestsState extends State<SupportRequests> {
                         color: Theme.of(context).dividerColor,
                       ).vP16;
                     },
-                  );
+                  ) : noDataFound(context);
                 }),
           )
         ],

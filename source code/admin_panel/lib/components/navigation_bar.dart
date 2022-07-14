@@ -112,7 +112,7 @@ class NavigationBarWithCloseBtn extends StatelessWidget
             children: [
               Row(
                 children: [
-                  ThemeIconWidget(ThemeIcon.close,
+                  const ThemeIconWidget(ThemeIcon.close,
                           size: 20)
                       .ripple((){
                         Get.back();

@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
-import 'package:music_streaming_mobile/model/post_search_parameter_model.dart';
 
 class DashboardController extends GetxController {
   List sections = [].obs;
-  RxList<NewsModel> posts = <NewsModel>[].obs;
-  RxList<NewsModel> featuredPosts = <NewsModel>[].obs;
+  RxList<BlogPostModel> posts = <BlogPostModel>[].obs;
+  RxList<BlogPostModel> featuredPosts = <BlogPostModel>[].obs;
 
   RxBool isLoading = true.obs;
 
   PostSearchParamModel postSearchParamModel = PostSearchParamModel();
 
   queryWithFollowers() {
+    clearPosts();
+    postSearchParamModel = PostSearchParamModel();
     List<String> followingProfiles =
         getIt<UserProfileManager>().user?.followingProfiles ?? [];
     if (followingProfiles.isNotEmpty) {
@@ -50,14 +51,27 @@ class DashboardController extends GetxController {
   }
 
   prepareSearchQueryWithCategoryId(String categoryId) {
+    clearPosts();
     postSearchParamModel = PostSearchParamModel();
     postSearchParamModel.categoryId = categoryId;
   }
 
+  prepareSearchQueryWithFeaturedPosts() {
+    clearPosts();
+    postSearchParamModel = PostSearchParamModel();
+    postSearchParamModel.isFeatured = true;
+  }
+
+  prepareSearchQueryWithFollowers() {
+    queryWithFollowers();
+  }
+
   prepareSearchQuery() {
+    clearPosts();
+    postSearchParamModel = PostSearchParamModel();
     queryWithFollowedCategories();
     queryWithFollowedHashtags();
-    queryWithFollowers();
+    // queryWithFollowers();
   }
 
   clearPosts() {
@@ -67,9 +81,28 @@ class DashboardController extends GetxController {
   loadFeaturedPosts({required VoidCallback callBack}) {
     isLoading.value = true;
     update();
-    getIt<FirebaseManager>().getFeaturedPosts().then((result) {
-      featuredPosts.value = result;
+    getIt<FirebaseManager>().getFeaturedPosts(postSearchParamModel).then((result) {
+      featuredPosts.addAll(result.result as List<BlogPostModel>);
       isLoading.value = false;
+      // postSearchParamModel.startsAt = result.lastDoc;
+      callBack();
+      update();
+    });
+  }
+
+  loadFollowingUsersPosts({required VoidCallback callBack}) {
+    if((postSearchParamModel.userIds ?? []).isEmpty){
+      posts.value = [];
+      update();
+      return;
+    }
+    isLoading.value = true;
+    update();
+
+    getIt<FirebaseManager>().followingUsersPosts(searchModel: postSearchParamModel).then((result) {
+      posts.addAll(result.result as List<BlogPostModel>);
+      isLoading.value = false;
+      // postSearchParamModel.startsAt = result.lastDoc;
       callBack();
       update();
     });
@@ -81,8 +114,10 @@ class DashboardController extends GetxController {
     getIt<FirebaseManager>()
         .searchPosts(searchModel: postSearchParamModel)
         .then((result) {
-      posts.value = result;
+      posts.addAll(result.result as List<BlogPostModel>);
       isLoading.value = false;
+      // postSearchParamModel.startsAt = result.lastDoc;
+
       callBack();
       update();
     });

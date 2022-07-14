@@ -2,11 +2,11 @@ import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
 
 class NewsDetailController extends GetxController {
-  RxList<NewsModel> similarNews = <NewsModel>[].obs;
-  Rx<NewsModel?> model = Rx<NewsModel?>(null);
+  RxList<BlogPostModel> similarNews = <BlogPostModel>[].obs;
+  Rx<BlogPostModel?> model = Rx<BlogPostModel?>(null);
   bool isLoading = false;
 
-  setCurrentNewsPost(NewsModel post) {
+  setCurrentNewsPost(BlogPostModel post) {
     model.value = post;
   }
 
@@ -22,9 +22,10 @@ class NewsDetailController extends GetxController {
         .searchPosts(
       searchModel: postSearchModel,
     )
-        .then((result) {
+        .then((response) {
       isLoading = false;
-      similarNews.value = result;
+      similarNews.value = response.result as List<BlogPostModel>;
+
       update();
     });
   }
@@ -62,13 +63,13 @@ class NewsDetailController extends GetxController {
     });
   }
 
-  reportPost(NewsModel post) {
+  reportPost(BlogPostModel post) {
     if (getIt<UserProfileManager>().isLogin() == false) {
       Get.to(() => const AskForLogin());
       return;
     }
     getIt<FirebaseManager>()
-        .reportAbuse(post.id, post.title, DataType.news)
+        .reportAbuse(post.id, post.title, DataType.blogPost)
         .then((value) {
       // AppUtil.showToast(
       //     message: LocalizationString.newsReported, isSuccess: true, context: null);

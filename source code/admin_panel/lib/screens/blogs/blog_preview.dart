@@ -28,8 +28,6 @@ class _BlogPreviewState extends State<BlogPreview>
 
   loadData(BlogPostModel model) {
     newsDetailController.setCurrentBlogPost(model);
-    newsDetailController.loadSimilarPosts(
-        categoryId: model.categoryId, hashtags: model.hashtags);
     sourceController.getSourceDetail(id: model.authorId);
   }
 

@@ -50,8 +50,8 @@ class _DashboardState extends State<Dashboard> {
                 childAspectRatio: Responsive.isDesktop(context)
                     ? 2.1
                     : Responsive.isTablet(context)
-                        ? 3.2
-                        : 2,
+                    ? 3.2
+                    : 2,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
                 crossAxisCount: Responsive.isDesktop(context) ? 4 : 2),
@@ -62,25 +62,25 @@ class _DashboardState extends State<Dashboard> {
                       '${dashboardController.recordCounter.value?.blogs ?? 0}',
                       LocalizationString.blogs,
                       ThemeIcon.book,
-                      Colors.grey.darken(0.2));
+                      Colors.grey.lighten(0.25));
                 case 1:
                   return cardItem(
                       '${dashboardController.recordCounter.value?.users ?? 0}',
                       LocalizationString.users,
                       ThemeIcon.account,
-                      Colors.yellow.darken(0.4));
+                      Colors.yellow.lighten(0.25));
                 case 2:
                   return cardItem(
                       '${dashboardController.recordCounter.value?.authors ?? 0}',
                       LocalizationString.authors,
                       ThemeIcon.author,
-                      Colors.yellow.darken(0.4));
+                      Colors.red.lighten(0.35));
                 case 3:
                   return cardItem(
                       '${dashboardController.recordCounter.value?.featured ?? 0}',
                       LocalizationString.featured,
                       ThemeIcon.featured,
-                      Colors.yellow.darken(0.4));
+                      Colors.green.lighten(0.4));
               }
               return cardItem(
                   '${dashboardController.recordCounter.value?.blogs ?? 0}',
@@ -173,7 +173,7 @@ class _DashboardState extends State<Dashboard> {
             child: GetBuilder<BlogsController>(
                 init: blogsController,
                 builder: (ctx) {
-                  return ListView.separated(
+                  return blogsController.activeBlogs.isNotEmpty ? ListView.separated(
                       itemCount: blogsController.activeBlogs.length,
                       itemBuilder: (BuildContext ctx, int index) {
                         return Container(
@@ -184,7 +184,7 @@ class _DashboardState extends State<Dashboard> {
                       },
                       separatorBuilder: (BuildContext ctx, int index) {
                         return const SizedBox(height: 10);
-                      });
+                      }) : noDataFound(context);
                 }),
           ),
         ],

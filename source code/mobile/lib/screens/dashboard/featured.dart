@@ -13,7 +13,8 @@ class _FeaturedPostsState extends State<FeaturedPosts> {
   final controller = PageController(viewportFraction: 0.90, keepPage: true);
   final DashboardController dashboardController = Get.find();
   final PostCardController postCardController = Get.find();
-  final RefreshController _refreshController = RefreshController(initialRefresh: false);
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -27,6 +28,7 @@ class _FeaturedPostsState extends State<FeaturedPosts> {
   }
 
   loadData() {
+    dashboardController.prepareSearchQueryWithFeaturedPosts();
     dashboardController.loadFeaturedPosts(callBack: () {
       _refreshController.refreshCompleted();
     });
@@ -89,7 +91,8 @@ class _FeaturedPostsState extends State<FeaturedPosts> {
                                     init: postCardController,
                                     builder: (ctx) {
                                       return PostTile(
-                                        model: dashboardController.featuredPosts[index],
+                                        model: dashboardController
+                                            .featuredPosts[index],
                                       );
                                     });
                               },
@@ -97,10 +100,12 @@ class _FeaturedPostsState extends State<FeaturedPosts> {
                                 return divider(context: context, height: 0.5)
                                     .vp(40);
                               },
-                              itemCount: dashboardController.featuredPosts.length)
+                              itemCount:
+                                  dashboardController.featuredPosts.length)
                           .addPullToRefresh(
                               refreshController: _refreshController,
-                              onRefresh: loadData)
+                              onRefresh: loadData,
+                              onLoading: (){})
                           .hP16;
                 }),
           )

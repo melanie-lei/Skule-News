@@ -36,4 +36,5 @@ export 'package:firebase_storage/firebase_storage.dart';
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:dropdown_button2/dropdown_button2.dart';
 export 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-
+export 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+export 'package:google_sign_in/google_sign_in.dart';

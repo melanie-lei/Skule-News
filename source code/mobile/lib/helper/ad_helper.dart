@@ -46,7 +46,6 @@ class _BannerAdsState extends State<BannerAds> {
   late BannerAd _bannerAd;
 
   // TODO: Add _isBannerAdReady
-  static bool _isBannerAdReady = false;
 
   @override
   void initState() {
@@ -60,7 +59,7 @@ class _BannerAdsState extends State<BannerAds> {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.topCenter,
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: getIt<UserProfileManager>().user?.isPro == false
             ? _bannerAd.size.height.toDouble()
@@ -83,12 +82,9 @@ class _BannerAdsState extends State<BannerAds> {
       listener: BannerAdListener(
         onAdLoaded: (_) {
           setState(() {
-            _isBannerAdReady = true;
           });
         },
         onAdFailedToLoad: (ad, err) {
-          print('Failed to load a banner ad: ${err.message}');
-          _isBannerAdReady = false;
           //ad.dispose();
         },
       ),
@@ -135,9 +131,7 @@ class InterstitialAds extends StatelessWidget {
           _isInterstitialAdReady = true;
         },
         onAdFailedToLoad: (err) {
-          print('Failed to load an interstitial ad: ${err.message}');
           _isInterstitialAdReady = false;
-          print(onCompletion);
           onCompletion!();
         },
       ),

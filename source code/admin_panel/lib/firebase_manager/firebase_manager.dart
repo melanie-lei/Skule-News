@@ -28,43 +28,40 @@ class FirebaseManager {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   CollectionReference userCollection =
-      FirebaseFirestore.instance.collection('users');
+  FirebaseFirestore.instance.collection('users');
 
   CollectionReference blogPostsCollection =
-      FirebaseFirestore.instance.collection('blogPosts');
-
-  CollectionReference pendingApprovalPostsCollection =
-      FirebaseFirestore.instance.collection('pendingBlogPosts');
+  FirebaseFirestore.instance.collection('blogPosts');
 
   CollectionReference commentsCollection =
-      FirebaseFirestore.instance.collection('comments');
+  FirebaseFirestore.instance.collection('comments');
 
   CollectionReference categoriesCollection =
-      FirebaseFirestore.instance.collection('categories');
+  FirebaseFirestore.instance.collection('categories');
 
   CollectionReference authorsCollection =
-      FirebaseFirestore.instance.collection('authors');
+  FirebaseFirestore.instance.collection('authors');
 
   CollectionReference packagesCollection =
-      FirebaseFirestore.instance.collection('packages');
+  FirebaseFirestore.instance.collection('packages');
 
   CollectionReference hashtagsCollection =
-      FirebaseFirestore.instance.collection('hashtags');
+  FirebaseFirestore.instance.collection('hashtags');
 
   CollectionReference banners =
-      FirebaseFirestore.instance.collection('banners');
+  FirebaseFirestore.instance.collection('banners');
 
   CollectionReference reports =
-      FirebaseFirestore.instance.collection('reports');
+  FirebaseFirestore.instance.collection('reports');
 
   CollectionReference contact =
-      FirebaseFirestore.instance.collection('contact');
+  FirebaseFirestore.instance.collection('contact');
 
   CollectionReference counter =
-      FirebaseFirestore.instance.collection('counter');
+  FirebaseFirestore.instance.collection('counter');
 
   CollectionReference settings =
-      FirebaseFirestore.instance.collection('settings');
+  FirebaseFirestore.instance.collection('settings');
 
   /////////////////////////*********** User ***********//////////////////////////////////
 
@@ -176,6 +173,28 @@ class FirebaseManager {
     return response!;
   }
 
+  Future<String> updateProfileImage({required String uniqueId,
+    required Uint8List bytes,
+    required String fileName}) async {
+    final _firebaseStorage =
+    FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
+    String randomImageName = uniqueId + p.extension(fileName);
+
+    final mime = lookupMimeType('', headerBytes: bytes);
+
+    final metadata = SettableMetadata(
+      contentType: mime,
+    );
+
+    //Upload to Firebase
+    var uploadTask = _firebaseStorage
+        .ref('blogmaster/profileImage/$randomImageName')
+        .putData(bytes, metadata);
+
+    var downloadUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+    return downloadUrl;
+  }
+
   Future<FirebaseResponse> deleteUser(UserModel model) async {
     DocumentReference userDoc = userCollection.doc(model.id);
     DocumentReference counterDoc = counter.doc('counter');
@@ -186,6 +205,19 @@ class FirebaseManager {
     batch.update(counterDoc, {'users': FieldValue.increment(-1)});
 
     await batch.commit().then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error);
+    });
+    return response!;
+  }
+
+  Future<FirebaseResponse> updateUser(
+      {String? name, String? bio, String? image}) async {
+    DocumentReference doc =
+    authorsCollection.doc(FirebaseAuth.instance.currentUser!.uid);
+
+    await doc.update({'name': name, 'bio': bio, 'image': image}).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
       response = FirebaseResponse(false, error);
@@ -210,32 +242,9 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<String> updateProfileImage(File imageFile) async {
-    final storageRef = FirebaseStorage.instance.ref();
-    final imageRef =
-        storageRef.child("${FirebaseAuth.instance.currentUser!.uid}.jpg");
-
-    await imageRef.putFile(imageFile);
-    String path = await imageRef.getDownloadURL();
-
-    DocumentReference userDoc =
-        authorsCollection.doc(FirebaseAuth.instance.currentUser!.uid);
-
-    getIt<UserProfileManager>().user!.image = path;
-    await userDoc.update({
-      'image': path,
-    }).then((value) {
-      // response = FirebaseResponse(true, null);
-    }).catchError((error) {
-      // response = FirebaseResponse(false, error);
-    });
-    return path;
-  }
-
   Future<AuthorsModel?> getSourceDetail(String id) async {
     AuthorsModel? source;
     await authorsCollection.doc(id).get().then((doc) {
-      print(doc.data());
       source = AuthorsModel.fromJson(doc.data() as Map<String, dynamic>);
     }).catchError((error) {
       response = FirebaseResponse(false, error);
@@ -262,21 +271,50 @@ class FirebaseManager {
   }
 
   Future<FirebaseResponse> approveBlogPost(BlogPostModel model) async {
-    DocumentReference activeRingtone = blogPostsCollection.doc(model.id);
-    DocumentReference pendingRingtone =
-        pendingApprovalPostsCollection.doc(model.id);
+    DocumentReference activeBlogPost = blogPostsCollection.doc(model.id);
     DocumentReference artistDoc = authorsCollection.doc(model.authorId);
     DocumentReference counterDoc = counter.doc('counter');
 
     await FirebaseFirestore.instance.runTransaction((transaction) async {
-      final snapshot = await transaction.get(pendingRingtone);
+      List<String> newHashtags = [];
+      List<String> existingHashtags = [];
 
-      transaction.set(activeRingtone, snapshot.data()!);
-      transaction.delete(pendingRingtone);
+      for (String hashtag in model.hashtags) {
+        DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+        final snapshot = await transaction.get(hashtagDoc);
+
+        if (snapshot.exists) {
+          existingHashtags.add(hashtag);
+        } else {
+          newHashtags.add(hashtag);
+        }
+      }
+
+      for (String hashtag in newHashtags) {
+        DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+
+        transaction.set(hashtagDoc, {
+          'name': hashtag,
+          'keywords': hashtag.allPossibleSubstrings(),
+          'postsCount': FieldValue.increment(1),
+        });
+      }
+
+      for (String hashtag in existingHashtags) {
+        DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+
+        transaction.update(hashtagDoc, {
+          'name': hashtag,
+          'keywords': hashtag.allPossibleSubstrings(),
+          'postsCount': FieldValue.increment(1),
+        });
+      }
+
+      transaction.update(activeBlogPost, {'approvedStatus': 1});
       transaction.update(artistDoc, {'totalPosts': FieldValue.increment(1)});
       transaction.update(counterDoc, {'blogs': FieldValue.increment(1)});
     }).then(
-      (value) {
+          (value) {
         response = FirebaseResponse(true, null);
       },
       onError: (error) {
@@ -287,10 +325,9 @@ class FirebaseManager {
   }
 
   Future<FirebaseResponse> rejectBlogPost(BlogPostModel model) async {
-    DocumentReference pendingRingtone =
-        pendingApprovalPostsCollection.doc(model.id);
+    DocumentReference pendingBlogPost = blogPostsCollection.doc(model.id);
 
-    await pendingRingtone.update({'status': 0}).then((value) {
+    await pendingBlogPost.update({'approvedStatus': -1}).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
       response = FirebaseResponse(false, error);
@@ -332,29 +369,42 @@ class FirebaseManager {
   }
 
   Future<List<BlogPostModel>> getAllReportedBlogs() async {
-    List<BlogPostModel> ringtonesList = [];
+    List<BlogPostModel> list = [];
 
     await blogPostsCollection
         .where('reportCount', isGreaterThan: 0)
         .get()
         .then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
-        ringtonesList
+        list
             .add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
       response = FirebaseResponse(false, error);
     });
 
-    return ringtonesList;
+    return list;
   }
 
-  Future<String> uploadBlogImage(
-      {required String uniqueId,
-      required Uint8List bytes,
-      required String fileName}) async {
+  Future<FirebaseResponse> deleteAuthorReport(AuthorsModel model) async {
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+
+    DocumentReference doc = authorsCollection.doc(model.id);
+    batch.update(doc, {'reportCount': 0});
+
+    await batch.commit().then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error);
+    });
+    return response!;
+  }
+
+  Future<String> uploadBlogImage({required String uniqueId,
+    required Uint8List bytes,
+    required String fileName}) async {
     final _firebaseStorage =
-        FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
+    FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
     String randomImageName = uniqueId + p.extension(fileName);
 
     final mime = lookupMimeType('', headerBytes: bytes);
@@ -372,16 +422,15 @@ class FirebaseManager {
     return downloadUrl;
   }
 
-  Future<String> uploadBlogFile(
-      {required String uniqueId,
-      required Uint8List bytes,
-      required String fileName}) async {
+  Future<String> uploadBlogVideo({required String uniqueId,
+    required Uint8List bytes,
+    required String fileName}) async {
     final _firebaseStorage =
-        FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
+    FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
     String randomImageName = uniqueId + p.extension(fileName);
 
     final metadata = SettableMetadata(
-      contentType: 'audio/mpeg',
+      contentType: 'video/mp4',
     );
 
     //Upload to Firebase
@@ -408,92 +457,194 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<FirebaseResponse> insertBlogPost(
-      {required BlogPostModel? post,
-      required bool isUpdate,
-      required String postId,
-      required String postTitle,
-      required String content,
-      required String postThumbnail,
-      String? postVideoPath,
-      required String categoryId,
-      required String category,
-      required List<String> hashtags,
-      required bool isPremium,
-      required AvailabilityStatus status}) async {
-    var postJson = {
-      'authorId': getIt<UserProfileManager>().user!.id,
-      'authorName': getIt<UserProfileManager>().user!.name,
-      'authorPicture': getIt<UserProfileManager>().user!.image,
-      'category': category,
-      'categoryId': categoryId,
-      'content': content,
-      'contentType': postVideoPath == null ? 1 : 2,
-      'thumbnailImage': postThumbnail,
-      'createdAt': FieldValue.serverTimestamp(),
-      'hashtags': hashtags,
-      'id': postId,
-      'isPremium': isPremium,
-      'keywords': postTitle.allPossibleSubstrings(),
-      'likesCount': 0,
-      'reportCount': 0,
-      'savedCount': 0,
-      'status': status == AvailabilityStatus.active ? 1 : 0,
-      'title': postTitle,
-      'totalComments': 0,
-      'totalLikes': 0,
-      'totalSaved': 0,
-      'videoUrl': postVideoPath
-    };
+  Future<FirebaseResponse> insertBlogPost({required BlogPostModel? post,
+    required bool isUpdate,
+    required String postId,
+    required String postTitle,
+    required String content,
+    required String postThumbnail,
+    String? postVideoPath,
+    required String categoryId,
+    required String category,
+    required List<String> hashtags,
+    required bool isPremium,
+    required AvailabilityStatus status}) async {
+    // List list = [
+    //   'post1',
+    //   'post2',
+    //   'post3',
+    //   'post4',
+    //   'post5',
+    //   'post6',
+    //   'post7',
+    //   'post8',
+    //   'post9',
+    //   'post10',
+    //   'post11',
+    //   'post12',
+    //   'post13',
+    //   'post14',
+    //   'post15',
+    //   'post16',
+    //   'post17',
+    //   'post18',
+    //   'post19',
+    //   'post20',
+    // ];
 
-    int postCounterIncrementFactor = 1;
+    // for (String title in list) {
+      var keywords = postTitle.allPossibleSubstrings();
+      keywords.addAll(hashtags.map((e) => '#' + e));
+      keywords.add(categoryId);
 
-    DocumentReference postDoc = blogPostsCollection.doc(postId);
-    DocumentReference counterDoc = counter.doc('counter');
-    DocumentReference author = authorsCollection.doc(auth.currentUser!.uid);
+      // postId = title;
+      // postTitle = title;
 
-    if (isUpdate == true) {
-      if (post!.status == 1 && status == AvailabilityStatus.deactivated) {
-        postCounterIncrementFactor = -1;
-      } else if (post.status == 0 && status == AvailabilityStatus.active) {
-        postCounterIncrementFactor = 1;
+      var postJson = {
+        'authorId': getIt<UserProfileManager>().user!.id,
+        'authorName': getIt<UserProfileManager>().user!.name,
+        'authorPicture': getIt<UserProfileManager>().user!.image,
+        'category': category,
+        'categoryId': categoryId,
+        'content': content,
+        'contentType': postVideoPath == null ? 1 : 2,
+        'thumbnailImage': postThumbnail,
+        'createdAt': FieldValue.serverTimestamp(),
+        'hashtags': hashtags,
+        'id': postId,
+        'isPremium': isPremium,
+        'keywords': keywords,
+        'likesCount': 0,
+        'reportCount': 0,
+        'savedCount': 0,
+        'status': status == AvailabilityStatus.active ? 1 : 0,
+        'title': postTitle,
+        'totalComments': 0,
+        'totalLikes': 0,
+        'totalSaved': 0,
+        'videoUrl': postVideoPath,
+        'approvedStatus': 1,
+      };
+
+      int postCounterIncrementFactor = 1;
+      DocumentReference postDoc = blogPostsCollection.doc(postId);
+      DocumentReference counterDoc = counter.doc('counter');
+      DocumentReference author =
+      authorsCollection.doc(getIt<UserProfileManager>().user!.id);
+
+      if (isUpdate == true) {
+        if (post!.status == 1 && status == AvailabilityStatus.deactivated) {
+          postCounterIncrementFactor = -1;
+        } else if (post.status == 0 && status == AvailabilityStatus.active) {
+          postCounterIncrementFactor = 1;
+        } else {
+          postCounterIncrementFactor = 0;
+        }
+
+        List<String> newHashtags = [];
+        List<String> existingHashtags = [];
+
+        await firestore.runTransaction((transaction) async {
+          for (String hashtag in hashtags) {
+            DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+            final snapshot = await transaction.get(hashtagDoc);
+
+            if (snapshot.exists) {
+              existingHashtags.add(hashtag);
+            } else {
+              newHashtags.add(hashtag);
+            }
+          }
+
+          for (String hashtag in newHashtags) {
+            DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+
+            transaction.set(hashtagDoc, {
+              'name': hashtag,
+              'keywords': hashtag.allPossibleSubstrings(),
+              'postsCount': FieldValue.increment(1),
+            });
+          }
+          for (String hashtag in existingHashtags) {
+            DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+
+            transaction.update(hashtagDoc, {
+              'name': hashtag,
+              'keywords': hashtag.allPossibleSubstrings(),
+              'postsCount': FieldValue.increment(1),
+            });
+          }
+
+          transaction.update(postDoc, postJson);
+          transaction.update(author,
+              {'totalPosts': FieldValue.increment(postCounterIncrementFactor)});
+
+          if (postCounterIncrementFactor != 0) {
+            transaction.update(counterDoc,
+                {'blogs': FieldValue.increment(postCounterIncrementFactor)});
+          }
+        }).then(
+              (value) {
+            response = FirebaseResponse(true, null);
+          },
+          onError: (e) {
+            response = FirebaseResponse(false, null);
+          },
+        );
       } else {
-        postCounterIncrementFactor = 0;
+        postJson['createdAt'] = FieldValue.serverTimestamp();
+
+        postJson['searchedCount'] = 0;
+        postJson['totalDownloads'] = 0;
+
+        List<String> newHashtags = [];
+        List<String> existingHashtags = [];
+
+        await firestore.runTransaction((transaction) async {
+          for (String hashtag in hashtags) {
+            DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+            final snapshot = await transaction.get(hashtagDoc);
+            if (snapshot.exists) {
+              existingHashtags.add(hashtag);
+            } else {
+              newHashtags.add(hashtag);
+            }
+          }
+
+          for (String hashtag in newHashtags) {
+            DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+
+            transaction.set(hashtagDoc, {
+              'name': hashtag,
+              'keywords': hashtag.allPossibleSubstrings(),
+              'postsCount': FieldValue.increment(1),
+            });
+          }
+
+          for (String hashtag in existingHashtags) {
+            DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+
+            transaction.update(hashtagDoc, {
+              'name': hashtag,
+              'keywords': hashtag.allPossibleSubstrings(),
+              'postsCount': FieldValue.increment(1),
+            });
+          }
+
+          transaction.set(postDoc, postJson);
+          transaction.update(counterDoc,
+              {'blogs': FieldValue.increment(postCounterIncrementFactor)});
+          transaction.update(author, {'totalPosts': FieldValue.increment(1)});
+        }).then(
+              (value) {
+            response = FirebaseResponse(true, null);
+          },
+          onError: (e) {
+            response = FirebaseResponse(false, null);
+          },
+        );
       }
-
-      WriteBatch batch = FirebaseFirestore.instance.batch();
-
-      batch.update(postDoc, postJson);
-      batch.update(author,
-          {'totalPosts': FieldValue.increment(postCounterIncrementFactor)});
-
-      if (postCounterIncrementFactor != 0) {
-        batch.update(counterDoc,
-            {'blogs': FieldValue.increment(postCounterIncrementFactor)});
-      }
-
-      await batch.commit().then((value) {
-        response = FirebaseResponse(true, null);
-      }).catchError((error) {
-        response = FirebaseResponse(false, error);
-      });
-    } else {
-      postJson['createdAt'] = FieldValue.serverTimestamp();
-      postJson['searchedCount'] = 0;
-      postJson['totalDownloads'] = 0;
-
-      WriteBatch batch = FirebaseFirestore.instance.batch();
-      batch.set(postDoc, postJson);
-      batch.update(counterDoc,
-          {'blogs': FieldValue.increment(postCounterIncrementFactor)});
-      batch.update(author, {'totalPosts': FieldValue.increment(1)});
-
-      await batch.commit().then((value) {
-        response = FirebaseResponse(true, null);
-      }).catchError((error) {
-        response = FirebaseResponse(false, error);
-      });
-    }
+    // }
 
     return response!;
   }
@@ -501,7 +652,7 @@ class FirebaseManager {
   addOrRemoveFromFeature(BlogPostModel model) async {
     final batch = FirebaseFirestore.instance.batch();
     DocumentReference postDoc =
-        blogPostsCollection.doc(model.id); //.collection('following');
+    blogPostsCollection.doc(model.id); //.collection('following');
     DocumentReference counterDoc = counter.doc('counter');
 
     batch.update(postDoc, {
@@ -523,7 +674,7 @@ class FirebaseManager {
   addOrRemoveFromPremium(BlogPostModel model) async {
     final batch = FirebaseFirestore.instance.batch();
     DocumentReference postDoc =
-        blogPostsCollection.doc(model.id); //.collection('following');
+    blogPostsCollection.doc(model.id); //.collection('following');
     DocumentReference counterDoc = counter.doc('counter');
 
     batch.update(postDoc, {
@@ -573,48 +724,12 @@ class FirebaseManager {
     if (searchModel.isRecent != null) {
       query = query.orderBy("createdAt", descending: true).limit(10);
     }
-
-    await query.get().then((QuerySnapshot snapshot) {
-      for (var doc in snapshot.docs) {
-        list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
-      }
-    }).catchError((error) {
-      response = FirebaseResponse(false, error);
-    });
-
-    return list;
-  }
-
-  Future<List<BlogPostModel>> searchPendingApprovalPosts(
-      {required BlogPostSearchParamModel searchModel}) async {
-    List<BlogPostModel> list = [];
-
-    Query query = pendingApprovalPostsCollection;
-
-    if (searchModel.searchText != null) {
+    if (searchModel.status != null) {
+      query = query.where("status", isEqualTo: searchModel.status);
+    }
+    if (searchModel.approvedStatus != null) {
       query =
-          query.where("keywords", arrayContainsAny: [searchModel.searchText]);
-    }
-    if (searchModel.categoryId != null) {
-      query = query.where('categoryId', isEqualTo: searchModel.categoryId);
-    }
-    if (searchModel.categoryIds != null) {
-      query = query.where('categoryId', whereIn: searchModel.categoryIds);
-    }
-    if (searchModel.hashtags != null) {
-      query = query.where("hashtags", arrayContainsAny: searchModel.hashtags);
-    }
-    if (searchModel.userId != null) {
-      query = query.where('authorId', isEqualTo: searchModel.userId);
-    }
-    if (searchModel.userIds != null) {
-      query = query.where("authorId", whereIn: searchModel.userIds);
-    }
-    if (searchModel.featured != null) {
-      query = query.where("featured", isEqualTo: searchModel.featured);
-    }
-    if (searchModel.isRecent != null) {
-      query = query.orderBy("createdAt", descending: true).limit(10);
+          query.where("approvedStatus", isEqualTo: searchModel.approvedStatus);
     }
 
     await query.get().then((QuerySnapshot snapshot) {
@@ -644,8 +759,8 @@ class FirebaseManager {
     return list;
   }
 
-  Future<FirebaseResponse> reportAbuse(
-      String id, String name, DataType type) async {
+  Future<FirebaseResponse> reportAbuse(String id, String name,
+      DataType type) async {
     String reportId = '${id}_${auth.currentUser!.uid}';
 
     WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -676,8 +791,8 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<FirebaseResponse> sendContactusMessage(
-      String name, String email, String phone, String message) async {
+  Future<FirebaseResponse> sendContactusMessage(String name, String email,
+      String phone, String message) async {
     String id = getRandString(15);
     DocumentReference doc = contact.doc(id);
     await doc.set({
@@ -717,7 +832,7 @@ class FirebaseManager {
     return categoriesList;
   }
 
-  Future<List<AuthorsModel>> searchSources(
+  Future<List<AuthorsModel>> searchAuthors(
       {String? searchText, int? type, List<String>? sourceIds}) async {
     List<AuthorsModel> list = [];
 
@@ -734,6 +849,24 @@ class FirebaseManager {
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
         list.add(AuthorsModel.fromJson(doc.data() as Map<String, dynamic>));
+      }
+    }).catchError((error) {
+      response = FirebaseResponse(false, error);
+    });
+
+    return list;
+  }
+
+  Future<List<AuthorsModel>> getAllReportedAuthors() async {
+    List<AuthorsModel> list = [];
+
+    await authorsCollection
+        .where('reportCount', isGreaterThan: 0)
+        .get()
+        .then((QuerySnapshot snapshot) {
+      for (var doc in snapshot.docs) {
+        list
+            .add(AuthorsModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
       response = FirebaseResponse(false, error);
@@ -863,7 +996,6 @@ class FirebaseManager {
     List<PackageModel> list = [];
     await packagesCollection.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
-        print(doc.data());
         list.add(PackageModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
@@ -875,12 +1007,11 @@ class FirebaseManager {
 
   /////////////////////////////////************* Category *************////////////////////////////////////////
 
-  Future<FirebaseResponse> insertNewCategory(
-      {CategoryModel? category,
-      required String id,
-      required String name,
-      required String image,
-      required AvailabilityStatus status}) async {
+  Future<FirebaseResponse> insertNewCategory({CategoryModel? category,
+    required String id,
+    required String name,
+    required String image,
+    required AvailabilityStatus status}) async {
     DocumentReference categoryDoc = categoriesCollection.doc(id);
 
     var categoryJson = {
@@ -908,12 +1039,11 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<String> uploadCategoryImage(
-      {required String uniqueId,
-      required Uint8List bytes,
-      required String fileName}) async {
+  Future<String> uploadCategoryImage({required String uniqueId,
+    required Uint8List bytes,
+    required String fileName}) async {
     final _firebaseStorage =
-        FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
+    FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
     String randomImageName = uniqueId + p.extension(fileName);
 
     final mime = lookupMimeType('', headerBytes: bytes);
@@ -996,13 +1126,12 @@ class FirebaseManager {
     return recordCounter;
   }
 
-  Future<FirebaseResponse> saveSetting(
-      {required String phone,
-      required String email,
-      required String facebook,
-      required String twitter,
-      required String aboutUs,
-      required String privacyPolicy}) async {
+  Future<FirebaseResponse> saveSetting({required String phone,
+    required String email,
+    required String facebook,
+    required String twitter,
+    required String aboutUs,
+    required String privacyPolicy}) async {
     DocumentReference doc = settings.doc('settings');
 
     var settingsData = {
@@ -1040,7 +1169,6 @@ class FirebaseManager {
 
     await contact.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
-        print(doc.data());
         supportTickets
             .add(SupportModel.fromJson(doc.data() as Map<String, dynamic>));
       }

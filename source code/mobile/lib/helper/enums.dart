@@ -1,6 +1,6 @@
 enum DataType {
-  news,
-  source,
+  blogPost,
+  author,
 
   ringtones,
   wallpapers,

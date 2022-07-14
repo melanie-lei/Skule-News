@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +25,7 @@ class LocationTile extends StatelessWidget {
             width: 50,
           )
           .round(10).ripple(() {
-            Get.to(() => NewsSourceDetail(userId: model.id));
+            Get.to(() => AuthorDetail(userId: model.id));
           }),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

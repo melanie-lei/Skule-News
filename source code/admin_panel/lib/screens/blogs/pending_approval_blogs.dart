@@ -90,7 +90,7 @@ class _PendingApprovalsBlogsState extends State<PendingApprovalsBlogs> {
           child: GetBuilder<PendingBlogsController>(
               init: pendingBlogsController,
               builder: (ctx) {
-                return ListView.separated(
+                return pendingBlogsController.pendingApprovalBlogs.isNotEmpty ? ListView.separated(
                   itemCount: pendingBlogsController.pendingApprovalBlogs.length,
                   itemBuilder: (BuildContext ctx, int index) {
                     return PendingBlogPostTile(
@@ -117,7 +117,7 @@ class _PendingApprovalsBlogsState extends State<PendingApprovalsBlogs> {
                       width: double.infinity,
                     ).vP8;
                   },
-                ).vP25;
+                ).vP25 : noDataFound(context);
               }),
         ),
       ],

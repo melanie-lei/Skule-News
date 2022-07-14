@@ -12,11 +12,11 @@ class HorizontalMenuBar extends StatefulWidget {
 
   const HorizontalMenuBar(
       {Key? key,
-        required this.onSegmentChange,
-        required this.menus,
-        required this.selectedIndex,
-        this.height,
-        this.padding})
+      required this.onSegmentChange,
+      required this.menus,
+      required this.selectedIndex,
+      this.height,
+      this.padding})
       : super(key: key);
 
   @override
@@ -40,7 +40,8 @@ class _HorizontalMenuBarState extends State<HorizontalMenuBar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height ?? (padding == null ? 40 : (40 + padding!.top + padding!.bottom)),
+      height: height ??
+          (padding == null ? 40 : (40 + padding!.top + padding!.bottom)),
       child: Center(
         child: ListView.builder(
             padding: padding ?? EdgeInsets.zero,
@@ -51,7 +52,9 @@ class _HorizontalMenuBarState extends State<HorizontalMenuBar> {
                   Text(
                     widget.menus[index],
                     style: index == widget.selectedIndex
-                        ? Theme.of(context).textTheme.titleMedium!.copyWith(color: Theme.of(context).primaryColor)
+                        ? Theme.of(context).textTheme.titleMedium!.copyWith(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w600)
                         : Theme.of(context).textTheme.titleMedium,
                   ).hP16.ripple(() {
                     setState(() {
@@ -77,7 +80,6 @@ class _HorizontalMenuBarState extends State<HorizontalMenuBar> {
     );
   }
 }
-
 
 class StaggeredMenuBar extends StatefulWidget {
   final String? title;
@@ -116,8 +118,7 @@ class StaggeredMenuBarState extends State<StaggeredMenuBar> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         title != null
-            ? Text(title!, style: Theme.of(context).textTheme.subtitle1)
-                .bP16
+            ? Text(title!, style: Theme.of(context).textTheme.subtitle1).bP16
             : Container(),
         Wrap(
           spacing: 5,
@@ -198,7 +199,8 @@ class _HorizontalSegmentBarState extends State<HorizontalSegmentBar> {
                         style: index == selectedMenuIndex
                             ? selectedTextStyle ??
                                 Theme.of(context).textTheme.bodyMedium
-                            : textStyle ?? Theme.of(context).textTheme.bodyMedium),
+                            : textStyle ??
+                                Theme.of(context).textTheme.bodyMedium),
                     index == selectedMenuIndex
                         ? Container(
                             height: 2,
@@ -208,7 +210,8 @@ class _HorizontalSegmentBarState extends State<HorizontalSegmentBar> {
                         : Container(
                             height: 1,
                             width: width / menus.length,
-                            color: Theme.of(context).dividerColor.withOpacity(0.5),
+                            color:
+                                Theme.of(context).dividerColor.withOpacity(0.5),
                           )
                   ],
                 ),
@@ -342,7 +345,8 @@ class HorizontalSegmentBarWithPointerState
                         style: index == selectedMenuIndex
                             ? selectedTextStyle ??
                                 Theme.of(context).textTheme.bodyMedium
-                            : textStyle ?? Theme.of(context).textTheme.bodyMedium),
+                            : textStyle ??
+                                Theme.of(context).textTheme.bodyMedium),
                     index == selectedMenuIndex
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -361,7 +365,8 @@ class HorizontalSegmentBarWithPointerState
                         : Container(
                             height: 2,
                             width: width / menus.length,
-                            color: Theme.of(context).dividerColor.withOpacity(0.5),
+                            color:
+                                Theme.of(context).dividerColor.withOpacity(0.5),
                           )
                   ],
                 ),

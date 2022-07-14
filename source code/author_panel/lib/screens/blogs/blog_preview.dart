@@ -28,8 +28,6 @@ class _BlogPreviewState extends State<BlogPreview>
 
   loadData(BlogPostModel model) {
     newsDetailController.setCurrentBlogPost(model);
-    newsDetailController.loadSimilarPosts(
-        categoryId: model.categoryId, hashtags: model.hashtags);
     sourceController.setAuthor();
   }
 
@@ -62,7 +60,7 @@ class _BlogPreviewState extends State<BlogPreview>
             ),
             Positioned(left: 0, right: 0, top: 0, child: appBar())
           ],
-        ),
+        ).hp(100),
       ),
     );
   }
@@ -122,7 +120,11 @@ class _BlogPreviewState extends State<BlogPreview>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                            constraints: const BoxConstraints(maxWidth: 100),
+                            constraints: BoxConstraints(
+                                maxWidth: widget.model.categoryName
+                                        .toUpperCase()
+                                        .length *
+                                    10),
                             color: Theme.of(context).primaryColor,
                             child: Center(
                               child: Text(

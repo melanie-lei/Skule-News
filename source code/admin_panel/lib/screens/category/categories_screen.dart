@@ -83,7 +83,7 @@ class _CategoriesListState extends State<CategoriesList> {
                 child: GetBuilder<CategoryController>(
                     init: categoryController,
                     builder: (ctx) {
-                      return GridView.builder(
+                      return categoryController.categories.isNotEmpty ? GridView.builder(
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         itemCount: categoryController.categories.length,
@@ -105,7 +105,7 @@ class _CategoriesListState extends State<CategoriesList> {
                                     categoryController.categories[index]));
                           });
                         },
-                      ).p25;
+                      ).p25 : noDataFound(context);
                     }),
               ).round(20),
             ),

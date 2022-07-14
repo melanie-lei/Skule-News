@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -17,7 +18,7 @@ class FirebaseResponse {
   Object? result;
   UserCredential? credential;
 
-  FirebaseResponse(this.status, this.message);
+  FirebaseResponse(this.status, this.message, {this.result});
 }
 
 class FirebaseManager {
@@ -26,43 +27,43 @@ class FirebaseManager {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   CollectionReference userCollection =
-  FirebaseFirestore.instance.collection('users');
+      FirebaseFirestore.instance.collection('users');
 
   CollectionReference blogPostsCollection =
-  FirebaseFirestore.instance.collection('blogPosts');
+      FirebaseFirestore.instance.collection('blogPosts');
 
   CollectionReference pendingApprovalPostsCollection =
-  FirebaseFirestore.instance.collection('pendingBlogPosts');
+      FirebaseFirestore.instance.collection('pendingBlogPosts');
 
   CollectionReference commentsCollection =
-  FirebaseFirestore.instance.collection('comments');
+      FirebaseFirestore.instance.collection('comments');
 
   CollectionReference categoriesCollection =
-  FirebaseFirestore.instance.collection('categories');
+      FirebaseFirestore.instance.collection('categories');
 
   CollectionReference authorsCollection =
-  FirebaseFirestore.instance.collection('authors');
+      FirebaseFirestore.instance.collection('authors');
 
   CollectionReference packagesCollection =
-  FirebaseFirestore.instance.collection('packages');
+      FirebaseFirestore.instance.collection('packages');
 
   CollectionReference hashtagsCollection =
-  FirebaseFirestore.instance.collection('hashtags');
+      FirebaseFirestore.instance.collection('hashtags');
 
   CollectionReference banners =
-  FirebaseFirestore.instance.collection('banners');
+      FirebaseFirestore.instance.collection('banners');
 
   CollectionReference reports =
-  FirebaseFirestore.instance.collection('reports');
+      FirebaseFirestore.instance.collection('reports');
 
   CollectionReference contact =
-  FirebaseFirestore.instance.collection('contact');
+      FirebaseFirestore.instance.collection('contact');
 
   CollectionReference counter =
-  FirebaseFirestore.instance.collection('counter');
+      FirebaseFirestore.instance.collection('counter');
 
   CollectionReference settings =
-  FirebaseFirestore.instance.collection('settings');
+      FirebaseFirestore.instance.collection('settings');
 
   Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
@@ -98,8 +99,10 @@ class FirebaseManager {
     return response!;
   }
 
-  loginAnonymously() async {
-    await auth.signInAnonymously();
+  loginAnonymously(VoidCallback callback) async {
+    EasyLoading.show(status: LocalizationString.loading);
+    await auth.signInAnonymously().then((value) => callback());
+    EasyLoading.dismiss();
   }
 
   Future<FirebaseResponse> signUpViaEmail(
@@ -293,10 +296,10 @@ class FirebaseManager {
     return path;
   }
 
-  Future<NewsSourceModel?> getSourceDetail(String id) async {
-    NewsSourceModel? source;
+  Future<AuthorModel?> getAuthorDetail(String id) async {
+    AuthorModel? source;
     await authorsCollection.doc(id).get().then((doc) {
-      source = NewsSourceModel.fromJson(doc.data() as Map<String, dynamic>);
+      source = AuthorModel.fromJson(doc.data() as Map<String, dynamic>);
     }).catchError((error) {
       response = FirebaseResponse(false, error);
     });
@@ -304,7 +307,7 @@ class FirebaseManager {
     return source;
   }
 
-  Future<List<CategoryModel>> getSourceCategories(String id) async {
+  Future<List<CategoryModel>> getAuthorCategories(String id) async {
     List<CategoryModel> list = [];
     await authorsCollection
         .doc(id)
@@ -370,7 +373,7 @@ class FirebaseManager {
   }
 
   Future<FirebaseResponse> followUser(
-      {required String id, required bool isSource}) async {
+      {required String id, required bool isAuthor}) async {
     getIt<UserProfileManager>().user!.likedPost.add(id);
 
     final batch = FirebaseFirestore.instance.batch();
@@ -381,7 +384,7 @@ class FirebaseManager {
       'followingProfiles': FieldValue.arrayUnion([id]),
     });
 
-    if (isSource) {
+    if (isAuthor) {
       DocumentReference itemDoc = authorsCollection.doc(id);
       batch.update(itemDoc, {
         'totalFollowers': FieldValue.increment(1),
@@ -436,18 +439,18 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<FirebaseResponse> followHashtag({required String id}) async {
-    getIt<UserProfileManager>().user!.followingHashtags.add(id);
+  Future<FirebaseResponse> followHashtag({required Hashtag hashtag}) async {
+    getIt<UserProfileManager>().user!.followingHashtags.add(hashtag.name);
 
     final batch = FirebaseFirestore.instance.batch();
     DocumentReference currentUserDoc =
         userCollection.doc(auth.currentUser!.uid); //.collection('following');
 
     batch.update(currentUserDoc, {
-      'followingHashtags': FieldValue.arrayUnion([id]),
+      'followingHashtags': FieldValue.arrayUnion([hashtag.name]),
     });
 
-    DocumentReference itemDoc = hashtagsCollection.doc(id);
+    DocumentReference itemDoc = hashtagsCollection.doc(hashtag.name);
     batch.update(itemDoc, {
       'totalFollowers': FieldValue.increment(1),
       'popularityFactor': FieldValue.increment(2)
@@ -461,18 +464,18 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<FirebaseResponse> unFollowHashtag({required String id}) async {
-    getIt<UserProfileManager>().user!.followingHashtags.remove(id);
+  Future<FirebaseResponse> unFollowHashtag({required Hashtag hashtag}) async {
+    getIt<UserProfileManager>().user!.followingHashtags.remove(hashtag.name);
 
     final batch = FirebaseFirestore.instance.batch();
     DocumentReference currentUserDoc =
         userCollection.doc(auth.currentUser!.uid); //.collection('following');
 
     batch.update(currentUserDoc, {
-      'followingHashtags': FieldValue.arrayRemove([id]),
+      'followingHashtags': FieldValue.arrayRemove([hashtag.name]),
     });
 
-    DocumentReference itemDoc = hashtagsCollection.doc(id);
+    DocumentReference itemDoc = hashtagsCollection.doc(hashtag.name);
     batch.update(itemDoc, {
       'totalFollowers': FieldValue.increment(-1),
       'popularityFactor': FieldValue.increment(-2)
@@ -584,7 +587,7 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<FirebaseResponse> increasePostSearchCount(NewsModel news) async {
+  Future<FirebaseResponse> increasePostSearchCount(BlogPostModel news) async {
     DocumentReference postDoc = blogPostsCollection.doc(news.id);
 
     await postDoc.update({
@@ -598,8 +601,7 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<FirebaseResponse> increaseSourceSearchCount(
-      NewsSourceModel source) async {
+  Future<FirebaseResponse> increaseSourceSearchCount(AuthorModel source) async {
     DocumentReference sourceDoc = authorsCollection.doc(source.id);
 
     await sourceDoc.update({
@@ -628,31 +630,29 @@ class FirebaseManager {
     return bannersList;
   }
 
-  Future<List<NewsModel>> searchPosts(
+  Future<FirebaseResponse> searchPosts(
       {required PostSearchParamModel searchModel}) async {
-    List<NewsModel> list = [];
-    // List<String> copiedPostsId = List.from(postIds ?? []);
+    List<BlogPostModel> list = [];
 
     Query query = blogPostsCollection;
+
+    List<String> searchKeywords = [];
 
     if (searchModel.searchText != null) {
       query =
           query.where("keywords", arrayContainsAny: [searchModel.searchText]);
     }
-    // if (isVideo != null) {
-    //   query = query.where("contentType", isEqualTo: isVideo == true ? 2 : 1);
-    // }
     if (searchModel.categoryId != null) {
-      query = query.where('categoryId', isEqualTo: searchModel.categoryId);
+      searchKeywords = [searchModel.categoryId!];
+      // query = query.where("keywords", arrayContainsAny: [searchModel.categoryId]);
     }
     if (searchModel.categoryIds != null) {
-      query = query.where('categoryId', whereIn: searchModel.categoryIds);
+      searchKeywords.addAll(searchModel.categoryIds!);
+      // query = query.where("keywords", arrayContainsAny: searchModel.categoryIds);
     }
-    // if (locationId != null) {
-    //   query = query.where('locationId', isEqualTo: locationId);
-    // }
     if (searchModel.hashtags != null) {
-      query = query.where("hashtags", arrayContainsAny: searchModel.hashtags);
+      searchKeywords.addAll(searchModel.hashtags!);
+      // query = query.where("keywords", arrayContainsAny: searchModel.hashtags);
     }
     if (searchModel.userId != null) {
       query = query.where('authorId', isEqualTo: searchModel.userId);
@@ -660,36 +660,90 @@ class FirebaseManager {
     if (searchModel.userIds != null) {
       query = query.where("authorId", whereIn: searchModel.userIds);
     }
+    if (searchModel.postIds != null) {
+      query = query.where("id", whereIn: searchModel.postIds);
+    }
 
-    // if (postIds != null && postIds.isNotEmpty) {
-    //   query = query.where("id", whereIn: copiedPostsId);
+    query = query.where("approvedStatus", isEqualTo: 1);
+    query = query.where("status", isEqualTo: 1);
+    query = query.orderBy("createdAt", descending: true);
+    // query = query.limit(10);
+    // if (searchModel.startsAt != null) {
+    //   query = query.startAt([searchModel.startsAt]);
+    // }
+    if (searchKeywords.isNotEmpty) {
+      query = query.where("keywords",
+          arrayContainsAny: searchKeywords.toSet().toList());
+    }
+
+    await query.get().then((QuerySnapshot snapshot) {
+      for (var doc in snapshot.docs) {
+        list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
+      }
+      // final lastVisibleDoc = snapshot.docs[snapshot.size - 1];
+
+      response = FirebaseResponse(true, null, result: list);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error);
+    });
+
+    return response!;
+  }
+
+  Future<FirebaseResponse> followingUsersPosts(
+      {required PostSearchParamModel searchModel}) async {
+    List<BlogPostModel> list = [];
+
+    Query query = blogPostsCollection;
+    if (searchModel.userIds != null) {
+      query = query.where("authorId", whereIn: searchModel.userIds);
+    }
+    query = query.where("approvedStatus", isEqualTo: 1);
+    query = query.where("status", isEqualTo: 1);
+    query = query.orderBy("createdAt", descending: true);
+    // query = query.limit(10);
+    // if (searchModel.startsAt != null) {
+    //   query = query.startAt([searchModel.startsAt]);
     // }
 
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
-        list.add(NewsModel.fromJson(doc.data() as Map<String, dynamic>));
+        list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
       }
+      // final lastVisibleDoc = snapshot.docs[snapshot.size - 1];
+
+      response = FirebaseResponse(true, null, result: list);
     }).catchError((error) {
       response = FirebaseResponse(false, error);
     });
 
-    return list;
+    return response!;
   }
 
-  Future<List<NewsModel>> getFeaturedPosts() async {
-    List<NewsModel> list = [];
+  Future<FirebaseResponse> getFeaturedPosts(
+      PostSearchParamModel searchParamModel) async {
+    List<BlogPostModel> list = [];
 
     Query query = blogPostsCollection.where('featured', isEqualTo: true);
-
+    query = query.where("status", isEqualTo: 1);
+    query = query.orderBy("createdAt", descending: true);
+    // query = query.limit(10);
+    // if (searchParamModel.startsAt != null) {
+    //   query = query.startAt([searchParamModel.startsAt]);
+    // }
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
-        list.add(NewsModel.fromJson(doc.data() as Map<String, dynamic>));
+        list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
       }
+      // final lastVisibleDoc = snapshot.docs[snapshot.size - 1];
+
+      response = FirebaseResponse(true, null, result: list);
     }).catchError((error) {
+      print(error);
       response = FirebaseResponse(false, error);
     });
 
-    return list;
+    return response!;
   }
 
   Future<FirebaseResponse> reportAbuse(
@@ -703,19 +757,21 @@ class FirebaseManager {
     var reportData = {
       'id': id,
       'name': name,
-      'type': type == DataType.news ? 1 : 2
+      'createdAt': FieldValue.serverTimestamp(),
+      'type': type == DataType.blogPost ? 1 : 2
     };
 
     batch.set(doc, reportData);
 
-    if (type == DataType.news) {
+    if (type == DataType.blogPost) {
       DocumentReference postDoc = blogPostsCollection.doc(id);
       batch.update(postDoc, {'reportCount': FieldValue.increment(1)});
-    } else if (type == DataType.source) {
+    } else if (type == DataType.author) {
       DocumentReference sourceDoc = authorsCollection.doc(id);
       batch.update(sourceDoc, {'reportCount': FieldValue.increment(1)});
     }
 
+    print('done');
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
@@ -785,9 +841,9 @@ class FirebaseManager {
     return categoriesList;
   }
 
-  Future<List<NewsSourceModel>> searchSources(
+  Future<List<AuthorModel>> searchSources(
       {String? searchText, int? type, List<String>? sourceIds}) async {
-    List<NewsSourceModel> list = [];
+    List<AuthorModel> list = [];
 
     Query query = authorsCollection;
 
@@ -801,7 +857,7 @@ class FirebaseManager {
 
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
-        list.add(NewsSourceModel.fromJson(doc.data() as Map<String, dynamic>));
+        list.add(AuthorModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
       response = FirebaseResponse(false, error);
@@ -835,8 +891,22 @@ class FirebaseManager {
   //   return list;
   // }
 
+  Future<Hashtag?> getHashtagDetail(String id) async {
+    Hashtag? hashtag;
+    await hashtagsCollection.doc(id).get().then((doc) {
+      hashtag = Hashtag.fromJson(doc.data() as Map<String, dynamic>);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error);
+    });
+
+    return hashtag;
+  }
+
   Future<List<Hashtag>> searchHashtags(
-      {String? searchText, int? type, List<String>? hashtags}) async {
+      {String? searchText,
+      int? type,
+      List<String>? hashtags,
+      bool? isTrending}) async {
     List<Hashtag> list = [];
 
     Query query = hashtagsCollection;
@@ -845,8 +915,12 @@ class FirebaseManager {
       query = query.where("keywords", arrayContainsAny: [searchText]);
     }
 
+    if (isTrending != null) {
+      query = query.orderBy("popularityFactor", descending: true);
+    }
+
     if (hashtags != null && hashtags.isNotEmpty) {
-      query = query.where("id", whereIn: hashtags);
+      query = query.where("name", whereIn: hashtags);
     }
 
     await query.get().then((QuerySnapshot snapshot) {
@@ -881,15 +955,12 @@ class FirebaseManager {
     return list;
   }
 
-  Future<List<CommentModel>> getComments(
-      {String? searchText, int? type}) async {
+  Future<List<CommentModel>> getComments({required String posId}) async {
     List<CommentModel> list = [];
 
-    Query query = commentsCollection;
-
-    if (searchText != null) {
-      query = query.where("keywords", arrayContainsAny: [searchText]);
-    }
+    Query query = commentsCollection
+        .where("posId", isEqualTo: posId)
+        .orderBy("createdAt", descending: true);
 
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
@@ -929,7 +1000,6 @@ class FirebaseManager {
     List<PackageModel> list = [];
     await packagesCollection.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
-        print(doc.data());
         list.add(PackageModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {

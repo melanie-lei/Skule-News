@@ -6,7 +6,7 @@ class BlogPostSearchParamModel {
   List<String>? userIds;
   List<String>? categoryIds;
   List<String>? postIds;
-  bool? approved;
+  int? approvedStatus;
   int? status;
   bool? featured;
   bool? isRecent;
@@ -19,7 +19,7 @@ class BlogPostSearchParamModel {
       this.userIds,
       this.categoryIds,
       this.postIds,
-      this.approved,
+      this.approvedStatus,
       this.featured,
       this.isRecent,
       this.status});

@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
 
 class FollowingController extends GetxController {
-  RxList<NewsSourceModel> sources = <NewsSourceModel>[].obs;
+  RxList<AuthorModel> sources = <AuthorModel>[].obs;
   RxList<Hashtag> hashtags = <Hashtag>[].obs;
   RxList<NewsLocation> locations = <NewsLocation>[].obs;
 
@@ -82,7 +82,7 @@ class FollowingController extends GetxController {
   }
 
   void followUnfollowSourceAndUser(
-      {NewsSourceModel? newsSource, UserModel? user, required bool isSource}) {
+      {AuthorModel? newsSource, UserModel? user, required bool isSource}) {
     if (getIt<UserProfileManager>().isLogin() == false) {
       Get.to(() => const AskForLogin());
       return;
@@ -120,7 +120,7 @@ class FollowingController extends GetxController {
     AppUtil.checkInternet().then((value) async {
       if (value) {
         if (isFollowing) {
-          getIt<FirebaseManager>().followUser(id: objectId, isSource: isSource);
+          getIt<FirebaseManager>().followUser(id: objectId, isAuthor: isSource);
         } else {
           getIt<FirebaseManager>()
               .unFollowUser(id: objectId, isSource: isSource);
@@ -143,11 +143,11 @@ class FollowingController extends GetxController {
     bool isFollowing = false;
 
     if (hashtag.isFollowing() == true) {
-      getIt<UserProfileManager>().user!.followingHashtags.remove(hashtag.id);
+      getIt<UserProfileManager>().user!.followingHashtags.remove(hashtag.name);
       hashtag.totalFollowers -= 1;
       isFollowing = false;
     } else {
-      getIt<UserProfileManager>().user!.followingHashtags.add(hashtag.id);
+      getIt<UserProfileManager>().user!.followingHashtags.add(hashtag.name);
       hashtag.totalFollowers += 1;
       isFollowing = true;
     }
@@ -157,9 +157,9 @@ class FollowingController extends GetxController {
     AppUtil.checkInternet().then((value) async {
       if (value) {
         if (isFollowing) {
-          getIt<FirebaseManager>().followHashtag(id: hashtag.id);
+          getIt<FirebaseManager>().followHashtag(hashtag: hashtag);
         } else {
-          getIt<FirebaseManager>().unFollowHashtag(id: hashtag.id);
+          getIt<FirebaseManager>().unFollowHashtag(hashtag: hashtag);
         }
       } else {
         // AppUtil.showToast(

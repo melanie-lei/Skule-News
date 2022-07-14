@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
-import 'package:music_streaming_admin_panel/screens/misc/comments_screen.dart';
 
 class PostCard extends StatefulWidget {
   final BlogPostModel model;

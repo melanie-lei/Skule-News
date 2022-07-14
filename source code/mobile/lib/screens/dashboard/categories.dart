@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
-import 'package:music_streaming_mobile/screens/news/category_posts.dart';
 
 class Categories extends StatefulWidget {
   const Categories({Key? key}) : super(key: key);
@@ -75,7 +74,7 @@ class _CategoriesState extends State<Categories> {
           return categoryController.isLoading == true ? const CategoryShimmer() : SizedBox(
             height: MediaQuery.of(context).size.height * 0.7,
             child: GridView.builder(
-              padding:  EdgeInsets.only(top: 20),
+              padding:  const EdgeInsets.only(top: 20),
               itemCount: categoryController.categories.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   childAspectRatio: 1,

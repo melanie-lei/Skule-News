@@ -70,7 +70,7 @@ class _AuthorsListState extends State<AuthorsList> {
           child: GetBuilder<AuthorController>(
               init: authorController,
               builder: (ctx) {
-                return ListView.separated(
+                return authorController.authors.isNotEmpty ? ListView.separated(
                   itemCount: authorController.authors.length,
                   itemBuilder: (BuildContext ctx, int index) {
                     return Container(
@@ -91,7 +91,7 @@ class _AuthorsListState extends State<AuthorsList> {
                       width: double.infinity,
                     ).vP8;
                   },
-                ).vP25;
+                ).vP25 : noDataFound(context);
               }),
         ),
       ],

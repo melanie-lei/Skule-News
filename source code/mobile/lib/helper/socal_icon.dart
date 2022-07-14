@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_streaming_mobile/theme/theme.dart';
-import 'package:music_streaming_mobile/theme/text_styles.dart';
 import 'package:music_streaming_mobile/theme/extention.dart';
 
 class SocalIcon extends StatelessWidget {

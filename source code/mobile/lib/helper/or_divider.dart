@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:music_streaming_mobile/helper/common_import.dart';
 
 class OrDivider extends StatelessWidget {
   const OrDivider({Key? key}) : super(key: key);

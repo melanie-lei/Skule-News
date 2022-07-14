@@ -31,8 +31,8 @@ class AuthorController extends GetxController {
     if (selectedCategoryIndex.value != index) {
       posts.value = [];
       selectedCategoryIndex.value = index;
-      loadSourcePosts(
-          reporterId: author.value!.id, categoryId: categories[index].id);
+      // loadSourcePosts(
+      //     reporterId: author.value!.id, categoryId: categories[index].id);
       update();
     }
   }
@@ -48,26 +48,26 @@ class AuthorController extends GetxController {
       categories.value = result;
       isLoading = false;
       if (result.isNotEmpty) {
-        loadSourcePosts(reporterId: id, categoryId: result.first.id);
+        // loadSourcePosts(reporterId: id, categoryId: result.first.id);
       }
       update();
     });
   }
 
-  loadSourcePosts({
-    String? categoryId,
-    String? reporterId,
-  }) {
-    BlogPostSearchParamModel searchParamModel =
-        BlogPostSearchParamModel(userId: reporterId);
-    getIt<FirebaseManager>()
-        .searchPosts(
-      searchModel: searchParamModel,
-    )
-        .then((result) {
-      posts.value = result;
-      update();
-    });
-  }
+  // loadSourcePosts({
+  //   String? categoryId,
+  //   required String reporterId,
+  // }) {
+  //   BlogPostSearchParamModel searchParamModel =
+  //       BlogPostSearchParamModel(userId: reporterId);
+  //   getIt<FirebaseManager>()
+  //       .searchPosts(
+  //     searchModel: searchParamModel,
+  //   )
+  //       .then((result) {
+  //     posts.value = result;
+  //     update();
+  //   });
+  // }
 
 }

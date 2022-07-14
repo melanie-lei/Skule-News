@@ -33,9 +33,6 @@ class FirebaseManager {
   CollectionReference blogPostsCollection =
       FirebaseFirestore.instance.collection('blogPosts');
 
-  CollectionReference pendingApprovalPostsCollection =
-      FirebaseFirestore.instance.collection('pendingBlogPosts');
-
   CollectionReference commentsCollection =
       FirebaseFirestore.instance.collection('comments');
 
@@ -46,7 +43,7 @@ class FirebaseManager {
       FirebaseFirestore.instance.collection('authors');
 
   CollectionReference counter =
-  FirebaseFirestore.instance.collection('counter');
+      FirebaseFirestore.instance.collection('counter');
 
   /////////////////////////*********** User ***********//////////////////////////////////
 
@@ -69,10 +66,6 @@ class FirebaseManager {
 
       user = userCredential.user;
 
-      if (userCredential.additionalUserInfo?.isNewUser == true) {
-        insertUser(user!.uid);
-      }
-
       response = FirebaseResponse(true, null);
     } catch (error) {
       response =
@@ -82,13 +75,29 @@ class FirebaseManager {
     return response!;
   }
 
-  insertUser(String id) async {
-    final batch = FirebaseFirestore.instance.batch();
+  insertUser({required String id, String? name, String? email}) async {
     DocumentReference doc = authorsCollection.doc(id);
 
-    batch.set(doc, {'id': id, 'name': 'Admin', 'status': 1});
+    await doc
+        .set({'id': id, 'name': name, 'status': 1, 'email': email})
+        .then((value) {})
+        .catchError((error) {
+          print(error);
+          // AppUtil.showToast(message: 'insertUser $error', isSuccess: true);
+        });
+  }
 
-    await batch.commit().then((value) {}).catchError((error) {});
+  Future<FirebaseResponse> updateUser(
+      {String? name, String? bio, String? image}) async {
+    DocumentReference doc =
+        authorsCollection.doc(FirebaseAuth.instance.currentUser!.uid);
+
+    await doc.update({'name': name, 'bio': bio, 'image': image}).then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error);
+    });
+    return response!;
   }
 
   loginAnonymously() async {
@@ -121,6 +130,34 @@ class FirebaseManager {
       response =
           FirebaseResponse(false, LocalizationString.userNameOrPasswordIsWrong);
       // response!.credential = null;
+    }
+
+    return response!;
+  }
+
+  Future<FirebaseResponse> signUpViaEmail(
+      {required String email,
+      required String password,
+      required String name}) async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    User? user;
+
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      user = userCredential.user;
+
+      if (user != null) {
+        response = FirebaseResponse(true, null);
+        await insertUser(id: user.uid, name: name, email: email);
+      }
+    } catch (error) {
+      print(error);
+      response = FirebaseResponse(false, error.toString());
     }
 
     return response!;
@@ -175,26 +212,27 @@ class FirebaseManager {
   //   return response!;
   // }
 
-  Future<String> updateProfileImage(File imageFile) async {
-    final storageRef = FirebaseStorage.instance.ref();
-    final imageRef =
-        storageRef.child("${FirebaseAuth.instance.currentUser!.uid}.jpg");
+  Future<String> updateProfileImage(
+      {required String uniqueId,
+      required Uint8List bytes,
+      required String fileName}) async {
+    final _firebaseStorage =
+        FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
+    String randomImageName = uniqueId + p.extension(fileName);
 
-    await imageRef.putFile(imageFile);
-    String path = await imageRef.getDownloadURL();
+    final mime = lookupMimeType('', headerBytes: bytes);
 
-    DocumentReference userDoc =
-        authorsCollection.doc(FirebaseAuth.instance.currentUser!.uid);
+    final metadata = SettableMetadata(
+      contentType: mime,
+    );
 
-    getIt<UserProfileManager>().user!.image = path;
-    await userDoc.update({
-      'image': path,
-    }).then((value) {
-      // response = FirebaseResponse(true, null);
-    }).catchError((error) {
-      // response = FirebaseResponse(false, error);
-    });
-    return path;
+    //Upload to Firebase
+    var uploadTask = _firebaseStorage
+        .ref('blogmaster/profileImage/$randomImageName')
+        .putData(bytes, metadata);
+
+    var downloadUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
+    return downloadUrl;
   }
 
   Future<List<CategoryModel>> getSourceCategories(String id) async {
@@ -288,7 +326,7 @@ class FirebaseManager {
     return downloadUrl;
   }
 
-  Future<String> uploadBlogFile(
+  Future<String> uploadBlogVideo(
       {required String uniqueId,
       required Uint8List bytes,
       required String fileName}) async {
@@ -297,7 +335,7 @@ class FirebaseManager {
     String randomImageName = uniqueId + p.extension(fileName);
 
     final metadata = SettableMetadata(
-      contentType: 'audio/mpeg',
+      contentType: 'video/mp4',
     );
 
     //Upload to Firebase
@@ -337,6 +375,10 @@ class FirebaseManager {
       required List<String> hashtags,
       required bool isPremium,
       required AvailabilityStatus status}) async {
+    var keywords = postTitle.allPossibleSubstrings();
+    keywords.addAll(hashtags.map((e) => '#$e'));
+    keywords.add(categoryId);
+
     var postJson = {
       'authorId': getIt<UserProfileManager>().user!.id,
       'authorName': getIt<UserProfileManager>().user!.name,
@@ -350,7 +392,7 @@ class FirebaseManager {
       'hashtags': hashtags,
       'id': postId,
       'isPremium': isPremium,
-      'keywords': postTitle.allPossibleSubstrings(),
+      'keywords': keywords,
       'likesCount': 0,
       'reportCount': 0,
       'savedCount': 0,
@@ -359,7 +401,8 @@ class FirebaseManager {
       'totalComments': 0,
       'totalLikes': 0,
       'totalSaved': 0,
-      'videoUrl': postVideoPath
+      'videoUrl': postVideoPath,
+      'approvedStatus': 0
     };
 
     int postCounterIncrementFactor = 1;
@@ -463,6 +506,7 @@ class FirebaseManager {
     List<BlogPostModel> list = [];
 
     Query query = blogPostsCollection;
+    query = query.where('authorId', isEqualTo: searchModel.userId);
 
     if (searchModel.searchText != null) {
       query =
@@ -477,9 +521,6 @@ class FirebaseManager {
     if (searchModel.hashtags != null) {
       query = query.where("hashtags", arrayContainsAny: searchModel.hashtags);
     }
-    if (searchModel.userId != null) {
-      query = query.where('authorId', isEqualTo: searchModel.userId);
-    }
     if (searchModel.userIds != null) {
       query = query.where("authorId", whereIn: searchModel.userIds);
     }
@@ -489,48 +530,12 @@ class FirebaseManager {
     if (searchModel.isRecent != null) {
       query = query.orderBy("createdAt", descending: true).limit(10);
     }
-
-    await query.get().then((QuerySnapshot snapshot) {
-      for (var doc in snapshot.docs) {
-        list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
-      }
-    }).catchError((error) {
-      response = FirebaseResponse(false, error);
-    });
-
-    return list;
-  }
-
-  Future<List<BlogPostModel>> searchPendingApprovalPosts(
-      {required BlogPostSearchParamModel searchModel}) async {
-    List<BlogPostModel> list = [];
-
-    Query query = pendingApprovalPostsCollection;
-
-    if (searchModel.searchText != null) {
+    if (searchModel.status != null) {
+      query = query.where("status", isEqualTo: searchModel.status);
+    }
+    if (searchModel.approvedStatus != null) {
       query =
-          query.where("keywords", arrayContainsAny: [searchModel.searchText]);
-    }
-    if (searchModel.categoryId != null) {
-      query = query.where('categoryId', isEqualTo: searchModel.categoryId);
-    }
-    if (searchModel.categoryIds != null) {
-      query = query.where('categoryId', whereIn: searchModel.categoryIds);
-    }
-    if (searchModel.hashtags != null) {
-      query = query.where("hashtags", arrayContainsAny: searchModel.hashtags);
-    }
-    if (searchModel.userId != null) {
-      query = query.where('authorId', isEqualTo: searchModel.userId);
-    }
-    if (searchModel.userIds != null) {
-      query = query.where("authorId", whereIn: searchModel.userIds);
-    }
-    if (searchModel.featured != null) {
-      query = query.where("featured", isEqualTo: searchModel.featured);
-    }
-    if (searchModel.isRecent != null) {
-      query = query.orderBy("createdAt", descending: true).limit(10);
+          query.where("approvedStatus", isEqualTo: searchModel.approvedStatus);
     }
 
     await query.get().then((QuerySnapshot snapshot) {
@@ -538,6 +543,8 @@ class FirebaseManager {
         list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
+      print(error);
+
       response = FirebaseResponse(false, error);
     });
 
@@ -560,15 +567,31 @@ class FirebaseManager {
     return list;
   }
 
-  Future<List<CategoryModel>> searchCategories(
-      {String? searchText, int? type}) async {
+  Future<List<CategoryModel>> searchAdminCategories() async {
     List<CategoryModel> categoriesList = [];
 
-    Query query = categoriesCollection;
+    Query query = categoriesCollection.where('status', isEqualTo: 1);
 
-    if (searchText != null) {
-      query = query.where("keywords", arrayContainsAny: [searchText]);
-    }
+    await query.get().then((QuerySnapshot snapshot) {
+      for (var doc in snapshot.docs) {
+        categoriesList
+            .add(CategoryModel.fromJson(doc.data() as Map<String, dynamic>));
+      }
+    }).catchError((error) {
+      response = FirebaseResponse(false, error);
+    });
+
+    return categoriesList;
+  }
+
+  Future<List<CategoryModel>> searchAuthorCategories(
+      {required int status}) async {
+    List<CategoryModel> categoriesList = [];
+
+    Query query = authorsCollection
+        .doc(auth.currentUser!.uid)
+        .collection('categories')
+        .where('status', isEqualTo: status);
 
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
@@ -651,7 +674,6 @@ class FirebaseManager {
     return response!;
   }
 
-
   /////////////////////////////////************* Category *************////////////////////////////////////////
 
   Future<FirebaseResponse> insertNewCategory(
@@ -660,7 +682,10 @@ class FirebaseManager {
       required String name,
       required String image,
       required AvailabilityStatus status}) async {
-    DocumentReference categoryDoc = categoriesCollection.doc(id);
+    DocumentReference categoryDoc = authorsCollection
+        .doc(auth.currentUser!.uid)
+        .collection('categories')
+        .doc(id);
 
     var categoryJson = {
       'id': id,
@@ -715,7 +740,7 @@ class FirebaseManager {
     WriteBatch batch = FirebaseFirestore.instance.batch();
 
     DocumentReference counterDoc = counter.doc('counter');
-    DocumentReference categoryDoc = categoriesCollection.doc(category.id);
+    DocumentReference categoryDoc = authorsCollection.doc(category.id);
 
     batch.update(categoryDoc, {'status': 0});
     batch.update(counterDoc, {'categories': FieldValue.increment(-1)});
@@ -726,40 +751,6 @@ class FirebaseManager {
       response = FirebaseResponse(false, error);
     });
     return response!;
-  }
-
-  Future<List<CategoryModel>> getAllCategoriesBy(
-      {required int status, String? searchKeyword}) async {
-    List<CategoryModel> categoryList = [];
-
-    Query query = categoriesCollection.where('status', isEqualTo: status);
-
-    if (searchKeyword != null && searchKeyword.isNotEmpty) {
-      query = query.where("keywords", arrayContainsAny: [searchKeyword]);
-    }
-
-    await query.get().then((QuerySnapshot snapshot) {
-      for (var doc in snapshot.docs) {
-        categoryList
-            .add(CategoryModel.fromJson(doc.data() as Map<String, dynamic>));
-      }
-    }).catchError((error) {
-      response = FirebaseResponse(false, error);
-    });
-
-    return categoryList;
-  }
-
-  Future<CategoryModel?> getCategory(String id) async {
-    CategoryModel? category;
-
-    await categoriesCollection.doc(id).get().then((doc) {
-      category = CategoryModel.fromJson(doc.data() as Map<String, dynamic>);
-    }).catchError((error) {
-      response = FirebaseResponse(false, error);
-    });
-
-    return category;
   }
 
   Future<RecordCounterModel?> getCounter() async {
@@ -774,5 +765,4 @@ class FirebaseManager {
 
     return recordCounter;
   }
-
 }

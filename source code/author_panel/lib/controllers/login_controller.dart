@@ -10,7 +10,7 @@ class LoginController extends GetxController {
 
   String emailText = '';
 
-  setEmail(String email){
+  setEmail(String email) {
     emailText = email;
   }
 
@@ -31,7 +31,13 @@ class LoginController extends GetxController {
       if (response.status == true) {
         await getIt<UserProfileManager>().refreshProfile();
 
-        Get.offAll(() => const MainScreen());
+        if (getIt<UserProfileManager>().user!.status == 1) {
+          Get.offAll(() => const MainScreen());
+        } else {
+          getIt<UserProfileManager>().logout();
+          AppUtil.showToast(
+              message: LocalizationString.accountDeleted, isSuccess: false);
+        }
       } else {
         showMessage(response.message ?? '', true);
       }
@@ -50,6 +56,25 @@ class LoginController extends GetxController {
     } else {
       showMessage(LocalizationString.pleaseEnterValidEmail, true);
     }
+  }
+
+  signUpViaEmail(
+      {required String email,
+      required String password,
+      required String name}) async {
+    EasyLoading.show(status: LocalizationString.loading);
+    getIt<FirebaseManager>()
+        .signUpViaEmail(email: email, password: password, name: name)
+        .then((value) async {
+      await getIt<UserProfileManager>().refreshProfile();
+
+      EasyLoading.dismiss();
+      if (value.status == true) {
+        Get.to(() => const MainScreen());
+      } else {
+        showMessage(value.message!, true);
+      }
+    });
   }
 
   showMessage(String message, bool isError) {

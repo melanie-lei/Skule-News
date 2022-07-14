@@ -101,7 +101,7 @@ class DrawerListItem extends StatelessWidget {
                             height: 10,
                             width: 10,
                             color: Theme.of(context).primaryColor,
-                          ).circular
+                          ).borderWithRadius(value: 4, radius: 10, context: context)
                         : Container()
                   ],
                 )

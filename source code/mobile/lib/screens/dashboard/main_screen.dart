@@ -94,7 +94,7 @@ class MainScreenState extends State<MainScreen> {
     } else if (selectedIndex == 3) {
       return const Categories();
     } else if (selectedIndex == 4) {
-      return const MyAccount();
+      return const MiscMenus();
     }
     return const DashboardScreen();
   }

@@ -24,7 +24,7 @@ class ProfileTile extends StatelessWidget {
             height: 50,
             width: 50,
           ).round(10).ripple(() {
-            Get.to(() => NewsSourceDetail(userId: model.id));
+            Get.to(() => AuthorDetail(userId: model.id));
           }),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

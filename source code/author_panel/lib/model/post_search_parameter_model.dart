@@ -1,12 +1,14 @@
+import 'package:music_streaming_admin_panel/helper/common_import.dart';
+
 class BlogPostSearchParamModel {
   String? searchText;
   String? categoryId;
-  String? userId;
+  String userId = getIt<UserProfileManager>().user!.id;
   List<String>? hashtags;
   List<String>? userIds;
   List<String>? categoryIds;
   List<String>? postIds;
-  bool? approved;
+  int? approvedStatus;
   int? status;
   bool? featured;
   bool? isRecent;
@@ -14,12 +16,11 @@ class BlogPostSearchParamModel {
   BlogPostSearchParamModel(
       {this.searchText,
       this.categoryId,
-      this.userId,
       this.hashtags,
       this.userIds,
       this.categoryIds,
       this.postIds,
-      this.approved,
+      this.approvedStatus,
       this.featured,
       this.isRecent,
       this.status});

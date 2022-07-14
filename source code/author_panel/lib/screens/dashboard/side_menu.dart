@@ -43,8 +43,8 @@ class _SideMenuState extends State<SideMenu> {
                               children: [
                                 Container(
                                   child: ThemeIconWidget(
-                                    ThemeIcon.music,
-                                    size: 25,
+                                    ThemeIcon.bookMark,
+                                    size: 40,
                                     color: Theme.of(context).primaryColorLight,
                                   ).p(12),
                                   color: Theme.of(context).primaryColor,
@@ -52,10 +52,36 @@ class _SideMenuState extends State<SideMenu> {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                Text(
-                                  AppConfig.projectName,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      AppConfig.projectName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge!
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                              fontWeight: FontWeight.w900),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      getIt<UserProfileManager>().user!.name,
+                                      style:
+                                          Theme.of(context).textTheme.bodyLarge,
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
+                                      getIt<UserProfileManager>().user!.email,
+                                      style:
+                                          Theme.of(context).textTheme.bodyLarge,
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
@@ -64,11 +90,11 @@ class _SideMenuState extends State<SideMenu> {
                             ),
                             Text(
                               LocalizationString.logout,
-                              style: Theme.of(context).textTheme.titleMedium,
+                              style: Theme.of(context).textTheme.titleSmall,
                             ).ripple(() {
                               getIt<UserProfileManager>().logout();
-                              Get.offAll(() => const LoginScreen());
-                            })
+                              Get.offAll(() => const AskForLogin());
+                            }),
                           ],
                         ))
                       : Container(),
@@ -84,7 +110,7 @@ class _SideMenuState extends State<SideMenu> {
                   }),
                   DrawerListItemGroup(items: [
                     DrawerListItem(
-                      icon: ThemeIconWidget(ThemeIcon.book,
+                        icon: ThemeIconWidget(ThemeIcon.book,
                           color: Theme.of(context).iconTheme.color, size: 20),
                       title: LocalizationString.blogs,
                       isSelected: sideMenuContainer.selectedMenu.value ==
@@ -106,7 +132,7 @@ class _SideMenuState extends State<SideMenu> {
                       sideMenuContainer.selectMenu(MenuType.featuredBlogs);
                     }),
                     DrawerListItem(
-                      icon: ThemeIconWidget(ThemeIcon.music,
+                      icon: ThemeIconWidget(ThemeIcon.pending,
                           color: Theme.of(context).iconTheme.color, size: 20),
                       title: LocalizationString.pendingApproval,
                       isSelected: sideMenuContainer.selectedMenu.value ==
@@ -116,6 +142,17 @@ class _SideMenuState extends State<SideMenu> {
                       selectionHandler(MenuType.pendingApprovalBlogs);
                       sideMenuContainer
                           .selectMenu(MenuType.pendingApprovalBlogs);
+                    }),
+                    DrawerListItem(
+                      icon: ThemeIconWidget(ThemeIcon.pending,
+                          color: Theme.of(context).iconTheme.color, size: 20),
+                      title: LocalizationString.rejected,
+                      isSelected: sideMenuContainer.selectedMenu.value ==
+                          MenuType.rejectedBlogs,
+                    ).ripple(() {
+                      scaffoldKey.currentState!.openEndDrawer();
+                      selectionHandler(MenuType.rejectedBlogs);
+                      sideMenuContainer.selectMenu(MenuType.rejectedBlogs);
                     }),
                     DrawerListItem(
                       icon: ThemeIconWidget(ThemeIcon.deactivatedBlog,
@@ -197,6 +234,20 @@ class _SideMenuState extends State<SideMenu> {
                       selectionHandler(MenuType.changePassword);
                       sideMenuContainer.selectMenu(MenuType.changePassword);
                     }),
+                    DrawerListItem(
+                      icon: ThemeIconWidget(
+                        ThemeIcon.author,
+                        color: Theme.of(context).iconTheme.color,
+                        size: 20,
+                      ),
+                      title: LocalizationString.updateProfile,
+                      isSelected: sideMenuContainer.selectedMenu.value ==
+                          MenuType.updateProfile,
+                    ).ripple(() {
+                      scaffoldKey.currentState!.openEndDrawer();
+                      selectionHandler(MenuType.updateProfile);
+                      sideMenuContainer.selectMenu(MenuType.updateProfile);
+                    })
                   ], title: LocalizationString.settings),
                 ],
               ),

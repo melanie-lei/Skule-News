@@ -70,4 +70,12 @@ export 'package:music_streaming_admin_panel/controllers/change_password_controll
 export 'package:music_streaming_admin_panel/controllers/login_controller.dart';
 export 'package:music_streaming_admin_panel/controllers/dashboard_controller.dart';
 export 'package:music_streaming_admin_panel/controllers/side_menu_container.dart';
-
+export 'package:music_streaming_admin_panel/controllers/user_controller.dart';
+export 'package:music_streaming_admin_panel/screens/user/signup_via_email.dart';
+export 'package:music_streaming_admin_panel/screens/user/social_login.dart';
+export 'package:music_streaming_admin_panel/screens/user/social_login.dart';
+export 'package:music_streaming_admin_panel/screens/user/ask_for_login.dart';
+export 'package:music_streaming_admin_panel/screens/user/login_via_email.dart';
+export 'package:music_streaming_admin_panel/screens/user/forgot_password.dart';
+export 'package:music_streaming_admin_panel/controllers/main_screen_controller.dart';
+export 'package:music_streaming_admin_panel/screens/user/update_profile.dart';

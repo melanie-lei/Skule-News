@@ -42,6 +42,7 @@ void main() async{
   Get.put(LoginController());
   Get.put(SupportRequestsController());
   Get.put(SideMenuContainer());
+  Get.put(UserController());
 
   runApp(
     EasyLocalization(

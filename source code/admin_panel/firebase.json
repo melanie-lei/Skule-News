@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "target": "admin",
+    "target": "adminPanel",
     "public": "build/web",
     "ignore": [
       "firebase.json",

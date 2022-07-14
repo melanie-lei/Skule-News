@@ -15,16 +15,17 @@ class PendingBlogsController extends GetxController {
     selectedCategory.value = category;
   }
 
-  getPendingBlogs() {
+  getPendingBlogs(BlogStatusType statusType) {
     BlogPostSearchParamModel searchParamModel = BlogPostSearchParamModel();
     searchParamModel.categoryId = selectedCategory.value?.id;
     searchParamModel.searchText =
         (searchText ?? '').isNotEmpty ? searchText : null;
-    searchParamModel.approved = false;
+    searchParamModel.approvedStatus =
+        statusType == BlogStatusType.pending ? 0 : -1;
     searchParamModel.status = 1;
 
     getIt<FirebaseManager>()
-        .searchPendingApprovalPosts(
+        .searchPosts(
       searchModel: searchParamModel,
     )
         .then((result) {
@@ -32,5 +33,4 @@ class PendingBlogsController extends GetxController {
       update();
     });
   }
-
 }

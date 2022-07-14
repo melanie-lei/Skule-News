@@ -17,7 +17,8 @@ class _SelectCategoryState extends State<SelectCategory> {
   @override
   void initState() {
     // TODO: implement initState
-    categoryController.getCategories();
+    categoryController.setStatusType(1);
+    categoryController.getAllCategories();
     super.initState();
   }
 

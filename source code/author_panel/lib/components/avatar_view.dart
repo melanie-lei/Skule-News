@@ -19,10 +19,7 @@ class AvatarView extends StatelessWidget {
           ? CachedNetworkImage(
               imageUrl: url!,
               fit: BoxFit.cover,
-              placeholder: (context, url) => const SizedBox(
-                height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator()),
+              placeholder: (context, url) => const CircularProgressIndicator().p16,
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ).round(18).p(2)
           : Image.asset(

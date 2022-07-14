@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
 
@@ -427,6 +425,8 @@ extension PulltoRefresh on Widget {
   Widget addPullToRefresh({
     required RefreshController refreshController,
     required VoidCallback onRefresh,
+    required VoidCallback onLoading,
+
   }) =>
       SmartRefresher(
         enablePullDown: true,
@@ -434,6 +434,8 @@ extension PulltoRefresh on Widget {
         header: const WaterDropHeader(),
         controller: refreshController,
         onRefresh: onRefresh,
+        onLoading: onLoading,
         child: this,
       );
+
 }

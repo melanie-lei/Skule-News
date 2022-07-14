@@ -162,7 +162,9 @@ class _AskForLoginState extends State<AskForLogin> {
                       width: 50,
                     ),
                   ],
-                ),
+                ).ripple((){
+                  getIt<UserProfileManager>().loginAnonymously();
+                }),
               ))
         ],
       ),

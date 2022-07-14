@@ -2,7 +2,7 @@ import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
 
 class SeeAllPostsController extends GetxController {
-  RxList<NewsModel> posts = <NewsModel>[].obs;
+  RxList<BlogPostModel> posts = <BlogPostModel>[].obs;
   RxBool isLoading = false.obs;
 
   clear() {
@@ -17,9 +17,10 @@ class SeeAllPostsController extends GetxController {
         .searchPosts(
       searchModel: searchModel,
     )
-        .then((result) {
+        .then((response) {
       isLoading.value = false;
-      posts.value = result;
+      posts.value = response.result as List<BlogPostModel>;
+
       update();
     });
   }

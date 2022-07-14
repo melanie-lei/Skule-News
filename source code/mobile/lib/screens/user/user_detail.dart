@@ -147,7 +147,8 @@ class _UserDetailState extends State<UserDetail> {
                             ? Theme.of(context).primaryColor
                             : Theme.of(context).backgroundColor,
                     textStyle: userController.reporter.value!.isFollowing()
-                        ? Theme.of(context).textTheme.bodyMedium
+                        ? Theme.of(context).textTheme.titleMedium!.copyWith(
+                        color: Colors.white, fontWeight: FontWeight.w600)
                         : Theme.of(context).textTheme.bodyMedium,
                     onPress: () {
                       userController.followUnfollowUser();

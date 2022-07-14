@@ -5,7 +5,7 @@ import 'package:image_picker/image_picker.dart' as image_picker;
 class UserController extends GetxController {
   final image_picker.ImagePicker _picker = image_picker.ImagePicker();
 
-  RxList<NewsModel> posts = <NewsModel>[].obs;
+  RxList<BlogPostModel> posts = <BlogPostModel>[].obs;
   Rx<UserModel?> reporter = (null).obs;
 
   Rx<int> selectedTab = 0.obs;
@@ -45,8 +45,9 @@ class UserController extends GetxController {
         .searchPosts(
       searchModel: searchParamModel,
     )
-        .then((result) {
-      posts.value = result;
+        .then((response) {
+      posts.value = response.result as List<BlogPostModel>;
+
       update();
     });
   }
@@ -75,7 +76,7 @@ class UserController extends GetxController {
       if (value) {
         if (isFollowing) {
           getIt<FirebaseManager>()
-              .followUser(id: reporter.value!.id, isSource: false);
+              .followUser(id: reporter.value!.id, isAuthor: false);
         } else {
           getIt<FirebaseManager>()
               .unFollowUser(id: reporter.value!.id, isSource: false);

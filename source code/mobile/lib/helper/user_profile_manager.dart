@@ -1,4 +1,5 @@
 import 'package:music_streaming_mobile/helper/common_import.dart';
+import 'package:get/get.dart';
 
 class UserProfileManager {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -9,10 +10,16 @@ class UserProfileManager {
     return user != null;
   }
 
+  loginAnonymously() {
+    getIt<FirebaseManager>().loginAnonymously(() {
+      Get.offAll(() => const MainScreen());
+    });
+  }
+
   logout() {
     user = null;
     getIt<FirebaseManager>().logout();
-    getIt<FirebaseManager>().loginAnonymously();
+    getIt<FirebaseManager>().loginAnonymously(() {});
   }
 
   refreshProfile() async {
@@ -21,18 +28,29 @@ class UserProfileManager {
       if (firebaseUser != null && firebaseUser.isAnonymous == false) {
         user = await getIt<FirebaseManager>().getCurrentUser(firebaseUser.uid);
       } else {
-        await getIt<FirebaseManager>().loginAnonymously();
+        await getIt<FirebaseManager>().loginAnonymously(() {});
       }
     } else {
       if (auth.currentUser!.isAnonymous == false) {
-        user = await getIt<FirebaseManager>().getCurrentUser(auth.currentUser!.uid);
+        user = await getIt<FirebaseManager>()
+            .getCurrentUser(auth.currentUser!.uid);
+      }
+    }
+
+    if (user != null) {
+      if (user!.status == 1) {
+        Get.offAll(() => const MainScreen());
+      } else {
+        getIt<UserProfileManager>().logout();
+        AppUtil.showToast(
+            message: LocalizationString.accountDeleted, isSuccess: false);
       }
     }
   }
 
-  forceRefreshProfile() async {
-    if (auth.currentUser != null && auth.currentUser?.isAnonymous == false) {
-      user = await getIt<FirebaseManager>().getUser(auth.currentUser!.uid);
-    }
-  }
+// forceRefreshProfile() async {
+//   if (auth.currentUser != null && auth.currentUser?.isAnonymous == false) {
+//     user = await getIt<FirebaseManager>().getUser(auth.currentUser!.uid);
+//   }
+// }
 }
