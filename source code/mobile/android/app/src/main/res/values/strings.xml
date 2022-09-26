@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string
-        name="admobId"
-        >ca-app-pub-1748815945631578~1256886289</string>
+        name="admobId">ca-app-pub-1748815945631578~1256886289</string>
+    <string name="facebook_app_id">1403828733417902</string>
+    <string name="facebook_client_token">23427c4680c39189fd18c64c9bd17ff1</string>
 </resources>

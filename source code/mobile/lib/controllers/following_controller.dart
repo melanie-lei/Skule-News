@@ -43,7 +43,7 @@ class FollowingController extends GetxController {
     if (getIt<UserProfileManager>().user!.followingProfiles.isNotEmpty) {
       isLoadingSource.value = true;
       getIt<FirebaseManager>()
-          .searchSources(
+          .searchAuthors(
               sourceIds: getIt<UserProfileManager>().user!.followingProfiles)
           .then((result) {
         sources = RxList(result);

@@ -14,6 +14,11 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>ar</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>music_streaming_mobile</string>
 	<key>CFBundlePackageType</key>
@@ -53,16 +58,16 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb524902128439064</string>
+				<string>fb1403828733417902</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>FacebookAppID</key>
-	<string>524902128439064</string>
+	<string>1403828733417902</string>
 	<key>FacebookClientToken</key>
-	<string>f3908a70ebae8bf2f7ca68e41ea69da2</string>
+	<string>23427c4680c39189fd18c64c9bd17ff1</string>
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-1748815945631578~1256886289</string>
 	<key>LSRequiresIPhoneOS</key>

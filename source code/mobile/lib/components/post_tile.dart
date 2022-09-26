@@ -81,7 +81,8 @@ class _PostTileState extends State<PostTile> {
               widget.tapHandler!();
             }
           }),
-          divider(context: context).vP16,
+          const SizedBox(height: 15,),
+          // divider(context: context).vP16,
           bottomBar(),
         ],
       ),
@@ -155,7 +156,7 @@ class _PostTileState extends State<PostTile> {
                       '${snapshot.data!.totalFollowers} ${LocalizationString.followers.toLowerCase()}',
                       style: Theme.of(context).textTheme.bodyMedium),
                 ],
-              ).lP8.ripple(() {
+              ).hP8.ripple(() {
                 openProfile(snapshot.data!.id);
               }),
               const Spacer(),

@@ -43,7 +43,7 @@ class _AskForLoginState extends State<AskForLogin> {
               Container(
                   height: 120,
                   width: 120,
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).backgroundColor.lighten(0.05),
                   child: Image.asset(
                     'assets/images/logo.png',
                     height: 80,
@@ -63,7 +63,7 @@ class _AskForLoginState extends State<AskForLogin> {
                 child: Container(
                   height: 400,
                   width: MediaQuery.of(context).size.width - 32,
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).backgroundColor.lighten(0.05),
                   child: Column(
                     children: [
                       const SizedBox(
@@ -116,7 +116,7 @@ class _AskForLoginState extends State<AskForLogin> {
                           Container(
                             color: Theme.of(context).dividerColor,
                             height: 1,
-                            width: 100,
+                            width: 50,
                           ),
                           Text(
                             'Or connect using',
@@ -125,14 +125,17 @@ class _AskForLoginState extends State<AskForLogin> {
                           Container(
                             color: Theme.of(context).dividerColor,
                             height: 1,
-                            width: 100,
+                            width: 50,
                           ),
                         ],
                       ),
                       const SizedBox(
-                        height: 50,
+                        height: 25,
                       ),
                       const SocialLogin(),
+                      const SizedBox(
+                        height: 20,
+                      ),
                     ],
                   ).hP16,
                 ).round(20),
@@ -142,7 +145,7 @@ class _AskForLoginState extends State<AskForLogin> {
           Positioned(
               left: 0,
               right: 0,
-              bottom: 50,
+              bottom: 40,
               child: Center(
                 child: Column(
                   children: [

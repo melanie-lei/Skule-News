@@ -16,8 +16,6 @@ class _SeeAllPostsState extends State<SeeAllPosts> {
   final controller = PageController(viewportFraction: 0.90, keepPage: true);
   final SeeAllPostsController seeAllPostController = Get.find();
   final PostCardController postCardController = Get.find();
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
 
   @override
   void initState() {

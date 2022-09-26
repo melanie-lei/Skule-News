@@ -19,10 +19,10 @@ class AvatarView extends StatelessWidget {
           ? CachedNetworkImage(
               imageUrl: url!,
               fit: BoxFit.cover,
-              placeholder: (context, url) => const SizedBox(
-                height: 20,
+              placeholder: (context, url) => SizedBox(
+                  height: 20,
                   width: 20,
-                  child: CircularProgressIndicator()),
+                  child: const CircularProgressIndicator().p8),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ).round(18).p(2)
           : Image.asset(
@@ -50,16 +50,13 @@ class UserAvatarView extends StatelessWidget {
       height: size,
       width: size!,
       child: user.image != null
-          ?
-      CachedNetworkImage(
-        imageUrl: user.image!,
-          fit: BoxFit.cover,
-        placeholder: (context, url) => const SizedBox(
-            height: 20,
-            width: 20,
-            child: CircularProgressIndicator()),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
-      ).round(15).p(2)
+          ? CachedNetworkImage(
+              imageUrl: user.image!,
+              fit: BoxFit.cover,
+              placeholder: (context, url) =>  SizedBox(
+                  height: 20, width: 20, child: const CircularProgressIndicator().p8),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ).round(15).p(2)
           : Center(
               child: Text(
                 user.getInitials,

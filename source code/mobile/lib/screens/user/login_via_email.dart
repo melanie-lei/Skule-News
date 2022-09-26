@@ -30,6 +30,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: Stack(
         children: [
@@ -74,7 +75,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                       Container(
                           height: 40,
                           width: 40,
-                          color: Theme.of(context).backgroundColor,
+                          color: Theme.of(context).backgroundColor.lighten(0.05),
                           child: Image.asset(
                             'assets/images/logo.png',
                             height: 20,
@@ -108,7 +109,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
               Container(
                 height: 260,
                 width: MediaQuery.of(context).size.width - 32,
-                color: Theme.of(context).backgroundColor,
+                color: Theme.of(context).backgroundColor.lighten(0.05),
                 child: Column(
                   children: [
                     const SizedBox(
@@ -160,7 +161,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
               Container(
                       height: 80,
                       width: MediaQuery.of(context).size.width - 32,
-                      color: Theme.of(context).backgroundColor,
+                      color: Theme.of(context).backgroundColor.lighten(0.05),
                       child: const SocialLogin())
                   .round(20),
               const Spacer(),
@@ -203,7 +204,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             InputField(
-              key: UniqueKey(),
+              // key: UniqueKey(),
               controller: loginEmail,
               hintText: 'adam@zedge.com',
               icon: ThemeIcon.email,
@@ -216,7 +217,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
             ),
             PasswordField(
               onChanged: (txt) {},
-              key: UniqueKey(),
+              // key: UniqueKey(),
               controller: loginPassword,
               hintText: '*********',
               icon: ThemeIcon.lock,

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
+import 'package:music_streaming_mobile/helper/int_extension.dart';
 
 class HashtagTile extends StatelessWidget {
   final Hashtag model;
   final VoidCallback actionCallback;
-  const HashtagTile({Key? key, required this.model, required this.actionCallback}) : super(key: key);
+
+  const HashtagTile(
+      {Key? key, required this.model, required this.actionCallback})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,42 +18,32 @@ class HashtagTile extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            '#${model.name}',
-            style: Theme.of(context)
-                .textTheme
-                .displaySmall!
-                .copyWith(color: Theme.of(context).primaryColor),
-          ).p8,
-          // CachedNetworkImage(
-          //   imageUrl: model.image,
-          //   fit: BoxFit.cover,
-          //   placeholder: (context, url) =>
-          //   const CircularProgressIndicator(),
-          //   errorWidget: (context, url, error) => const Icon(Icons.error),
-          //   height: 50,
-          //   width: 50,
-          // ).round(10).ripple(() {
-          //   Get.to(() => NewsSourceDetail(userId: model.id));
-          // }),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                model.name,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              Text(
-                '${model.totalFollowers} ${LocalizationString.followers.toLowerCase()}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ],
-          ).lP8,
-          const Spacer(),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '#${model.name}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(color: Theme.of(context).primaryColor),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  '${model.totalFollowers.formatNumber} ${LocalizationString.followers.toLowerCase()}',
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontWeight: FontWeight.w600),
+                ),
+              ],
+            ).lP8,
+          ),
+          // const Spacer(),
           SizedBox(
             height: 30,
             width: 100,

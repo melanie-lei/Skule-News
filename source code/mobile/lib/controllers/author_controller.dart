@@ -10,6 +10,12 @@ class AuthorController extends GetxController {
   bool isLoading = false;
   RxInt selectedCategoryIndex = 0.obs;
 
+  clear() {
+    posts.clear();
+    author.value = null;
+    categories.clear();
+  }
+
   selectCategory(int index) {
     if (selectedCategoryIndex.value != index) {
       posts.value = [];
@@ -30,29 +36,81 @@ class AuthorController extends GetxController {
     getIt<FirebaseManager>().getAuthorDetail(id).then((result) {
       author.value = result;
       isLoading = false;
+      getAllCategories(id: id);
       update();
     });
   }
 
-  getAuthorCategories({required String id}) {
-    isLoading = true;
-    getIt<FirebaseManager>().getAuthorCategories(id).then((result) {
-      categories.value = result;
-      print(categories.length);
-      isLoading = false;
-      if (result.isNotEmpty) {
-        loadAuthorPosts(authorId: id, categoryId: result.first.id);
-      }
-      update();
-    });
+  void getAllCategories({required String id}) async {
+    categories.clear();
+
+    List<CategoryModel> allCategories = [];
+
+    var responses = await Future.wait([
+      getAuthorCategories(id: id),
+      getAdminCategories(),
+    ]);
+
+    allCategories.addAll(responses[0]);
+    allCategories.addAll(responses[1]);
+
+    categories.value = allCategories
+        .where((element) => author.value!.usedCategories.contains(element.id))
+        .toList();
+
+    isLoading = false;
+    if (categories.isNotEmpty) {
+      loadAuthorPosts(authorId: id, categoryId: categories.first.id);
+    }
+    update();
+
+    update();
   }
+
+  Future<List<CategoryModel>> getAuthorCategories({required String id}) async {
+    List<CategoryModel> list = [];
+    await AppUtil.checkInternet().then((value) async {
+      if (value) {
+        await getIt<FirebaseManager>().getAuthorCategories(id).then((result) {
+          list = result;
+        });
+      } else {}
+    });
+    return list;
+  }
+
+  Future<List<CategoryModel>> getAdminCategories() async {
+    List<CategoryModel> list = [];
+
+    await AppUtil.checkInternet().then((value) async {
+      if (value) {
+        await getIt<FirebaseManager>().searchCategories().then((result) {
+          list = result;
+        });
+      } else {}
+    });
+    return list;
+  }
+
+  // getAuthorCategories({required String id}) {
+  //   isLoading = true;
+  //   getIt<FirebaseManager>().getAuthorCategories(id).then((result) {
+  //     categories.value = result;
+  //     print(categories.length);
+  //     isLoading = false;
+  //     if (result.isNotEmpty) {
+  //       loadAuthorPosts(authorId: id, categoryId: result.first.id);
+  //     }
+  //     update();
+  //   });
+  // }
 
   loadAuthorPosts({
     String? categoryId,
     String? authorId,
   }) {
     PostSearchParamModel searchParamModel =
-        PostSearchParamModel(userId: authorId,categoryId: categoryId);
+        PostSearchParamModel(userId: authorId, categoryId: categoryId);
     getIt<FirebaseManager>()
         .searchPosts(
       searchModel: searchParamModel,
@@ -79,10 +137,7 @@ class AuthorController extends GetxController {
       author.value!.totalFollowers -= 1;
       isFollowing = false;
     } else {
-      getIt<UserProfileManager>()
-          .user!
-          .followingProfiles
-          .add(author.value!.id);
+      getIt<UserProfileManager>().user!.followingProfiles.add(author.value!.id);
       author.value!.totalFollowers += 1;
       isFollowing = true;
     }

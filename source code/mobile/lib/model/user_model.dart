@@ -23,10 +23,13 @@ class UserModel {
 
   bool isPro = false;
 
-  DateTime? subscriptionDate;
+  // int? subscriptionDate;
   DateTime todayDate;
-  int subscriptionDays;
+
+  // int subscriptionDays;
   String? subscriptionTerm;
+
+  String? subscriptionReceipt;
 
   UserModel({
     required this.id,
@@ -43,10 +46,12 @@ class UserModel {
     required this.totalPosts,
     required this.totalFollowers,
     required this.status,
-    required this.subscriptionDate,
+    // required this.subscriptionDate,
     required this.todayDate,
-    required this.subscriptionDays,
+    // required this.subscriptionDays,
     this.subscriptionTerm,
+    this.subscriptionReceipt,
+    required this.isPro,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -55,7 +60,7 @@ class UserModel {
         phone: json["phone"] ?? '',
         bio: json["bio"] ?? '',
         image: json["image"],
-        totalPosts: json["totalPosts"] ?? 0,
+        totalPosts: json["totalBlogPosts"] ?? 0,
         totalFollowers: json["totalFollowers"] ?? 0,
         followingProfiles: json["followingProfiles"] == null
             ? []
@@ -88,14 +93,14 @@ class UserModel {
                 .map((e) => e.toString())
                 .toList(),
         status: json["status"],
-        subscriptionDays: json["numberOfDays"] ?? 0,
-        subscriptionTerm: json["subscriptionTerm"],
-        subscriptionDate: json["subscriptionDate"] == null
-            ? null
-            : json["subscriptionDate"].toDate(),
+        // subscriptionDays: json["numberOfDays"] ?? 0,
+        subscriptionTerm: json["subscriptionTerm"] ?? '',
+        // subscriptionDate: json["subscriptionDate"],
         todayDate: json["todayDate"] == null
             ? DateTime.now()
             : json["todayDate"].toDate(),
+        subscriptionReceipt: json["subscriptionReceipt"],
+        isPro: json["isPro"] ?? false,
       );
 
   isFollowing() {
@@ -118,16 +123,24 @@ class UserModel {
 
   String get getInitials {
     if ((getIt<UserProfileManager>().user!.name ?? '').isNotEmpty) {
-      List<String> nameparts =
+      List<String> nameParts =
           getIt<UserProfileManager>().user!.name!.split(' ');
-      return nameparts[0].substring(0, 1).toUpperCase() +
-          nameparts[1].substring(0, 1).toUpperCase();
+      if (nameParts.length > 1) {
+        return nameParts[0].substring(0, 1).toUpperCase() +
+            nameParts[1].substring(0, 1).toUpperCase();
+      } else {
+        return nameParts[0].substring(0, 1).toUpperCase();
+      }
     }
     if ((getIt<UserProfileManager>().user!.phone ?? '').isNotEmpty) {
       return getIt<UserProfileManager>().user!.phone!.substring(0, 1);
     }
-    List<String> nameparts = AppConfig.projectName.split(' ');
-    return nameparts[0].substring(0, 1).toUpperCase() +
-        nameparts[1].substring(0, 1).toUpperCase();
+    List<String> nameParts = AppConfig.projectName.split(' ');
+    if (nameParts.length > 1) {
+      return nameParts[0].substring(0, 1).toUpperCase() +
+          nameParts[1].substring(0, 1).toUpperCase();
+    } else {
+      return nameParts[0].substring(0, 1).toUpperCase();
+    }
   }
 }

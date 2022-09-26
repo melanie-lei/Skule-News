@@ -4,6 +4,7 @@ import 'package:timeago/timeago.dart' as timeago;
 class BlogPostModel {
   String id;
   String title;
+
   // String shortContent;
   List<String> hashtags;
 
@@ -18,6 +19,7 @@ class BlogPostModel {
   String authorPicture;
   String category;
   String categoryId;
+
   // String locationId;
 
   int totalLikes;
@@ -49,33 +51,33 @@ class BlogPostModel {
   });
 
   factory BlogPostModel.fromJson(Map<String, dynamic> json) => BlogPostModel(
-    id: json["id"],
-    title: json["title"],
-    content: json["content"],
-    thumbnailImage: json["thumbnailImage"],
-    videoUrl: json["videoUrl"],
-    // shortContent: json["shortContent"],
-    hashtags: (json['hashtags'] as List<dynamic>)
-        .map((e) => e.toString())
-        .toList(),
-    authorId: json["authorId"],
-    authorName: json["authorName"],
-    // authorUserName: json["authorUserName"],
-    // authorEmail: json["authorEmail"],
-    authorPicture: json["authorPicture"],
-    // authorPhone: json["authorPhone"],
-    totalLikes: json["totalLikes"],
-    totalSaved: json["totalSaved"],
-    totalComments: json["totalComments"],
-    category: json["category"],
-    categoryId: json["categoryId"],
-    // locationId: json["locationId"],
-    createdAt: json["createdAt"] == null
-        ? DateTime.now()
-        : json["createdAt"].toDate(),
-    contentType: json["contentType"],
-    isPremium: json["isPremium"] ?? false,
-  );
+        id: json["id"],
+        title: json["title"],
+        content: json["content"],
+        thumbnailImage: json["thumbnailImage"],
+        videoUrl: json["videoUrl"],
+        // shortContent: json["shortContent"],
+        hashtags: (json['hashtags'] as List<dynamic>)
+            .map((e) => e.toString())
+            .toList(),
+        authorId: json["authorId"],
+        authorName: json["authorName"],
+        // authorUserName: json["authorUserName"],
+        // authorEmail: json["authorEmail"],
+        authorPicture: json["authorPicture"],
+        // authorPhone: json["authorPhone"],
+        totalLikes: json["totalLikes"],
+        totalSaved: json["totalSaved"],
+        totalComments: json["totalComments"],
+        category: json["category"],
+        categoryId: json["categoryId"],
+        // locationId: json["locationId"],
+        createdAt: json["createdAt"] == null
+            ? DateTime.now()
+            : json["createdAt"].toDate(),
+        contentType: json["contentType"],
+        isPremium: json["isPremium"] ?? false,
+      );
 
   String get date {
     return timeago.format(createdAt);
@@ -100,22 +102,30 @@ class BlogPostModel {
   }
 
   bool get isLocked {
+    if (getIt<UserProfileManager>().user == null) {
+      return isPremium ?? false;
+    }
     if (isPremium == true) {
-      DateTime? subscriptionDate =
-          getIt<UserProfileManager>().user!.subscriptionDate;
-      if (subscriptionDate != null) {
-        DateTime todayDate = getIt<UserProfileManager>().user!.todayDate;
-        int daysConsumed = todayDate.difference(subscriptionDate).inDays;
-        int noOfDaysInSubscription =
-            getIt<UserProfileManager>().user!.subscriptionDays;
-        if (noOfDaysInSubscription > daysConsumed) {
-          return false;
-        } else {
-          return true;
-        }
-      } else {
-        return true;
-      }
+      return !getIt<UserProfileManager>().user!.isPro;
+      // int? subscriptionDateEpoch =
+      //     getIt<UserProfileManager>().user!.subscriptionDate;
+      //
+      // if (subscriptionDateEpoch != null) {
+      //   DateTime? subscriptionDate =
+      //   DateTime.fromMillisecondsSinceEpoch(subscriptionDateEpoch);
+      //   // DateTime todayDate = getIt<UserProfileManager>().user!.todayDate;
+      //   // int daysConsumed = todayDate.difference(subscriptionDate).inDays;
+      //   // int noOfDaysInSubscription =
+      //   //     getIt<UserProfileManager>().user!.subscriptionDays;
+      //   // if (noOfDaysInSubscription > daysConsumed) {
+      //   //   return false;
+      //   // } else {
+      //   //   return true;
+      //   // }
+      //   return true;
+      // } else {
+      //   return true;
+      // }
     } else {
       return false;
     }

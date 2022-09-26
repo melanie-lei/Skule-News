@@ -9,15 +9,3 @@ class AppConfig {
   static bool isLoggedIn = false;
 }
 
-class AdmobConstants{
-  // Admob ids for android
-  static const bannerAdUnitIdForAndroid = 'ca-app-pub-3940256099942544/6300978111';
-  static const interstitialAdUnitIdForAndroid = 'ca-app-pub-3940256099942544/1033173712';
-  static const rewardAdUnitIdForAndroid = "ca-app-pub-3940256099942544/5224354917";
-
-  // Admob ids for iOS
-  static const bannerAdUnitIdForiOS = 'ca-app-pub-3940256099942544/6300978111';
-  static const interstitialAdUnitIdForiOS = 'ca-app-pub-3940256099942544/1033173712';
-  static const rewardAdUnitIdForiOS = "ca-app-pub-3940256099942544/1712485313";
-
-}

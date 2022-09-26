@@ -13,8 +13,7 @@ class _FeaturedPostsState extends State<FeaturedPosts> {
   final controller = PageController(viewportFraction: 0.90, keepPage: true);
   final DashboardController dashboardController = Get.find();
   final PostCardController postCardController = Get.find();
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -25,6 +24,8 @@ class _FeaturedPostsState extends State<FeaturedPosts> {
     });
 
     super.initState();
+
+    InterstitialAds().loadInterstitialAd();
   }
 
   loadData() {

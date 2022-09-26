@@ -41,7 +41,7 @@ class _SelectCategoryState extends State<SelectCategory> {
                 }),
                 Text(
                   LocalizationString.selectCategory,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(fontWeight: FontWeight.w900),
                 ),
                 const SizedBox(
                   width: 40,

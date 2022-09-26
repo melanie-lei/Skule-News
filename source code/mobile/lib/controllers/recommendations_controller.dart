@@ -34,7 +34,7 @@ class RecommendationController extends GetxController {
   loadSources({String? searchText}) {
     isLoadingSource.value = true;
     getIt<FirebaseManager>()
-        .searchSources(searchText: searchText)
+        .searchAuthors(searchText: searchText)
         .then((result) {
       sources = RxList(result);
       isLoadingSource.value = false;
@@ -60,21 +60,10 @@ class RecommendationController extends GetxController {
     });
   }
 
-  // loadLocations({String? searchText}) {
-  //   isLoadingLocations.value = true;
-  //   getIt<FirebaseManager>()
-  //       .searchLocations(searchText: searchText)
-  //       .then((result) {
-  //     locations = RxList(result);
-  //     isLoadingLocations.value = false;
-  //     update();
-  //   });
-  // }
-
-  loadHashtags({String? searchText}) {
+  loadHashtags({String? searchText, required bool isTrending}) {
     isLoadingHashtags.value = true;
     getIt<FirebaseManager>()
-        .searchHashtags(searchText: searchText,isTrending: true)
+        .searchHashtags(searchText: searchText,isTrending: isTrending)
         .then((result) {
       hashtags = RxList(result);
       isLoadingHashtags.value = false;
@@ -223,11 +212,11 @@ class RecommendationController extends GetxController {
   }
 
   searchTextChanged(String text) {
-    clear();
+    // clear();
     searchText.value = text;
     if (text.isEmpty) {
       // loadLocations();
-      loadHashtags();
+      loadHashtags(isTrending: true);
       loadSources();
       update();
     } else {
@@ -242,7 +231,7 @@ class RecommendationController extends GetxController {
       } else if (selectedSegment.value == 1) {
         loadSources(searchText: searchText.value);
       } else if (selectedSegment.value == 2) {
-        loadHashtags(searchText: searchText.value);
+        loadHashtags(searchText: searchText.value,isTrending: false);
       } else if (selectedSegment.value == 3) {
         // loadLocations(searchText: searchText.value);
       }

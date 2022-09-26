@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'dart:convert';
 import 'dart:math';
 import 'package:crypto/crypto.dart';
+import 'dart:io' show Platform;
 
 String generateNonce([int length = 32]) {
   const charset =
@@ -34,58 +35,69 @@ class _SocialLoginState extends State<SocialLogin> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Container(
-            color: Theme.of(context).hoverColor,
-            height: 40,
-            width: 40,
-            child: Center(
-                child: Image.asset(
-              'assets/images/apple.png',
-              color: Theme.of(context).primaryColor,
-              height: 20,
-              width: 20,
-            ))).round(5).ripple(() {
-          _handleAppleSignIn();
-        }),
-        Container(
-            color: Theme.of(context).hoverColor,
-            height: 40,
-            width: 40,
-            child: Center(
-                child: Image.asset(
-              'assets/images/gmailicon.png',
-              height: 20,
-              width: 20,
-            ))).round(5).ripple(() {
-          signInWithGoogle();
-        }),
-        Container(
-            color: Theme.of(context).hoverColor,
-            height: 40,
-            width: 40,
-            child: Center(
-                child: Image.asset(
-              'assets/images/facebook.png',
-              height: 20,
-              width: 20,
-            ))).round(5).ripple(() {
-          fbSignInAction();
-        }),
-        Container(
-            color: Theme.of(context).hoverColor,
-            height: 40,
-            width: 40,
-            child: Center(
-                child: Image.asset(
-              'assets/images/phone.png',
-              height: 20,
-              width: 20,
-            ))).round(5).ripple(() {
-          Get.to(() => const LoginViaPhone());
-        }),
-      ],
+      children: loginOptions(),
     ).hp(40);
+  }
+
+  List<Widget> loginOptions() {
+    List<Widget> options = [
+      Container(
+          color: Theme.of(context).hoverColor,
+          height: 40,
+          width: 40,
+          child: Center(
+              child: Image.asset(
+            'assets/images/gmailicon.png',
+            height: 20,
+            width: 20,
+          ))).round(5).ripple(() {
+        signInWithGoogle();
+      }),
+      Container(
+          color: Theme.of(context).hoverColor,
+          height: 40,
+          width: 40,
+          child: Center(
+              child: Image.asset(
+            'assets/images/facebook.png',
+            height: 20,
+            width: 20,
+          ))).round(5).ripple(() {
+        fbSignInAction();
+      }),
+      Container(
+          color: Theme.of(context).hoverColor,
+          height: 40,
+          width: 40,
+          child: Center(
+              child: Image.asset(
+            'assets/images/phone.png',
+            height: 20,
+            width: 20,
+          ))).round(5).ripple(() {
+        Get.to(() => const LoginViaPhone());
+      }),
+    ];
+
+    if (Platform.isIOS) {
+      options.insert(
+          0,
+          Container(
+              color: Theme.of(context).hoverColor,
+              height: 40,
+              width: 40,
+              child: Center(
+                  child: Image.asset(
+                'assets/images/apple.png',
+                color: Theme.of(context).primaryColor,
+                height: 20,
+                width: 20,
+              ))).round(5).ripple(() {
+            _handleAppleSignIn();
+          }));
+    }
+
+    return options;
   }
 
   void signInWithGoogle() async {
@@ -114,6 +126,7 @@ class _SocialLoginState extends State<SocialLogin> {
     // Trigger the sign-in flow
     final LoginResult loginResult = await FacebookAuth.instance.login();
 
+    print(loginResult.message);
     // Create a credential from the access token
     final OAuthCredential facebookAuthCredential =
         FacebookAuthProvider.credential(loginResult.accessToken!.token);
@@ -138,11 +151,17 @@ class _SocialLoginState extends State<SocialLogin> {
     if (credentials.additionalUserInfo!.isNewUser == true) {
       getIt<FirebaseManager>()
           .insertUser(id: userId, name: name, email: email)
-          .then((response) {
+          .then((response) async {
         if (response.status == true) {
-          getIt<UserProfileManager>().refreshProfile();
+          await getIt<UserProfileManager>().refreshProfile();
 
-          Get.offAll(() => const ChooseCategories());
+          if (getIt<UserProfileManager>().user!.status == 1) {
+            Get.offAll(() => const ChooseCategories());
+          } else {
+            getIt<UserProfileManager>().logout();
+            AppUtil.showToast(
+                message: LocalizationString.accountDeleted, isSuccess: false);
+          }
         } else {
           AppUtil.showToast(
               message: LocalizationString.errorMessage, isSuccess: false);
@@ -150,7 +169,6 @@ class _SocialLoginState extends State<SocialLogin> {
       });
     } else {
       await getIt<UserProfileManager>().refreshProfile();
-
       if (getIt<UserProfileManager>().user!.status == 1) {
         Get.offAll(() => const MainScreen());
       } else {

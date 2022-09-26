@@ -23,6 +23,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: Stack(
         children: [
@@ -67,7 +68,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       Container(
                           height: 40,
                           width: 40,
-                          color: Theme.of(context).backgroundColor,
+                          color: Theme.of(context).backgroundColor.lighten(0.05),
                           child: Image.asset(
                             'assets/images/logo.png',
                             height: 20,
@@ -101,7 +102,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               Container(
                 height: 230,
                 width: MediaQuery.of(context).size.width - 32,
-                color: Theme.of(context).backgroundColor,
+                color: Theme.of(context).backgroundColor.lighten(0.05),
                 child: Column(
                   children: [
                     const SizedBox(

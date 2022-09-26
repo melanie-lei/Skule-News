@@ -12,7 +12,7 @@ class BlogPostTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Theme.of(context).dividerColor.withOpacity(0.1),
-      height: 120,
+      height: 150,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -49,14 +49,14 @@ class BlogPostTile extends StatelessWidget {
                 Text(model.title.toUpperCase(),
                         maxLines: 1,
                         style: Theme.of(context).textTheme.bodyLarge)
-                    .vP8,
+                    .tP8,
+                const Spacer(),
                 Text(model.content,
                         maxLines: 2,
-                        style: Theme.of(context).textTheme.titleMedium)
-                    .vP4,
+                        style: Theme.of(context).textTheme.titleSmall),
                 const Spacer(),
                 Text(model.date, style: Theme.of(context).textTheme.bodySmall)
-                    .vP8
+                    .bP8
               ],
             ).hP16,
           )

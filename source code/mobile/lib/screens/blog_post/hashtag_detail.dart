@@ -41,7 +41,7 @@ class _HashtagDetailState extends State<HashtagDetail> {
       child: Column(
         children: [
           BackNavBar(
-            title: widget.hashTag?.name ?? widget.hashTagName,
+            title: LocalizationString.back,
             // centerTitle: true,
             backTapHandler: () {
               Get.back();
@@ -102,16 +102,16 @@ class _HashtagDetailState extends State<HashtagDetail> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         SizedBox(
-          height: 125,
+          height: 140,
           width: MediaQuery.of(context).size.width,
           child: Center(
             child: Text(
               '#${widget.hashTag?.name ?? widget.hashTagName}',
-              style: Theme.of(context)
-                  .textTheme
-                  .displayLarge!
-                  .copyWith(color: Theme.of(context).primaryColor),
-            ),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.displayLarge!.copyWith(
+                  color: Theme.of(context).primaryColor,
+                  fontWeight: FontWeight.w900),
+            ).hP4,
           ),
         ),
         // CachedNetworkImage(
@@ -174,10 +174,11 @@ class _HashtagDetailState extends State<HashtagDetail> {
                       hashtagController.hashtag.value?.isFollowing() ?? false
                           ? Theme.of(context).primaryColor
                           : Theme.of(context).backgroundColor,
-                  textStyle: hashtagController.hashtag.value?.isFollowing() ?? false
-                      ? Theme.of(context).textTheme.titleMedium!.copyWith(
-                          color: Colors.white, fontWeight: FontWeight.w600)
-                      : Theme.of(context).textTheme.titleMedium,
+                  textStyle:
+                      hashtagController.hashtag.value?.isFollowing() ?? false
+                          ? Theme.of(context).textTheme.titleMedium!.copyWith(
+                              color: Colors.white, fontWeight: FontWeight.w600)
+                          : Theme.of(context).textTheme.titleMedium,
                   onPress: () {
                     hashtagController.followUnfollowHashtag(
                         hashtagController.hashtag.value!);

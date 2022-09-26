@@ -19,8 +19,9 @@ class _AuthorDetailState extends State<AuthorDetail> {
   void initState() {
     // TODO: implement initState
 
+    authorController.clear();
     authorController.getAuthorDetail(id: widget.userId);
-    authorController.getAuthorCategories(id: widget.userId);
+    // authorController.getAllCategories(id: widget.userId);
 
     super.initState();
   }
@@ -31,56 +32,84 @@ class _AuthorDetailState extends State<AuthorDetail> {
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: [
-          GetBuilder<AuthorController>(
-              init: authorController,
-              builder: (ctx) {
-                return Container(
-                  height: 90,
-                  color: Theme.of(context).backgroundColor.withOpacity(0.5),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          ThemeIconWidget(ThemeIcon.backArrow,
-                                  size: AppTheme.iconSize,
-                                  color: Theme.of(context).iconTheme.color)
-                              .ripple(() {
-                            Get.back();
-                            // Navigator.of(context).pop();
-                          }),
-                          const Spacer(),
-                          Text(
-                            authorController.author.value?.name ?? '',
-                            style: Theme.of(context).textTheme.titleMedium,
-                            overflow: TextOverflow.ellipsis,
-                          ).ripple(() {
-                            Get.back();
-                            //Navigator.of(context).pop();
-                          }),
-                          const Spacer(),
-                          ThemeIconWidget(ThemeIcon.more,
-                                  size: AppTheme.iconSize,
-                                  color: Theme.of(context).iconTheme.color)
-                              .ripple(() {
-                            showActionSheet();
-                          }),
-                        ],
-                      ).tp(55),
-                    ],
-                  ).hP16,
-                );
-              }),
-          GetBuilder<AuthorController>(
-              init: authorController,
-              builder: (context) {
-                return creatorInfo().p16;
-              }),
-          divider(context: context).vP16,
+          Stack(
+            children: [
+              Obx(() => authorController.author.value == null
+                  ? Container()
+                  : CachedNetworkImage(
+                      height: 350,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      imageUrl: authorController.author.value!.coverImage)),
+              Container(
+                color: Colors.black.withOpacity(0.7),
+                height: 350,
+                width: double.infinity,
+              ),
+              Column(
+                children: [
+                  GetBuilder<AuthorController>(
+                      init: authorController,
+                      builder: (ctx) {
+                        return SizedBox(
+                          height: 90,
+                          // color: Theme.of(context)
+                          //     .backgroundColor
+                          //     .withOpacity(0.5),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  ThemeIconWidget(ThemeIcon.backArrow,
+                                          size: AppTheme.iconSize,
+                                          color: Colors.white)
+                                      .ripple(() {
+                                    Get.back();
+                                    // Navigator.of(context).pop();
+                                  }),
+                                  const Spacer(),
+                                  Text(
+                                    authorController.author.value?.name ?? '',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(color: Colors.white),
+                                    overflow: TextOverflow.ellipsis,
+                                  ).ripple(() {
+                                    Get.back();
+                                    //Navigator.of(context).pop();
+                                  }),
+                                  const Spacer(),
+                                  ThemeIconWidget(ThemeIcon.more,
+                                          size: AppTheme.iconSize,
+                                          color: Colors.white)
+                                      .ripple(() {
+                                    showActionSheet();
+                                  }),
+                                ],
+                              ).tp(55),
+                            ],
+                          ).hP16,
+                        );
+                      }),
+                  GetBuilder<AuthorController>(
+                      init: authorController,
+                      builder: (context) {
+                        return creatorInfo().p16;
+                      }),
+                ],
+              ),
+            ],
+          ),
+
           Expanded(
             child: CustomScrollView(
               slivers: [
                 SliverList(
                     delegate: SliverChildListDelegate([
+                      const SizedBox(
+                        height: 20,
+                      ),
                   GetBuilder<AuthorController>(
                       init: authorController,
                       builder: (ctx) {
@@ -104,7 +133,8 @@ class _AuthorDetailState extends State<AuthorDetail> {
                               (authorController.posts.length * 40),
                           child: ListView.separated(
                               physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.only(top: 10,left: 16,right: 16),
+                              padding: const EdgeInsets.only(
+                                  top: 10, left: 16, right: 16),
                               itemBuilder: (BuildContext context, index) {
                                 return GetBuilder<PostCardController>(
                                     init: postCardController,
@@ -115,9 +145,13 @@ class _AuthorDetailState extends State<AuthorDetail> {
                                     });
                               },
                               separatorBuilder: (BuildContext context, index) {
-                                return const SizedBox(
-                                  height: 40,
-                                );
+                                return divider(
+                                    context: context,
+                                    height: 1,
+                                    color: Theme.of(context)
+                                        .dividerColor
+                                        .lighten(0.3))
+                                    .setPadding(bottom: 20, top: 10);
                               },
                               itemCount: authorController.posts.length),
                         );
@@ -137,16 +171,19 @@ class _AuthorDetailState extends State<AuthorDetail> {
         : Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CachedNetworkImage(
-                imageUrl: authorController.author.value!.image,
-                fit: BoxFit.cover,
-                placeholder: (context, url) =>
-                const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-                height: 80,
-                width: 80,
-              )
-              .circular,
+              AvatarView(
+                url: authorController.author.value!.image,
+                size: 80,
+              ),
+              // CachedNetworkImage(
+              //   imageUrl: authorController.author.value!.image,
+              //   fit: BoxFit.cover,
+              //   placeholder: (context, url) =>
+              //       const CircularProgressIndicator(),
+              //   errorWidget: (context, url, error) => const Icon(Icons.error),
+              //   height: 80,
+              //   width: 80,
+              // ).circular,
               const SizedBox(
                 height: 10,
               ),
@@ -154,7 +191,8 @@ class _AuthorDetailState extends State<AuthorDetail> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(authorController.author.value!.name,
-                      style: Theme.of(context).textTheme.bodyLarge),
+                      style: Theme.of(context).textTheme.displaySmall!.copyWith(
+                          color: Colors.white, fontWeight: FontWeight.w900)),
                   const SizedBox(
                     height: 5,
                   ),
@@ -162,13 +200,26 @@ class _AuthorDetailState extends State<AuthorDetail> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       authorController.author.value!.totalPosts > 0
-                          ? Text('${authorController.author.value!.totalPosts} ${LocalizationString.posts},',
-                                  style: Theme.of(context).textTheme.bodyMedium)
+                          ? Text('${authorController.author.value!.totalPosts} ${LocalizationString.posts}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w900))
                               .rP8
                           : Container(),
+                      // const SizedBox(
+                      //   width: 10,
+                      // ),
                       authorController.author.value!.totalFollowers > 0
-                          ? Text('${authorController.author.value!.totalFollowers} ${LocalizationString.followers},',
-                                  style: Theme.of(context).textTheme.bodyMedium)
+                          ? Text('${authorController.author.value!.totalFollowers} ${LocalizationString.followers}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w900))
                               .rP8
                           : Container(),
                     ],
@@ -191,7 +242,7 @@ class _AuthorDetailState extends State<AuthorDetail> {
                             : Theme.of(context).backgroundColor,
                     textStyle: authorController.author.value!.isFollowing()
                         ? Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.w600)
+                            color: Colors.white, fontWeight: FontWeight.w600)
                         : Theme.of(context).textTheme.titleMedium,
                     onPress: () {
                       authorController.followUnfollowUser();

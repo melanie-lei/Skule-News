@@ -18,11 +18,18 @@ class _RecommendationsState extends State<Recommendations> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      recommendationController.loadHashtags();
+      recommendationController.closeSearch();
+      recommendationController.loadHashtags(isTrending: true);
       // recommendationController.loadLocations();
       // recommendationController.loadProfiles();
       recommendationController.loadSources();
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant Recommendations oldWidget) {
+    // TODO: implement didUpdateWidget
+    super.didUpdateWidget(oldWidget);
   }
 
   @override

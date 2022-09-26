@@ -110,6 +110,29 @@ class _SettingsState extends State<Settings> {
             const SizedBox(
               height: 20,
             ),
+            Text(LocalizationString.iosInAppId,
+                style: Theme.of(context).textTheme.bodyLarge),
+            const SizedBox(
+              height: 10,
+            ),
+            Obx(() => InputField(
+                  controller: settingsController.iosInAppId.value,
+                  showBorder: true,
+                  cornerRadius: 5,
+                )),
+            const SizedBox(
+              height: 20,
+            ),
+            Text(LocalizationString.androidInAppId,
+                style: Theme.of(context).textTheme.bodyLarge),
+            const SizedBox(
+              height: 10,
+            ),
+            Obx(() => InputField(
+                  controller: settingsController.androidInAppId.value,
+                  showBorder: true,
+                  cornerRadius: 5,
+                )),
             const SizedBox(
               height: 40,
             ),

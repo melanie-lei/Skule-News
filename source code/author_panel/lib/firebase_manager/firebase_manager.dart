@@ -79,20 +79,24 @@ class FirebaseManager {
     DocumentReference doc = authorsCollection.doc(id);
 
     await doc
-        .set({'id': id, 'name': name, 'status': 1, 'email': email})
+        .set({'id': id, 'name': name, 'status': 1, 'email': email,'keywords':name!.allPossibleSubstrings()})
         .then((value) {})
         .catchError((error) {
-          print(error);
           // AppUtil.showToast(message: 'insertUser $error', isSuccess: true);
         });
   }
 
   Future<FirebaseResponse> updateUser(
-      {String? name, String? bio, String? image}) async {
+      {String? name, String? bio, String? image, String? coverImage}) async {
     DocumentReference doc =
         authorsCollection.doc(FirebaseAuth.instance.currentUser!.uid);
 
-    await doc.update({'name': name, 'bio': bio, 'image': image}).then((value) {
+    await doc.update({
+      'name': name,
+      'bio': bio,
+      'image': image,
+      'coverImage': coverImage
+    }).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
       response = FirebaseResponse(false, error);
@@ -213,12 +217,9 @@ class FirebaseManager {
   // }
 
   Future<String> updateProfileImage(
-      {required String uniqueId,
-      required Uint8List bytes,
-      required String fileName}) async {
+      {required Uint8List bytes, required String fileName}) async {
     final _firebaseStorage =
         FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
-    String randomImageName = uniqueId + p.extension(fileName);
 
     final mime = lookupMimeType('', headerBytes: bytes);
 
@@ -228,7 +229,7 @@ class FirebaseManager {
 
     //Upload to Firebase
     var uploadTask = _firebaseStorage
-        .ref('blogmaster/profileImage/$randomImageName')
+        .ref('blogmaster/profileImage/$fileName')
         .putData(bytes, metadata);
 
     var downloadUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
@@ -260,8 +261,8 @@ class FirebaseManager {
     DocumentReference counterDoc = counter.doc('counter');
 
     batch.update(postDoc, {'status': 0});
-    batch.update(userDoc, {'totalPosts': FieldValue.increment(-1)});
-    batch.update(counterDoc, {'blogs': FieldValue.increment(-1)});
+    batch.update(userDoc, {'totalBlogPosts': FieldValue.increment(-1)});
+    batch.update(counterDoc, {'totalBlogPosts': FieldValue.increment(-1)});
 
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
@@ -424,11 +425,11 @@ class FirebaseManager {
 
       batch.update(postDoc, postJson);
       batch.update(author,
-          {'totalPosts': FieldValue.increment(postCounterIncrementFactor)});
+          {'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)});
 
       if (postCounterIncrementFactor != 0) {
         batch.update(counterDoc,
-            {'blogs': FieldValue.increment(postCounterIncrementFactor)});
+            {'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)});
       }
 
       await batch.commit().then((value) {
@@ -444,8 +445,8 @@ class FirebaseManager {
       WriteBatch batch = FirebaseFirestore.instance.batch();
       batch.set(postDoc, postJson);
       batch.update(counterDoc,
-          {'blogs': FieldValue.increment(postCounterIncrementFactor)});
-      batch.update(author, {'totalPosts': FieldValue.increment(1)});
+          {'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)});
+      batch.update(author, {'totalBlogPosts': FieldValue.increment(1)});
 
       await batch.commit().then((value) {
         response = FirebaseResponse(true, null);
@@ -630,15 +631,12 @@ class FirebaseManager {
     return list;
   }
 
-  Future<List<CommentModel>> getComments(
-      {String? searchText, int? type}) async {
+  Future<List<CommentModel>> getComments({required String posId}) async {
     List<CommentModel> list = [];
 
-    Query query = commentsCollection;
-
-    if (searchText != null) {
-      query = query.where("keywords", arrayContainsAny: [searchText]);
-    }
+    Query query = commentsCollection
+        .where("posId", isEqualTo: posId)
+        .orderBy("createdAt", descending: true);
 
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {

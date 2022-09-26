@@ -9,6 +9,8 @@ class SettingsController extends GetxController {
   Rx<TextEditingController> twitter = TextEditingController().obs;
   Rx<TextEditingController> aboutUs = TextEditingController().obs;
   Rx<TextEditingController> privacyPolicy = TextEditingController().obs;
+  Rx<TextEditingController> iosInAppId = TextEditingController().obs;
+  Rx<TextEditingController> androidInAppId = TextEditingController().obs;
 
   SettingsModel? setting;
 
@@ -22,6 +24,8 @@ class SettingsController extends GetxController {
         twitter.value.text = setting?.twitter ?? '';
         aboutUs.value.text = setting?.aboutUs ?? '';
         privacyPolicy.value.text = setting?.privacyPolicy ?? '';
+        iosInAppId.value.text = setting?.iOSInAppPurchaseId ?? '';
+        androidInAppId.value.text = setting?.androidInAppPurchaseId ?? '';
       }
       update();
     });
@@ -32,13 +36,14 @@ class SettingsController extends GetxController {
 
     getIt<FirebaseManager>()
         .saveSetting(
-      phone: phone.value.text,
-      email: email.value.text,
-      facebook: facebook.value.text,
-      twitter: twitter.value.text,
-      aboutUs: aboutUs.value.text,
-      privacyPolicy: privacyPolicy.value.text,
-    )
+            phone: phone.value.text,
+            email: email.value.text,
+            facebook: facebook.value.text,
+            twitter: twitter.value.text,
+            aboutUs: aboutUs.value.text,
+            privacyPolicy: privacyPolicy.value.text,
+            iosInAppId: iosInAppId.value.text,
+            androidAppId: androidInAppId.value.text)
         .then((response) {
       EasyLoading.dismiss();
       if (response.status == true) {

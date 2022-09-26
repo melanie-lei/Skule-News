@@ -7,13 +7,6 @@ void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
 
-  await FacebookAuth.i.webInitialize(
-    appId: AppConfig.facebookAppId,
-    cookie: true,
-    xfbml: true,
-    version: "v13.0",
-  );
-
   await Firebase.initializeApp(
     // Replace with actual values
     options: const FirebaseOptions(

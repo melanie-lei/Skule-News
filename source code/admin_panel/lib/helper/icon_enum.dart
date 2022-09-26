@@ -83,6 +83,7 @@ enum ThemeIcon {
   music,
   deletedMusic,
 
+  pending,
   addMusic,
 
   addPlaylists,

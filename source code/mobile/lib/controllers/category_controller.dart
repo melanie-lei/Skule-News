@@ -56,9 +56,9 @@ class CategoryController extends GetxController {
         .then((result) {
       if (needDefaultCategory == true) {
         CategoryModel defaultCategory1 =
-            CategoryModel(id: '', name: LocalizationString.forYou, status: 1);
+            CategoryModel(id: '', name: LocalizationString.forYou, status: 1,totalBlogPosts: 0);
         CategoryModel defaultCategory2 =
-        CategoryModel(id: '', name: LocalizationString.following, status: 1);
+        CategoryModel(id: '', name: LocalizationString.following, status: 1,totalBlogPosts: 0);
         result.insert(0, defaultCategory1);
         result.insert(1, defaultCategory2);
       }

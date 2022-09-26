@@ -92,6 +92,7 @@ class _ChooseCategoriesState extends State<ChooseCategories> {
                       return Stack(
                         children: [
                           CategoryTile(
+                            isLargeText: false,
                               category: categoryController.categories[index]),
                           Positioned(
                               left: 0,

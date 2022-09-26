@@ -28,40 +28,40 @@ class FirebaseManager {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   CollectionReference userCollection =
-  FirebaseFirestore.instance.collection('users');
+      FirebaseFirestore.instance.collection('users');
 
   CollectionReference blogPostsCollection =
-  FirebaseFirestore.instance.collection('blogPosts');
+      FirebaseFirestore.instance.collection('blogPosts');
 
   CollectionReference commentsCollection =
-  FirebaseFirestore.instance.collection('comments');
+      FirebaseFirestore.instance.collection('comments');
 
   CollectionReference categoriesCollection =
-  FirebaseFirestore.instance.collection('categories');
+      FirebaseFirestore.instance.collection('categories');
 
   CollectionReference authorsCollection =
-  FirebaseFirestore.instance.collection('authors');
+      FirebaseFirestore.instance.collection('authors');
 
   CollectionReference packagesCollection =
-  FirebaseFirestore.instance.collection('packages');
+      FirebaseFirestore.instance.collection('packages');
 
   CollectionReference hashtagsCollection =
-  FirebaseFirestore.instance.collection('hashtags');
+      FirebaseFirestore.instance.collection('hashtags');
 
   CollectionReference banners =
-  FirebaseFirestore.instance.collection('banners');
+      FirebaseFirestore.instance.collection('banners');
 
   CollectionReference reports =
-  FirebaseFirestore.instance.collection('reports');
+      FirebaseFirestore.instance.collection('reports');
 
   CollectionReference contact =
-  FirebaseFirestore.instance.collection('contact');
+      FirebaseFirestore.instance.collection('contact');
 
   CollectionReference counter =
-  FirebaseFirestore.instance.collection('counter');
+      FirebaseFirestore.instance.collection('counter');
 
   CollectionReference settings =
-  FirebaseFirestore.instance.collection('settings');
+      FirebaseFirestore.instance.collection('settings');
 
   /////////////////////////*********** User ***********//////////////////////////////////
 
@@ -84,12 +84,11 @@ class FirebaseManager {
 
       user = userCredential.user;
 
-      if (userCredential.additionalUserInfo?.isNewUser == true) {
-        insertUser(user!.uid);
-      }
+      await insertUser(user!.uid, user.email!);
 
       response = FirebaseResponse(true, null);
     } catch (error) {
+      print(error);
       response =
           FirebaseResponse(false, LocalizationString.userNameOrPasswordIsWrong);
     }
@@ -97,56 +96,33 @@ class FirebaseManager {
     return response!;
   }
 
-  insertUser(String id) async {
-    final batch = FirebaseFirestore.instance.batch();
-    DocumentReference doc = authorsCollection.doc(id);
+  insertUser(String id, String email) async {
+    await firestore.runTransaction((transaction) async {
+      DocumentReference doc = authorsCollection.doc(id);
+      final snapshot = await transaction.get(doc);
 
-    batch.set(doc, {'id': id, 'name': 'Admin', 'status': 1});
-
-    await batch.commit().then((value) {}).catchError((error) {});
+      if (!snapshot.exists) {
+        transaction
+            .set(doc, {'id': id, 'name': 'Admin', 'status': 1, 'email': email});
+      }
+    });
   }
 
   loginAnonymously() async {
     await auth.signInAnonymously();
   }
 
-  Future<FirebaseResponse> loginViaEmail({
-    required String email,
-    required String password,
-  }) async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    await Firebase.initializeApp();
-    User? user;
-
-    await auth.setPersistence(Persistence.LOCAL);
-
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      user = userCredential.user;
-
-      if (user != null) {
-        response = FirebaseResponse(true, null);
-      }
-      // response!.credential = userCredential;
-    } catch (error) {
-      response =
-          FirebaseResponse(false, LocalizationString.userNameOrPasswordIsWrong);
-      // response!.credential = null;
-    }
-
-    return response!;
-  }
-
   Future<AuthorsModel?> getCurrentUser(String id) async {
     AuthorsModel? user;
 
+    print(authorsCollection.doc(id));
     await authorsCollection.doc(id).get().then((doc) {
+      print(doc.data());
+
       user = AuthorsModel.fromJson(doc.data() as Map<String, dynamic>);
     }).catchError((error) {
+      print('error');
+      print(error);
       response = FirebaseResponse(false, error);
     });
 
@@ -173,11 +149,12 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<String> updateProfileImage({required String uniqueId,
-    required Uint8List bytes,
-    required String fileName}) async {
+  Future<String> updateProfileImage(
+      {required String uniqueId,
+      required Uint8List bytes,
+      required String fileName}) async {
     final _firebaseStorage =
-    FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
+        FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
     String randomImageName = uniqueId + p.extension(fileName);
 
     final mime = lookupMimeType('', headerBytes: bytes);
@@ -215,7 +192,7 @@ class FirebaseManager {
   Future<FirebaseResponse> updateUser(
       {String? name, String? bio, String? image}) async {
     DocumentReference doc =
-    authorsCollection.doc(FirebaseAuth.instance.currentUser!.uid);
+        authorsCollection.doc(FirebaseAuth.instance.currentUser!.uid);
 
     await doc.update({'name': name, 'bio': bio, 'image': image}).then((value) {
       response = FirebaseResponse(true, null);
@@ -273,18 +250,22 @@ class FirebaseManager {
   Future<FirebaseResponse> approveBlogPost(BlogPostModel model) async {
     DocumentReference activeBlogPost = blogPostsCollection.doc(model.id);
     DocumentReference artistDoc = authorsCollection.doc(model.authorId);
+    DocumentReference categoryDoc = authorsCollection
+        .doc(model.authorId)
+        .collection('categories')
+        .doc(model.categoryId);
     DocumentReference counterDoc = counter.doc('counter');
 
     await FirebaseFirestore.instance.runTransaction((transaction) async {
       List<String> newHashtags = [];
-      List<String> existingHashtags = [];
+      List<Map<String, dynamic>> existingHashtagsData = [];
 
       for (String hashtag in model.hashtags) {
         DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
         final snapshot = await transaction.get(hashtagDoc);
 
         if (snapshot.exists) {
-          existingHashtags.add(hashtag);
+          existingHashtagsData.add(snapshot.data() as Map<String, dynamic>);
         } else {
           newHashtags.add(hashtag);
         }
@@ -296,25 +277,32 @@ class FirebaseManager {
         transaction.set(hashtagDoc, {
           'name': hashtag,
           'keywords': hashtag.allPossibleSubstrings(),
-          'postsCount': FieldValue.increment(1),
+          'totalBlogPosts': 1,
+          'popularityFactor': 1,
         });
       }
 
-      for (String hashtag in existingHashtags) {
-        DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+      for (Map<String, dynamic> hashtagData in existingHashtagsData) {
+        DocumentReference hashtagDoc =
+            hashtagsCollection.doc(hashtagData['name']);
 
         transaction.update(hashtagDoc, {
-          'name': hashtag,
-          'keywords': hashtag.allPossibleSubstrings(),
-          'postsCount': FieldValue.increment(1),
+          'totalBlogPosts': FieldValue.increment(1),
+          'popularityFactor': FieldValue.increment(1),
         });
       }
 
       transaction.update(activeBlogPost, {'approvedStatus': 1});
-      transaction.update(artistDoc, {'totalPosts': FieldValue.increment(1)});
-      transaction.update(counterDoc, {'blogs': FieldValue.increment(1)});
+      transaction.update(artistDoc, {
+        'totalBlogPosts': FieldValue.increment(1),
+        'usedCategories': FieldValue.arrayUnion([model.categoryId])
+      });
+      transaction
+          .update(counterDoc, {'totalBlogPosts': FieldValue.increment(1)});
+      transaction
+          .update(categoryDoc, {'totalBlogPosts': FieldValue.increment(1)});
     }).then(
-          (value) {
+      (value) {
         response = FirebaseResponse(true, null);
       },
       onError: (error) {
@@ -343,8 +331,8 @@ class FirebaseManager {
     DocumentReference counterDoc = counter.doc('counter');
 
     batch.update(postDoc, {'status': 0});
-    batch.update(userDoc, {'totalPosts': FieldValue.increment(-1)});
-    batch.update(counterDoc, {'blogs': FieldValue.increment(-1)});
+    batch.update(userDoc, {'totalBlogPosts': FieldValue.increment(-1)});
+    batch.update(counterDoc, {'totalBlogPosts': FieldValue.increment(-1)});
 
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
@@ -376,8 +364,7 @@ class FirebaseManager {
         .get()
         .then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
-        list
-            .add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
+        list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
       response = FirebaseResponse(false, error);
@@ -400,11 +387,12 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<String> uploadBlogImage({required String uniqueId,
-    required Uint8List bytes,
-    required String fileName}) async {
+  Future<String> uploadBlogImage(
+      {required String uniqueId,
+      required Uint8List bytes,
+      required String fileName}) async {
     final _firebaseStorage =
-    FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
+        FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
     String randomImageName = uniqueId + p.extension(fileName);
 
     final mime = lookupMimeType('', headerBytes: bytes);
@@ -422,11 +410,12 @@ class FirebaseManager {
     return downloadUrl;
   }
 
-  Future<String> uploadBlogVideo({required String uniqueId,
-    required Uint8List bytes,
-    required String fileName}) async {
+  Future<String> uploadBlogVideo(
+      {required String uniqueId,
+      required Uint8List bytes,
+      required String fileName}) async {
     final _firebaseStorage =
-    FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
+        FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
     String randomImageName = uniqueId + p.extension(fileName);
 
     final metadata = SettableMetadata(
@@ -457,194 +446,178 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<FirebaseResponse> insertBlogPost({required BlogPostModel? post,
-    required bool isUpdate,
-    required String postId,
-    required String postTitle,
-    required String content,
-    required String postThumbnail,
-    String? postVideoPath,
-    required String categoryId,
-    required String category,
-    required List<String> hashtags,
-    required bool isPremium,
-    required AvailabilityStatus status}) async {
-    // List list = [
-    //   'post1',
-    //   'post2',
-    //   'post3',
-    //   'post4',
-    //   'post5',
-    //   'post6',
-    //   'post7',
-    //   'post8',
-    //   'post9',
-    //   'post10',
-    //   'post11',
-    //   'post12',
-    //   'post13',
-    //   'post14',
-    //   'post15',
-    //   'post16',
-    //   'post17',
-    //   'post18',
-    //   'post19',
-    //   'post20',
-    // ];
+  Future<FirebaseResponse> insertBlogPost(
+      {required BlogPostModel? post,
+      required bool isUpdate,
+      required String postId,
+      required String postTitle,
+      required String content,
+      required String postThumbnail,
+      String? postVideoPath,
+      required String categoryId,
+      required String category,
+      required List<String> hashtags,
+      required bool isPremium,
+      required AvailabilityStatus status}) async {
+    var keywords = postTitle.allPossibleSubstrings();
+    keywords.addAll(hashtags.map((e) => '#' + e));
+    keywords.add(categoryId);
 
-    // for (String title in list) {
-      var keywords = postTitle.allPossibleSubstrings();
-      keywords.addAll(hashtags.map((e) => '#' + e));
-      keywords.add(categoryId);
+    var postJson = {
+      'authorId': getIt<UserProfileManager>().user!.id,
+      'authorName': getIt<UserProfileManager>().user!.name,
+      'authorPicture': getIt<UserProfileManager>().user!.image,
+      'category': category,
+      'categoryId': categoryId,
+      'content': content,
+      'contentType': postVideoPath == null ? 1 : 2,
+      'thumbnailImage': postThumbnail,
+      'createdAt': FieldValue.serverTimestamp(),
+      'hashtags': hashtags,
+      'id': postId,
+      'isPremium': isPremium,
+      'keywords': keywords,
+      'likesCount': 0,
+      'reportCount': 0,
+      'savedCount': 0,
+      'status': status == AvailabilityStatus.active ? 1 : 0,
+      'title': postTitle,
+      'totalComments': 0,
+      'totalLikes': 0,
+      'totalSaved': 0,
+      'videoUrl': postVideoPath,
+      'approvedStatus': 1,
+    };
 
-      // postId = title;
-      // postTitle = title;
+    int postCounterIncrementFactor = 1;
+    DocumentReference postDoc = blogPostsCollection.doc(postId);
+    DocumentReference counterDoc = counter.doc('counter');
+    DocumentReference categoryDoc = categoriesCollection.doc(categoryId);
 
-      var postJson = {
-        'authorId': getIt<UserProfileManager>().user!.id,
-        'authorName': getIt<UserProfileManager>().user!.name,
-        'authorPicture': getIt<UserProfileManager>().user!.image,
-        'category': category,
-        'categoryId': categoryId,
-        'content': content,
-        'contentType': postVideoPath == null ? 1 : 2,
-        'thumbnailImage': postThumbnail,
-        'createdAt': FieldValue.serverTimestamp(),
-        'hashtags': hashtags,
-        'id': postId,
-        'isPremium': isPremium,
-        'keywords': keywords,
-        'likesCount': 0,
-        'reportCount': 0,
-        'savedCount': 0,
-        'status': status == AvailabilityStatus.active ? 1 : 0,
-        'title': postTitle,
-        'totalComments': 0,
-        'totalLikes': 0,
-        'totalSaved': 0,
-        'videoUrl': postVideoPath,
-        'approvedStatus': 1,
-      };
+    DocumentReference author =
+        authorsCollection.doc(getIt<UserProfileManager>().user!.id);
 
-      int postCounterIncrementFactor = 1;
-      DocumentReference postDoc = blogPostsCollection.doc(postId);
-      DocumentReference counterDoc = counter.doc('counter');
-      DocumentReference author =
-      authorsCollection.doc(getIt<UserProfileManager>().user!.id);
+    if (isUpdate == true) {
+      if (post!.status == 1 && status == AvailabilityStatus.deactivated) {
+        postCounterIncrementFactor = -1;
+      } else if (post.status == 0 && status == AvailabilityStatus.active) {
+        postCounterIncrementFactor = 1;
+      } else {
+        postCounterIncrementFactor = 0;
+      }
 
-      if (isUpdate == true) {
-        if (post!.status == 1 && status == AvailabilityStatus.deactivated) {
-          postCounterIncrementFactor = -1;
-        } else if (post.status == 0 && status == AvailabilityStatus.active) {
-          postCounterIncrementFactor = 1;
-        } else {
-          postCounterIncrementFactor = 0;
+      List<String> newHashtags = [];
+      List<Map<String, dynamic>> existingHashtagsData = [];
+
+      await firestore.runTransaction((transaction) async {
+        for (String hashtag in hashtags) {
+          DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+          final snapshot = await transaction.get(hashtagDoc);
+
+          if (snapshot.exists) {
+            existingHashtagsData.add(snapshot.data() as Map<String, dynamic>);
+          } else {
+            newHashtags.add(hashtag);
+          }
         }
 
-        List<String> newHashtags = [];
-        List<String> existingHashtags = [];
+        for (String hashtag in newHashtags) {
+          DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
 
-        await firestore.runTransaction((transaction) async {
-          for (String hashtag in hashtags) {
-            DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
-            final snapshot = await transaction.get(hashtagDoc);
+          transaction.set(hashtagDoc, {
+            'name': hashtag,
+            'keywords': hashtag.allPossibleSubstrings(),
+            'totalBlogPosts': FieldValue.increment(1),
+          });
+        }
 
-            if (snapshot.exists) {
-              existingHashtags.add(hashtag);
-            } else {
-              newHashtags.add(hashtag);
-            }
+        for (Map<String, dynamic> hashtagData in existingHashtagsData) {
+          DocumentReference hashtagDoc =
+              hashtagsCollection.doc(hashtagData['name']);
+
+          transaction.update(hashtagDoc, {
+            'totalBlogPosts': FieldValue.increment(1),
+            'popularityFactor': FieldValue.increment(1),
+          });
+        }
+
+        transaction.update(postDoc, postJson);
+        transaction.update(author, {
+          'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
+        });
+
+        transaction.update(categoryDoc, {
+          'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
+        });
+
+        if (postCounterIncrementFactor != 0) {
+          transaction.update(counterDoc, {
+            'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
+          });
+        }
+      }).then(
+        (value) {
+          response = FirebaseResponse(true, null);
+        },
+        onError: (e) {
+          response = FirebaseResponse(false, null);
+        },
+      );
+    } else {
+      postJson['createdAt'] = FieldValue.serverTimestamp();
+
+      postJson['searchedCount'] = 0;
+      postJson['totalDownloads'] = 0;
+
+      List<String> newHashtags = [];
+      List<String> existingHashtags = [];
+
+      await firestore.runTransaction((transaction) async {
+        for (String hashtag in hashtags) {
+          DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+          final snapshot = await transaction.get(hashtagDoc);
+          if (snapshot.exists) {
+            existingHashtags.add(hashtag);
+          } else {
+            newHashtags.add(hashtag);
           }
+        }
 
-          for (String hashtag in newHashtags) {
-            DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+        for (String hashtag in newHashtags) {
+          DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
 
-            transaction.set(hashtagDoc, {
-              'name': hashtag,
-              'keywords': hashtag.allPossibleSubstrings(),
-              'postsCount': FieldValue.increment(1),
-            });
-          }
-          for (String hashtag in existingHashtags) {
-            DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+          transaction.set(hashtagDoc, {
+            'name': hashtag,
+            'keywords': hashtag.allPossibleSubstrings(),
+            'totalBlogPosts': FieldValue.increment(1),
+          });
+        }
 
-            transaction.update(hashtagDoc, {
-              'name': hashtag,
-              'keywords': hashtag.allPossibleSubstrings(),
-              'postsCount': FieldValue.increment(1),
-            });
-          }
+        for (String hashtag in existingHashtags) {
+          DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
 
-          transaction.update(postDoc, postJson);
-          transaction.update(author,
-              {'totalPosts': FieldValue.increment(postCounterIncrementFactor)});
+          transaction.update(hashtagDoc, {
+            'name': hashtag,
+            'keywords': hashtag.allPossibleSubstrings(),
+            'totalBlogPosts': FieldValue.increment(1),
+          });
+        }
 
-          if (postCounterIncrementFactor != 0) {
-            transaction.update(counterDoc,
-                {'blogs': FieldValue.increment(postCounterIncrementFactor)});
-          }
-        }).then(
-              (value) {
-            response = FirebaseResponse(true, null);
-          },
-          onError: (e) {
-            response = FirebaseResponse(false, null);
-          },
-        );
-      } else {
-        postJson['createdAt'] = FieldValue.serverTimestamp();
-
-        postJson['searchedCount'] = 0;
-        postJson['totalDownloads'] = 0;
-
-        List<String> newHashtags = [];
-        List<String> existingHashtags = [];
-
-        await firestore.runTransaction((transaction) async {
-          for (String hashtag in hashtags) {
-            DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
-            final snapshot = await transaction.get(hashtagDoc);
-            if (snapshot.exists) {
-              existingHashtags.add(hashtag);
-            } else {
-              newHashtags.add(hashtag);
-            }
-          }
-
-          for (String hashtag in newHashtags) {
-            DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
-
-            transaction.set(hashtagDoc, {
-              'name': hashtag,
-              'keywords': hashtag.allPossibleSubstrings(),
-              'postsCount': FieldValue.increment(1),
-            });
-          }
-
-          for (String hashtag in existingHashtags) {
-            DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
-
-            transaction.update(hashtagDoc, {
-              'name': hashtag,
-              'keywords': hashtag.allPossibleSubstrings(),
-              'postsCount': FieldValue.increment(1),
-            });
-          }
-
-          transaction.set(postDoc, postJson);
-          transaction.update(counterDoc,
-              {'blogs': FieldValue.increment(postCounterIncrementFactor)});
-          transaction.update(author, {'totalPosts': FieldValue.increment(1)});
-        }).then(
-              (value) {
-            response = FirebaseResponse(true, null);
-          },
-          onError: (e) {
-            response = FirebaseResponse(false, null);
-          },
-        );
-      }
-    // }
+        transaction.set(postDoc, postJson);
+        transaction
+            .update(counterDoc, {'totalBlogPosts': FieldValue.increment(1)});
+        transaction.update(author, {'totalBlogPosts': FieldValue.increment(1)});
+        transaction
+            .update(categoryDoc, {'totalBlogPosts': FieldValue.increment(1)});
+      }).then(
+        (value) {
+          response = FirebaseResponse(true, null);
+        },
+        onError: (e) {
+          response = FirebaseResponse(false, null);
+        },
+      );
+    }
 
     return response!;
   }
@@ -652,7 +625,7 @@ class FirebaseManager {
   addOrRemoveFromFeature(BlogPostModel model) async {
     final batch = FirebaseFirestore.instance.batch();
     DocumentReference postDoc =
-    blogPostsCollection.doc(model.id); //.collection('following');
+        blogPostsCollection.doc(model.id); //.collection('following');
     DocumentReference counterDoc = counter.doc('counter');
 
     batch.update(postDoc, {
@@ -674,7 +647,7 @@ class FirebaseManager {
   addOrRemoveFromPremium(BlogPostModel model) async {
     final batch = FirebaseFirestore.instance.batch();
     DocumentReference postDoc =
-    blogPostsCollection.doc(model.id); //.collection('following');
+        blogPostsCollection.doc(model.id); //.collection('following');
     DocumentReference counterDoc = counter.doc('counter');
 
     batch.update(postDoc, {
@@ -759,8 +732,8 @@ class FirebaseManager {
     return list;
   }
 
-  Future<FirebaseResponse> reportAbuse(String id, String name,
-      DataType type) async {
+  Future<FirebaseResponse> reportAbuse(
+      String id, String name, DataType type) async {
     String reportId = '${id}_${auth.currentUser!.uid}';
 
     WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -791,8 +764,8 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<FirebaseResponse> sendContactusMessage(String name, String email,
-      String phone, String message) async {
+  Future<FirebaseResponse> sendContactusMessage(
+      String name, String email, String phone, String message) async {
     String id = getRandString(15);
     DocumentReference doc = contact.doc(id);
     await doc.set({
@@ -865,8 +838,7 @@ class FirebaseManager {
         .get()
         .then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
-        list
-            .add(AuthorsModel.fromJson(doc.data() as Map<String, dynamic>));
+        list.add(AuthorsModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
       response = FirebaseResponse(false, error);
@@ -948,15 +920,12 @@ class FirebaseManager {
     return list;
   }
 
-  Future<List<CommentModel>> getComments(
-      {String? searchText, int? type}) async {
+  Future<List<CommentModel>> getComments({required String posId}) async {
     List<CommentModel> list = [];
 
-    Query query = commentsCollection;
-
-    if (searchText != null) {
-      query = query.where("keywords", arrayContainsAny: [searchText]);
-    }
+    Query query = commentsCollection
+        .where("posId", isEqualTo: posId)
+        .orderBy("createdAt", descending: true);
 
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
@@ -1007,11 +976,12 @@ class FirebaseManager {
 
   /////////////////////////////////************* Category *************////////////////////////////////////////
 
-  Future<FirebaseResponse> insertNewCategory({CategoryModel? category,
-    required String id,
-    required String name,
-    required String image,
-    required AvailabilityStatus status}) async {
+  Future<FirebaseResponse> insertNewCategory(
+      {CategoryModel? category,
+      required String id,
+      required String name,
+      required String image,
+      required AvailabilityStatus status}) async {
     DocumentReference categoryDoc = categoriesCollection.doc(id);
 
     var categoryJson = {
@@ -1020,6 +990,7 @@ class FirebaseManager {
       'image': image,
       'status': status == AvailabilityStatus.active ? 1 : 0,
       'keywords': name.allPossibleSubstrings(),
+      'totalBlogPosts': 1,
     };
 
     if (category != null) {
@@ -1039,11 +1010,12 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<String> uploadCategoryImage({required String uniqueId,
-    required Uint8List bytes,
-    required String fileName}) async {
+  Future<String> uploadCategoryImage(
+      {required String uniqueId,
+      required Uint8List bytes,
+      required String fileName}) async {
     final _firebaseStorage =
-    FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
+        FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
     String randomImageName = uniqueId + p.extension(fileName);
 
     final mime = lookupMimeType('', headerBytes: bytes);
@@ -1126,12 +1098,15 @@ class FirebaseManager {
     return recordCounter;
   }
 
-  Future<FirebaseResponse> saveSetting({required String phone,
-    required String email,
-    required String facebook,
-    required String twitter,
-    required String aboutUs,
-    required String privacyPolicy}) async {
+  Future<FirebaseResponse> saveSetting(
+      {required String phone,
+      required String email,
+      required String facebook,
+      required String twitter,
+      required String aboutUs,
+      required String iosInAppId,
+      required String androidAppId,
+      required String privacyPolicy}) async {
     DocumentReference doc = settings.doc('settings');
 
     var settingsData = {
@@ -1140,7 +1115,9 @@ class FirebaseManager {
       'facebook': facebook,
       'twitter': twitter,
       'aboutUs': aboutUs,
-      'privacyPolicy': privacyPolicy
+      'privacyPolicy': privacyPolicy,
+      'iOSInAppPurchaseId': iosInAppId,
+      'androidInAppPurchaseId': androidAppId
     };
 
     await doc.set(settingsData).then((value) {

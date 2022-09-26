@@ -29,7 +29,7 @@ class AuthorsModel {
     image: json["image"] ??
         'https://images.unsplash.com/photo-1657558570424-5e5a73d5edb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60',
     status: json["status"],
-    totalPosts: json["totalPosts"] ?? 0,
+    totalPosts: json["totalBlogPosts"] ?? 0,
     totalFollowers: json["totalFollowers"] ?? 0,
     createdAt: json["createdAt"] == null
         ? DateTime.now()

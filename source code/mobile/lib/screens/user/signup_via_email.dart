@@ -28,6 +28,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: Stack(
         children: [
@@ -72,7 +73,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
                       Container(
                           height: 40,
                           width: 40,
-                          color: Theme.of(context).backgroundColor,
+                          color: Theme.of(context).backgroundColor.lighten(0.05),
                           child: Image.asset(
                             'assets/images/logo.png',
                             height: 20,
@@ -106,7 +107,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
               Container(
                 height: 300,
                 width: MediaQuery.of(context).size.width - 32,
-                color: Theme.of(context).backgroundColor,
+                color: Theme.of(context).backgroundColor.lighten(0.05),
                 child: Column(
                   children: [
                     const SizedBox(
@@ -162,7 +163,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
               Container(
                       height: 80,
                       width: MediaQuery.of(context).size.width - 32,
-                      color: Theme.of(context).backgroundColor,
+                      color: Theme.of(context).backgroundColor.lighten(0.05),
                       child: const SocialLogin())
                   .round(20),
               const Spacer(),
@@ -205,7 +206,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             InputField(
-              key: UniqueKey(),
+              // key: UniqueKey(),
               controller: signUpEmail,
               hintText: "admin@gmail.com",
               icon: ThemeIcon.email,
@@ -217,7 +218,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
               height: 10,
             ),
             InputField(
-              key: UniqueKey(),
+              // key: UniqueKey(),
               controller: name,
               hintText: 'Adam',
               icon: ThemeIcon.account,
@@ -230,7 +231,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
             ),
             PasswordField(
               onChanged: (txt) {},
-              key: UniqueKey(),
+              // key: UniqueKey(),
               controller: signUpPassword,
               hintText: '********',
               icon: ThemeIcon.lock,
@@ -275,7 +276,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
 
           EasyLoading.dismiss();
           if (error == null) {
-            Get.to(() => const MainScreen());
+            Get.offAll(() => const ChooseCategories());
           } else {
             showMessage(error, true);
           }

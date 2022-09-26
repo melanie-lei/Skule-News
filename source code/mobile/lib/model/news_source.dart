@@ -6,42 +6,49 @@ class AuthorModel {
   String? bio;
 
   String image;
+  String coverImage;
   int status;
   int totalPosts;
   int totalFollowers;
   DateTime createdAt;
+  List<String> usedCategories;
 
-  AuthorModel({
-    required this.id,
-    required this.name,
-    this.bio,
-    required this.image,
-    required this.status,
-    required this.totalPosts,
-    required this.totalFollowers,
-    required this.createdAt,
-  });
+  AuthorModel(
+      {required this.id,
+      required this.name,
+      this.bio,
+      required this.image,
+      required this.coverImage,
+      required this.status,
+      required this.totalPosts,
+      required this.totalFollowers,
+      required this.createdAt,
+      required this.usedCategories});
 
   factory AuthorModel.fromJson(Map<String, dynamic> json) => AuthorModel(
-    id: json["id"],
-    name: json["name"],
-    bio: json["bio"] ?? '',
-    image: json["image"] ??
-        'https://images.unsplash.com/photo-1657558570424-5e5a73d5edb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60',
-    status: json["status"],
-    totalPosts: json["totalPosts"] ?? 0,
-    totalFollowers: json["totalFollowers"] ?? 0,
-    createdAt: json["createdAt"] == null
-        ? DateTime.now()
-        : json["createdAt"].toDate(),
-  );
+        id: json["id"],
+        name: json["name"],
+        bio: json["bio"] ?? '',
+        image: json["image"] ?? AppConfig.dummyProfilePictureUrl,
+        coverImage: json["coverImage"] ?? AppConfig.backgroundImage,
+        status: json["status"],
+        totalPosts: json["totalBlogPosts"] ?? 0,
+        totalFollowers: json["totalFollowers"] ?? 0,
+        usedCategories: (json["usedCategories"] as List<dynamic>?)
+                ?.map((e) => e.toString())
+                .toList() ??
+            [],
+        createdAt: json["createdAt"] == null
+            ? DateTime.now()
+            : json["createdAt"].toDate(),
+      );
 
   String get addedOn {
     return DateFormat('yyyy-MM-dd – kk:mm').format(createdAt);
   }
 
-  isFollowing(){
-    if(getIt<UserProfileManager>().user == null){
+  isFollowing() {
+    if (getIt<UserProfileManager>().user == null) {
       return false;
     }
     return getIt<UserProfileManager>().user!.followingProfiles.contains(id);

@@ -13,7 +13,7 @@ class Following extends StatefulWidget {
 
 class _FollowingState extends State<Following> {
   List<String> filters = [
-    LocalizationString.newsSources,
+    LocalizationString.authors,
     LocalizationString.hashTags,
   ];
 
@@ -82,7 +82,7 @@ class _FollowingState extends State<Following> {
               : ListView.separated(
                   padding: const EdgeInsets.only(top: 20, left: 16, right: 16),
                   itemBuilder: (BuildContext context, index) {
-                    return SourceTile(
+                    return AuthorTile(
                       model: followingController.sources[index],
                       actionCallback: () {
                         followingController.followUnfollowSourceAndUser(
@@ -93,7 +93,7 @@ class _FollowingState extends State<Following> {
                   },
                   separatorBuilder: (BuildContext context, index) {
                     return const SizedBox(
-                      height: 40,
+                      height: 20,
                     );
                   },
                   itemCount: followingController.sources.length);
@@ -147,7 +147,7 @@ class _FollowingState extends State<Following> {
                   },
                   separatorBuilder: (BuildContext context, index) {
                     return const SizedBox(
-                      height: 40,
+                      height: 20,
                     );
                   },
                   itemCount: followingController.hashtags.length);

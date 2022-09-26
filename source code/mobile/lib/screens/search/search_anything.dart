@@ -14,7 +14,7 @@ class SearchAnything extends StatefulWidget {
 class _SearchAnythingState extends State<SearchAnything> {
   List<String> filters = [
     LocalizationString.posts,
-    LocalizationString.newsSources,
+    LocalizationString.authors,
     LocalizationString.hashTags,
   ];
 
@@ -105,7 +105,7 @@ class _SearchAnythingState extends State<SearchAnything> {
               : ListView.separated(
                   padding: const EdgeInsets.only(top: 20, left: 16, right: 16),
                   itemBuilder: (BuildContext context, index) {
-                    return SourceTile(
+                    return AuthorTile(
                       model: recommendationController.sources[index],
                       actionCallback: () {
                         recommendationController.followUnfollowSourceAndUser(
@@ -173,7 +173,7 @@ class _SearchAnythingState extends State<SearchAnything> {
                   },
                   separatorBuilder: (BuildContext context, index) {
                     return const SizedBox(
-                      height: 40,
+                      height: 20,
                     );
                   },
                   itemCount: recommendationController.hashtags.length);

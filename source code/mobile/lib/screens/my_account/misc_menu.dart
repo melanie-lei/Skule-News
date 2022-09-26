@@ -19,10 +19,6 @@ class MiscMenusState extends State<MiscMenus> {
     // TODO: implement initState
     super.initState();
 
-
-    if (getIt<UserProfileManager>().isLogin()) {
-      subscriptionPackageController.getSubscriptionStatus();
-    }
     myAccountController.setCurrentMode();
   }
 
@@ -163,16 +159,18 @@ class MiscMenusState extends State<MiscMenus> {
         init: myAccountController,
         builder: (ctx) {
           return SizedBox(
-            height: 35,
+            height: 45,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  LocalizationString.subscription,
+                  LocalizationString.goPremium,
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 Text(
-                  subscriptionPackageController.subscriptionStatus.value,
+                  getIt<UserProfileManager>().user!.isPro
+                      ? LocalizationString.alreadyProUser
+                      : LocalizationString.becomePremium,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColor),
@@ -270,7 +268,7 @@ class MiscMenusState extends State<MiscMenus> {
         .setPadding(left: 16, right: 16, top: 4, bottom: 4)
         .borderWithRadius(value: 0.5, radius: 5, context: context)
         .ripple(() {
-      getIt<FirebaseManager>().logout();
+      getIt<UserProfileManager>().logout();
       Get.to(() => const AskForLogin());
     });
   }

@@ -31,11 +31,19 @@ class LoginController extends GetxController {
       if (loginStatus == true) {
         await getIt<UserProfileManager>().refreshProfile();
 
-        if (isFirstTimeLogin == true) {
-          Get.offAll(() => const ChooseCategories());
+        if (getIt<UserProfileManager>().user!.status == 1) {
+          if (isFirstTimeLogin == true) {
+            Get.offAll(() => const ChooseCategories());
+          } else {
+            Get.offAll(() => const MainScreen());
+          }
         } else {
-          Get.offAll(() => const MainScreen());
+          getIt<UserProfileManager>().logout();
+          AppUtil.showToast(
+              message: LocalizationString.accountDeleted, isSuccess: false);
         }
+
+
         // completion(null);
       } else {
         completion(LocalizationString.wrongOTP);

@@ -1,28 +1,28 @@
+import 'package:music_streaming_mobile/helper/common_import.dart';
 
-class OnboardingContents {
+class OnBoardingContents {
   final String title;
   final String image;
   final String desc;
 
-  const OnboardingContents(
+  const OnBoardingContents(
       {required this.title, required this.image, required this.desc});
 }
 
-List<OnboardingContents> contents = const [
-  OnboardingContents(
-    title: "Onboarding screen title 1",
+List<OnBoardingContents> contents =  [
+  OnBoardingContents(
+    title: LocalizationString.onBoardingTitle1,
     image: "assets/images/onboarding1.png",
-    desc: "Lorem ipsum dolor sit amet. Sed corporis quaerat qui veritatis ipsum aut obcaecati culpa a adipisci mollitia.",
+    desc: LocalizationString.onBoardingDescription1,
   ),
-  OnboardingContents(
-    title: "Onboarding screen title 2",
+  OnBoardingContents(
+    title: LocalizationString.onBoardingTitle2,
     image: "assets/images/onboarding2.png",
-    desc: "Lorem ipsum dolor sit amet. Sed corporis quaerat qui veritatis ipsum aut obcaecati culpa a adipisci mollitia.",
+    desc: LocalizationString.onBoardingDescription2,
   ),
-  OnboardingContents(
-    title: "Onboarding screen title 3",
+  OnBoardingContents(
+    title: LocalizationString.onBoardingTitle3,
     image: "assets/images/onboarding3.png",
-    desc:
-    "Lorem ipsum dolor sit amet. Sed corporis quaerat qui veritatis ipsum aut obcaecati culpa a adipisci mollitia.",
+    desc: LocalizationString.onBoardingDescription3,
   ),
 ];

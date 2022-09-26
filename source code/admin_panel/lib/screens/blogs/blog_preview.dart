@@ -127,19 +127,26 @@ class _BlogPreviewState extends State<BlogPreview>
                                       widget.model.categoryName.toUpperCase(),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyMedium!
+                                          .titleLarge!
                                           .copyWith(color: Colors.white))
                                   .p8,
                             )).round(5),
                         Text(widget.model.title.toUpperCase(),
                                 maxLines: 2,
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall)
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineLarge!
+                                    .copyWith(color: Colors.white))
                             .vP8,
                         Row(
                           children: [
                             Text(widget.model.date,
-                                style: Theme.of(context).textTheme.bodySmall),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w600)),
                           ],
                         ),
                       ],

@@ -13,14 +13,7 @@ class UserProfileManager {
   refreshProfile() async {
     if (auth.currentUser != null) {
       user =
-          await getIt<FirebaseManager>().getCurrentUser(auth.currentUser!.uid);
-      if (getIt<UserProfileManager>().user!.status == 1) {
-        Get.offAll(() => const MainScreen());
-      } else {
-        getIt<UserProfileManager>().logout();
-        AppUtil.showToast(
-            message: LocalizationString.accountDeleted, isSuccess: false);
-      }
+      await getIt<FirebaseManager>().getCurrentUser(auth.currentUser!.uid);
     }
   }
 }

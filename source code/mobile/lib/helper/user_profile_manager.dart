@@ -36,16 +36,6 @@ class UserProfileManager {
             .getCurrentUser(auth.currentUser!.uid);
       }
     }
-
-    if (user != null) {
-      if (user!.status == 1) {
-        Get.offAll(() => const MainScreen());
-      } else {
-        getIt<UserProfileManager>().logout();
-        AppUtil.showToast(
-            message: LocalizationString.accountDeleted, isSuccess: false);
-      }
-    }
   }
 
 // forceRefreshProfile() async {

@@ -54,7 +54,7 @@ class BackNavigationBar extends StatelessWidget with PreferredSizeWidget {
       this.showDivider,
       this.centerTitle,
       required this.backTapHandler})
-      : preferredSize = const Size.fromHeight(40.0),
+      : preferredSize = const Size.fromHeight(60.0),
         super(key: key);
 
   @override
@@ -78,7 +78,7 @@ class BackNavigationBar extends StatelessWidget with PreferredSizeWidget {
                   centerTitle != true ? Container(width: 20) : Container(),
                   title != null
                       ? Text(title!,
-                              style: Theme.of(context).textTheme.titleMedium)
+                              style: Theme.of(context).textTheme.titleMedium!.copyWith(fontWeight: FontWeight.w600))
                           .ripple(() {
                           backTapHandler();
                           //Navigator.of(context).pop();

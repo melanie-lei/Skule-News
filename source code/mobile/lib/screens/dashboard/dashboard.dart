@@ -46,18 +46,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
         });
   }
 
+  void refreshData() async {
+    dashboardController.clearPosts();
+    dashboardController.loadPosts(callBack: () {
+      _refreshController.refreshCompleted();
+      _refreshController.loadComplete();
+    });
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
     categoryController.clear();
     super.dispose();
-  }
-
-  void loadData() async {
-    dashboardController.loadPosts(callBack: () {
-      _refreshController.refreshCompleted();
-      _refreshController.loadComplete();
-    });
   }
 
   @override
@@ -128,8 +129,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 child: const HomeScreenShimmer())
                             : SizedBox(
                                 height: (dashboardController.posts.length *
-                                        150) +
-                                    (dashboardController.posts.length * 100),
+                                        160) +
+                                    (dashboardController.posts.length * 30),
                                 child: ListView.separated(
                                     physics:
                                         const NeverScrollableScrollPhysics(),
@@ -147,8 +148,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                     separatorBuilder:
                                         (BuildContext context, index) {
                                       return divider(
-                                              context: context, height: 0.5)
-                                          .vp(50);
+                                              context: context,
+                                              height: 1,
+                                              color: Theme.of(context)
+                                                  .dividerColor
+                                                  .lighten(0.3))
+                                          .setPadding(bottom: 20, top: 10);
                                     },
                                     itemCount:
                                         dashboardController.posts.length),
@@ -157,10 +162,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ]))
               ],
             ).addPullToRefresh(
-              refreshController: _refreshController,
-              onRefresh: loadData,
-              onLoading: (){}
-            ),
+                refreshController: _refreshController,
+                onRefresh: refreshData,
+                onLoading: () {}),
           ),
         ],
       ),

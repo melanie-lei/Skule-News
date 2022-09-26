@@ -50,7 +50,7 @@ class _HorizontalMenuBarState extends State<HorizontalMenuBar> {
               return Column(
                 children: [
                   Text(
-                    widget.menus[index],
+                    widget.menus[index].tr(),
                     style: index == widget.selectedIndex
                         ? Theme.of(context).textTheme.titleMedium!.copyWith(
                             color: Theme.of(context).primaryColor,

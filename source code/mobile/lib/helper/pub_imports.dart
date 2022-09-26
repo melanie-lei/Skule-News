@@ -27,15 +27,12 @@ export 'package:flutter_rating_bar/flutter_rating_bar.dart';
 export 'package:flutter_slidable/flutter_slidable.dart';
 export 'package:cached_network_image/cached_network_image.dart';
 export 'package:google_mobile_ads/google_mobile_ads.dart';
-export 'package:in_app_purchase/in_app_purchase.dart';
-export 'package:in_app_purchase_android/billing_client_wrappers.dart';
-export 'package:in_app_purchase_android/in_app_purchase_android.dart';
-export 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 export 'package:pull_to_refresh/pull_to_refresh.dart';
 
 export 'package:sign_in_with_apple/sign_in_with_apple.dart';
 export 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 export 'package:sign_in_with_apple/sign_in_with_apple.dart';
-export 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+export 'package:webview_flutter/webview_flutter.dart';
 export 'package:google_sign_in/google_sign_in.dart';
 
+export 'package:flutter_inapp_purchase/flutter_inapp_purchase.dart';

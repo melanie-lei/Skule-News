@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:music_streaming_mobile/model/setting.dart';
 
 String getRandString(int len) {
   var random = Random.secure();
@@ -32,9 +33,6 @@ class FirebaseManager {
   CollectionReference blogPostsCollection =
       FirebaseFirestore.instance.collection('blogPosts');
 
-  CollectionReference pendingApprovalPostsCollection =
-      FirebaseFirestore.instance.collection('pendingBlogPosts');
-
   CollectionReference commentsCollection =
       FirebaseFirestore.instance.collection('comments');
 
@@ -50,9 +48,6 @@ class FirebaseManager {
   CollectionReference hashtagsCollection =
       FirebaseFirestore.instance.collection('hashtags');
 
-  CollectionReference banners =
-      FirebaseFirestore.instance.collection('banners');
-
   CollectionReference reports =
       FirebaseFirestore.instance.collection('reports');
 
@@ -62,7 +57,7 @@ class FirebaseManager {
   CollectionReference counter =
       FirebaseFirestore.instance.collection('counter');
 
-  CollectionReference settings =
+  CollectionReference settingsCollection =
       FirebaseFirestore.instance.collection('settings');
 
   Future<void> logout() async {
@@ -122,8 +117,8 @@ class FirebaseManager {
       user = userCredential.user;
 
       if (user != null) {
-        response = FirebaseResponse(true, null);
         await insertUser(id: user.uid, name: name, email: email);
+        response = FirebaseResponse(true, null);
       }
     } catch (error) {
       response = FirebaseResponse(false, error.toString());
@@ -139,8 +134,6 @@ class FirebaseManager {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     await Firebase.initializeApp();
     User? user;
-
-    await auth.setPersistence(Persistence.LOCAL);
 
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -217,8 +210,10 @@ class FirebaseManager {
         .doc(id)
         .update({'todayDate': FieldValue.serverTimestamp()}).then((doc) async {
       await userCollection.doc(id).get().then((doc) {
+        print(doc.data());
         user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
       }).catchError((error) {
+        print(error);
         response = FirebaseResponse(false, error);
       });
     }).catchError((error) {});
@@ -238,14 +233,14 @@ class FirebaseManager {
   }
 
   Future<FirebaseResponse> updateUserSubscription(
-      {required int numberOfDays, required String subscriptionTerm}) async {
+      {required String receipt, required int purchaseDate}) async {
     DocumentReference userDoc =
         userCollection.doc(FirebaseAuth.instance.currentUser!.uid);
 
     await userDoc.update({
-      'numberOfDays': numberOfDays,
-      'subscriptionTerm': subscriptionTerm,
-      'subscriptionDate': FieldValue.serverTimestamp()
+      'subscriptionReceipt': receipt,
+      'isPro': true,
+      'subscriptionDate': purchaseDate
     }).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
@@ -312,6 +307,7 @@ class FirebaseManager {
     await authorsCollection
         .doc(id)
         .collection('categories')
+        .where('status', isEqualTo: 1)
         .get()
         .then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
@@ -615,21 +611,6 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<List<BannerModel>> getAllBanners() async {
-    List<BannerModel> bannersList = [];
-
-    await banners.get().then((QuerySnapshot snapshot) {
-      for (var doc in snapshot.docs) {
-        bannersList
-            .add(BannerModel.fromJson(doc.data() as Map<String, dynamic>));
-      }
-    }).catchError((error) {
-      response = FirebaseResponse(false, error);
-    });
-
-    return bannersList;
-  }
-
   Future<FirebaseResponse> searchPosts(
       {required PostSearchParamModel searchModel}) async {
     List<BlogPostModel> list = [];
@@ -671,9 +652,17 @@ class FirebaseManager {
     // if (searchModel.startsAt != null) {
     //   query = query.startAt([searchModel.startsAt]);
     // }
+
     if (searchKeywords.isNotEmpty) {
-      query = query.where("keywords",
-          arrayContainsAny: searchKeywords.toSet().toList());
+      if (searchKeywords.length < 10) {
+        query = query.where("keywords",
+            arrayContainsAny: searchKeywords.toSet().toList());
+      } else {
+        searchKeywords.shuffle();
+        searchKeywords = searchKeywords.sublist(0, 10);
+        query = query.where("keywords",
+            arrayContainsAny: searchKeywords.toSet().toList());
+      }
     }
 
     await query.get().then((QuerySnapshot snapshot) {
@@ -739,7 +728,6 @@ class FirebaseManager {
 
       response = FirebaseResponse(true, null, result: list);
     }).catchError((error) {
-      print(error);
       response = FirebaseResponse(false, error);
     });
 
@@ -771,7 +759,6 @@ class FirebaseManager {
       batch.update(sourceDoc, {'reportCount': FieldValue.increment(1)});
     }
 
-    print('done');
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
@@ -828,6 +815,7 @@ class FirebaseManager {
     if (searchText != null) {
       query = query.where("keywords", arrayContainsAny: [searchText]);
     }
+    query = query.where("status", isEqualTo: 1);
 
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
@@ -841,7 +829,7 @@ class FirebaseManager {
     return categoriesList;
   }
 
-  Future<List<AuthorModel>> searchSources(
+  Future<List<AuthorModel>> searchAuthors(
       {String? searchText, int? type, List<String>? sourceIds}) async {
     List<AuthorModel> list = [];
 
@@ -854,6 +842,7 @@ class FirebaseManager {
     if (sourceIds != null && sourceIds.isNotEmpty) {
       query = query.where("id", whereIn: sourceIds);
     }
+    query = query.where("status", isEqualTo: 1);
 
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
@@ -915,8 +904,8 @@ class FirebaseManager {
       query = query.where("keywords", arrayContainsAny: [searchText]);
     }
 
-    if (isTrending != null) {
-      query = query.orderBy("popularityFactor", descending: true);
+    if (isTrending == true) {
+      query = query.orderBy("popularityFactor", descending: true).limit(50);
     }
 
     if (hashtags != null && hashtags.isNotEmpty) {
@@ -926,27 +915,6 @@ class FirebaseManager {
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
         list.add(Hashtag.fromJson(doc.data() as Map<String, dynamic>));
-      }
-    }).catchError((error) {
-      response = FirebaseResponse(false, error);
-    });
-
-    return list;
-  }
-
-  Future<List<UserModel>> searchProfiles(
-      {String? searchText, int? type}) async {
-    List<UserModel> list = [];
-
-    Query query = userCollection;
-
-    if (searchText != null) {
-      query = query.where("keywords", arrayContainsAny: [searchText]);
-    }
-
-    await query.get().then((QuerySnapshot snapshot) {
-      for (var doc in snapshot.docs) {
-        list.add(UserModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
       response = FirebaseResponse(false, error);
@@ -996,16 +964,13 @@ class FirebaseManager {
     return response!;
   }
 
-  Future<List<PackageModel>> getPackages() async {
-    List<PackageModel> list = [];
-    await packagesCollection.get().then((QuerySnapshot snapshot) {
-      for (var doc in snapshot.docs) {
-        list.add(PackageModel.fromJson(doc.data() as Map<String, dynamic>));
-      }
-    }).catchError((error) {
-      response = FirebaseResponse(false, error);
-    });
+  Future<SettingsModel?> getSettings() async {
+    SettingsModel? setting;
 
-    return list;
+    await settingsCollection.doc('settings').get().then((doc) async {
+      setting = SettingsModel.fromJson(doc.data() as Map<String, dynamic>);
+    }).catchError((error) {});
+
+    return setting;
   }
 }

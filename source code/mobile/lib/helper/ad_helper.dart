@@ -21,16 +21,6 @@ class AdHelper {
       throw UnsupportedError("Unsupported platform");
     }
   }
-
-  static String get rewardedAdUnitId {
-    if (Platform.isAndroid) {
-      return AdmobConstants.rewardAdUnitIdForAndroid;
-    } else if (Platform.isIOS) {
-      return AdmobConstants.rewardAdUnitIdForiOS;
-    } else {
-      throw UnsupportedError("Unsupported platform");
-    }
-  }
 }
 
 class BannerAds extends StatefulWidget {
@@ -41,9 +31,8 @@ class BannerAds extends StatefulWidget {
 }
 
 class _BannerAdsState extends State<BannerAds> {
-  @override
   // TODO: Add _bannerAd
-  late BannerAd _bannerAd;
+  late BannerAd bannerAd;
 
   // TODO: Add _isBannerAdReady
 
@@ -62,10 +51,10 @@ class _BannerAdsState extends State<BannerAds> {
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: getIt<UserProfileManager>().user?.isPro == false
-            ? _bannerAd.size.height.toDouble()
+            ? bannerAd.size.height.toDouble()
             : 0,
         child: getIt<UserProfileManager>().user?.isPro == false
-            ? AdWidget(ad: _bannerAd)
+            ? AdWidget(ad: bannerAd)
             : const SizedBox(
                 height: 1,
               ),
@@ -75,7 +64,7 @@ class _BannerAdsState extends State<BannerAds> {
 
   void loadAds() {
     // TODO: Initialize _bannerAd
-    _bannerAd = BannerAd(
+    bannerAd = BannerAd(
       adUnitId: AdHelper.bannerAdUnitId,
       request: const AdRequest(),
       size: AdSize.banner,
@@ -89,10 +78,11 @@ class _BannerAdsState extends State<BannerAds> {
         },
       ),
     );
-    _bannerAd.load();
+    bannerAd.load();
   }
 }
 
+//ignore: must_be_immutable
 class InterstitialAds extends StatelessWidget {
   final VoidCallback? onCompletion;
 
@@ -102,7 +92,7 @@ class InterstitialAds extends StatelessWidget {
   InterstitialAd? _interstitialAd;
 
   // TODO: Add _isInterstitialAdReady
-  bool _isInterstitialAdReady = false;
+  bool isInterstitialAdReady = false;
 
   @override
   Widget build(BuildContext context) {
@@ -128,10 +118,10 @@ class InterstitialAds extends StatelessWidget {
             },
           );
 
-          _isInterstitialAdReady = true;
+          isInterstitialAdReady = true;
         },
         onAdFailedToLoad: (err) {
-          _isInterstitialAdReady = false;
+          isInterstitialAdReady = false;
           onCompletion!();
         },
       ),

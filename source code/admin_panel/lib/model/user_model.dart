@@ -57,7 +57,7 @@ class UserModel {
         phone: json["phone"] ?? '',
         bio: json["bio"] ?? '',
         image: json["image"],
-        totalPosts: json["totalPosts"] ?? 0,
+        totalPosts: json["totalBlogPosts"] ?? 0,
         totalFollowers: json["totalFollowers"] ?? 0,
         followingProfiles: json["followingProfiles"] == null
             ? []
@@ -98,9 +98,9 @@ class UserModel {
         todayDate: json["todayDate"] == null
             ? DateTime.now()
             : json["todayDate"].toDate(),
-    createdAt: json["createdAt"] == null
-        ? DateTime.now()
-        : json["createdAt"].toDate(),
+        createdAt: json["createdAt"] == null
+            ? DateTime.now()
+            : json["createdAt"].toDate(),
       );
 
   String get addedOn {
@@ -120,14 +120,18 @@ class UserModel {
 
   String get getInitials {
     if ((name ?? '').isNotEmpty) {
-      List<String> nameparts =
-          name!.split(' ');
-      return nameparts[0].substring(0, 1).toUpperCase() +
-          nameparts[1].substring(0, 1).toUpperCase();
+      List<String> nameParts = name!.split(' ');
+
+      if (nameParts.length > 1) {
+        return nameParts[0].substring(0, 1).toUpperCase() +
+            nameParts[1].substring(0, 1).toUpperCase();
+      } else {
+        return nameParts[0].substring(0, 1).toUpperCase();
+      }
     }
 
-    List<String> nameparts = AppConfig.projectName.split(' ');
-    return nameparts[0].substring(0, 0).toUpperCase() +
-        nameparts[1].substring(0, 0).toUpperCase();
+    List<String> nameParts = AppConfig.projectName.split(' ');
+    return nameParts[0].substring(0, 0).toUpperCase() +
+        nameParts[1].substring(0, 0).toUpperCase();
   }
 }

@@ -18,3 +18,15 @@ class PackageModel {
     return model;
   }
 }
+
+class PackageProducts {
+  String id = '';
+  String localizedPrice = '';
+  String title = '';
+
+  PackageProducts({
+    required this.id,
+    required this.localizedPrice,
+    required this.title,
+  });
+}

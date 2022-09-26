@@ -30,6 +30,7 @@ class VerifyOTPState extends State<VerifyOTP> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: Stack(
         children: [
@@ -211,14 +212,14 @@ class VerifyOTPState extends State<VerifyOTP> {
       showMessage(LocalizationString.pleaseEnterOTP, true);
       return;
     }
-    EasyLoading.show(status: LocalizationString.loading);
+    // EasyLoading.show(status: LocalizationString.loading);
 
     // EasyLoading.show(status: LocalizationString.loading);
 
     loginController.submitOTP(otp.text, widget.verificationId, (error) async{
-      EasyLoading.dismiss();
+      // EasyLoading.dismiss();
       if (error == null) {
-        // Get.to(() => const ChooseCategories());
+        Get.to(() => const ChooseCategories());
       } else {
         showMessage(error, true);
       }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
 
@@ -50,7 +49,6 @@ void main() async {
           Locale('ru', 'RU')
         ],
         path: 'assets/translations',
-        // <-- change the path of the translation files
         fallbackLocale: const Locale('en', 'US'),
         child: MainApp(
           onBoardingShown: onBoardingShown,
@@ -82,26 +80,18 @@ class MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      // theme: ThemeData(
-      //   fontFamily: ,
-      // ),
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
-      // localizationsDelegates: context.localizationDelegates,
-      localizationsDelegates: const [
-        GlobalCupertinoLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-        supportedLocales: const [
-          Locale("fa", "IR"),
-          Locale("en", "US"),
-          Locale('ar', 'AE')
-        ],
-        // locale: const Locale("fa", "IR"),
-      // supportedLocales: context.supportedLocales,
+      localizationsDelegates: context.localizationDelegates,
+      // localizationsDelegates: const [
+      //   GlobalCupertinoLocalizations.delegate,
+      //   GlobalMaterialLocalizations.delegate,
+      //   GlobalWidgetsLocalizations.delegate,
+      // ],
+      supportedLocales: context.supportedLocales,
+
       locale: context.locale,
       // navigatorKey: NoomiKeys.navKey,
       builder: EasyLoading.init(),

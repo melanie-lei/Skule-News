@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
+import 'package:music_streaming_admin_panel/screens/user/forgot_password.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -23,114 +24,157 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor.darken(),
-      body: Center(
-        child: Container(
-          width: Responsive.isMobile(context)
-              ? MediaQuery.of(context).size.width * 0.8
-              : MediaQuery.of(context).size.width * 0.35,
-          height: 500,
-          color: Theme.of(context).backgroundColor,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
+        children: [
+          Stack(
             children: [
-              Text(
-                AppConfig.projectName,
-                style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                    color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.w900),
+              Container(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height,
+                color: Colors.white.darken(),
               ),
-              Text(AppConfig.projectTagline,
-                  style: Theme.of(context).textTheme.titleSmall!),
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  width: double.infinity,
+                  height: MediaQuery.of(context).size.height / 3,
+                  color: Theme.of(context).primaryColor,
+                ).bottomRounded(10),
+              )
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
               const SizedBox(
                 height: 50,
               ),
-              Obx(() => InputField(
-                    controller: loginController.userName.value,
-                    hintText: LocalizationString.userName,
-                    icon: ThemeIcon.email,
-                    showBorder: true,
-                    cornerRadius: 5,
-                  )),
-              const SizedBox(
-                height: 20,
-              ),
-              Obx(() => PasswordField(
-                    controller: loginController.password.value,
-                    hintText: LocalizationString.password,
-                    icon: ThemeIcon.lock,
-                    cornerRadius: 5,
-                    showBorder: true,
-                    onChanged: (text) {},
-                  )),
-              const SizedBox(
-                height: 15,
-              ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    LocalizationString.forgotPwd,
-                    style: Theme.of(context).textTheme.titleMedium,
+                  const ThemeIconWidget(
+                    ThemeIcon.backArrow,
+                    color: Colors.white,
+                    size: 25,
                   ).ripple(() {
-                    showForgotPasswordPopup();
+                    Get.back();
                   }),
-                  const Spacer(),
-                  SizedBox(
-                      height: 50,
-                      width: 120,
-                      child: FilledButtonType1(
-                          text: LocalizationString.login,
-                          enabledTextStyle:
-                              Theme.of(context).textTheme.titleMedium,
-                          onPress: () {
-                            loginController.loginUser();
-                          }))
                 ],
-              )
+              ),
+              Container(
+                  height: 120,
+                  width: 120,
+                  color: Theme.of(context).backgroundColor,
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    height: 80,
+                    width: 80,
+                  )).round(25),
+              const SizedBox(
+                height: 40,
+              ),
+              Container(
+                height: 380,
+                width: 450,
+                color: Theme.of(context).backgroundColor,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    Text(
+                      LocalizationString.signIn,
+                      style: Theme.of(context)
+                          .textTheme
+                          .displaySmall!
+                          .copyWith(fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      LocalizationString.signInMessage,
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    loginWidget(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      height: 40,
+                      child: FilledButtonType1(
+                        text: LocalizationString.signIn,
+                        enabledTextStyle:
+                        Theme.of(context).textTheme.titleMedium,
+                        onPress: () {
+                          loginController.loginUser();
+                        },
+                      ),
+                    ),
+                  ],
+                ).hP16,
+              ).round(20),
+              const SizedBox(
+                height: 40,
+              ),
             ],
-          ).hp(Responsive.isDesktop(context) ? 100 : 20),
-        ).shadow(context: context).p(Responsive.isDesktop(context) ? 100 : 20),
+          ).hP16,
+        ],
       ),
     );
   }
 
-  showForgotPasswordPopup() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text(
-              LocalizationString.resetPwd,
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(color: Theme.of(context).primaryColor),
+  Widget loginWidget() {
+    return Container(
+      color: Theme.of(context).backgroundColor,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Obx(() => InputField(
+              key: UniqueKey(),
+              controller: loginController.userName.value,
+              hintText: 'adam@zedge.com',
+              icon: ThemeIcon.email,
+              showBorder: true,
+              cornerRadius: 5,
+              backgroundColor: Colors.black.withOpacity(0.05),
+            )),
+            const SizedBox(
+              height: 10,
             ),
-            content: TextField(
-              onChanged: (value) {
-                loginController.setEmail(value);
-              },
-              controller: loginController.email.value,
-              decoration: const InputDecoration(hintText: "admin@gmail.com"),
+            Obx(() => PasswordField(
+              onChanged: (txt) {},
+              key: UniqueKey(),
+              controller: loginController.password.value,
+              hintText: '*********',
+              icon: ThemeIcon.lock,
+              cornerRadius: 5,
+              showBorder: true,
+              backgroundColor: Colors.black.withOpacity(0.05),
+            )),
+            const SizedBox(
+              height: 10,
             ),
-            actions: <Widget>[
-              SizedBox(
-                  height: 50,
-                  width: 120,
-                  child: FilledButtonType1(
-                      text: LocalizationString.cancel,
-                      onPress: () {
-                        Navigator.pop(context);
-                      })),
-              SizedBox(
-                  height: 50,
-                  width: 120,
-                  child: FilledButtonType1(
-                      text: LocalizationString.submit,
-                      onPress: () {
-                        loginController.resetPassword();
-                      }))
-            ],
-          );
-        });
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  LocalizationString.forgotPwd,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(fontWeight: FontWeight.w600),
+                ).ripple(() {
+                  Get.to(() => const ForgotPassword());
+                }),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

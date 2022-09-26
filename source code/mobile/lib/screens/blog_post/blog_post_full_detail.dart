@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
@@ -63,7 +62,9 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                           hashtagsView(),
                           divider(height: 0.1, context: context).vP16,
                           similarNews(),
-                          const SizedBox(height: 100,)
+                          const SizedBox(
+                            height: 100,
+                          )
                         ],
                       ),
                       widget.model.isLocked
@@ -267,9 +268,14 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                                     .bodyLarge!
                                     .copyWith(color: Colors.white))
                             .ripple(() {
-                          Get.to(() => CommentsScreen(
-                                postId: widget.model.id,
-                              ));
+                          if (getIt<UserProfileManager>().isLogin() == false) {
+                            Get.to(() => const AskForLogin());
+                            return;
+                          } else {
+                            Get.to(() => CommentsScreen(
+                                  postId: widget.model.id,
+                                ));
+                          }
                         }),
                       ],
                     ),

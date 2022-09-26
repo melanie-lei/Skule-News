@@ -57,7 +57,7 @@ class UserModel {
         phone: json["phone"] ?? '',
         bio: json["bio"] ?? '',
         image: json["image"],
-        totalPosts: json["totalPosts"] ?? 0,
+        totalPosts: json["totalBlogPosts"] ?? 0,
         totalFollowers: json["totalFollowers"] ?? 0,
         followingProfiles: json["followingProfiles"] == null
             ? []

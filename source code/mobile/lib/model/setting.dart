@@ -1,4 +1,3 @@
-
 class SettingsModel {
   String? phone;
   String? email;
@@ -6,6 +5,8 @@ class SettingsModel {
   String? twitter;
   String? aboutUs;
   String? privacyPolicy;
+  String? iOSInAppPurchaseId;
+  String? androidInAppPurchaseId;
 
   SettingsModel({
     this.phone,
@@ -14,15 +15,18 @@ class SettingsModel {
     this.twitter,
     this.aboutUs,
     this.privacyPolicy,
+    this.iOSInAppPurchaseId,
+    this.androidInAppPurchaseId,
   });
 
   factory SettingsModel.fromJson(Map<String, dynamic> json) => SettingsModel(
-    phone: json["phone"] ,
+    phone: json["phone"],
     email: json["email"],
-    facebook: json["facebook"] ,
-    twitter: json["twitter"] ,
-    aboutUs: json["aboutUs"] ,
-    privacyPolicy: json["privacyPolicy"] ,
+    facebook: json["facebook"],
+    twitter: json["twitter"],
+    aboutUs: json["aboutUs"],
+    privacyPolicy: json["privacyPolicy"],
+    iOSInAppPurchaseId: json["iOSInAppPurchaseId"],
+    androidInAppPurchaseId: json["androidInAppPurchaseId"],
   );
-
 }

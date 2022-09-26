@@ -23,7 +23,7 @@ class Hashtag {
         name: json["name"],
         // image: json["image"],
         // status: json["status"],
-        totalPosts: json["postsCount"] ?? 0,
+        totalPosts: json["totalBlogPosts"] ?? 0,
         totalFollowers: json["totalFollowers"] ?? 0,
       );
 

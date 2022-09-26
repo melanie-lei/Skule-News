@@ -442,6 +442,7 @@ class LocalizationString {
   static String update = 'Update'.tr();
   static String updateProfile = 'Update profile'.tr();
   static String profileUpdated = 'Profile is updated successfully'.tr();
+  static String updateCoverImage = 'Update cover image'.tr();
 
   static String goPremium = 'Go Premium'.tr();
   static String restorePurchase = 'Restore in app purchases'.tr();

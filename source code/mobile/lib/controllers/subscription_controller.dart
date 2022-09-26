@@ -2,57 +2,69 @@ import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
 
 class SubscriptionPackageController extends GetxController {
-  RxList<PackageModel> packages = <PackageModel>[].obs;
+  Rx<PackageProducts?> package = Rx<PackageProducts?>(null);
 
   RxInt coins = 0.obs;
 
   final bool kAutoConsume = true;
-  final InAppPurchase inAppPurchase = InAppPurchase.instance;
-  late StreamSubscription<List<PurchaseDetails>> subscription;
-  RxList<ProductDetails> products = <ProductDetails>[].obs;
-  RxBool isAvailable = false.obs;
-  RxString selectedPurchaseId = ''.obs;
-  RxInt selectedPackage = 0.obs;
-  RxString subscriptionStatus = ''.obs;
+  String subscribedProductId = '';
 
-  initiate() {
-    AppUtil.checkInternet().then((value) {
-      if (value) {
-        getIt<FirebaseManager>().getPackages().then((value) {
-          packages.value = value;
-          initStoreInfo();
-          update();
-        });
+  late StreamSubscription purchaseUpdatedSubscription;
+  late StreamSubscription purchaseErrorSubscription;
+  late StreamSubscription connectionSubscription;
+
+  final List<IAPItem> items = [];
+
+  initiate() async {
+    // prepare
+    await FlutterInappPurchase.instance.initialize();
+
+    connectionSubscription =
+        FlutterInappPurchase.connectionUpdated.listen((connected) {
+      // print('connected: $connected');
+    });
+
+    purchaseUpdatedSubscription =
+        FlutterInappPurchase.purchaseUpdated.listen((productItem) {
+      // print('purchase-updated: $productItem');
+      if (productItem?.purchaseStateAndroid == PurchaseState.purchased ||
+          productItem?.transactionStateIOS == TransactionState.purchased) {
+        updateReceipt(
+            receipt: productItem!.transactionReceipt!,
+            purchaseDate: productItem.transactionDate!.millisecondsSinceEpoch);
       }
     });
 
-    final Stream<List<PurchaseDetails>> purchaseUpdated =
-        InAppPurchase.instance.purchaseStream;
-    subscription = purchaseUpdated.listen((purchaseDetailsList) {
-      _listenToPurchaseUpdated(purchaseDetailsList);
-    }, onDone: () {
-      subscription.cancel();
-    }, onError: (error) {
-      // handle error here.
+    purchaseErrorSubscription =
+        FlutterInappPurchase.purchaseError.listen((purchaseError) {
+    });
+
+    AppUtil.checkInternet().then((value) {
+      if (value) {
+        getIt<FirebaseManager>().getSettings().then((setting) {
+          if (setting != null) {
+            _getProduct(Platform.isIOS
+                ? setting.iOSInAppPurchaseId!
+                : setting.androidInAppPurchaseId!);
+          }
+        });
+      }
     });
   }
 
-  Future<void> initStoreInfo() async {
-    isAvailable.value = await InAppPurchase.instance.isAvailable();
-    if (!isAvailable.value) {
-      products.value = [];
+  Future _getProduct(String productId) async {
+    List<IAPItem> items =
+        await FlutterInappPurchase.instance.getProducts([productId]);
+
+    if (items.isNotEmpty) {
+      package.value = PackageProducts(
+        id: items.first.productId!,
+        localizedPrice: items.first.localizedPrice!,
+        title: items.first.title!,
+      );
+
       update();
-      return;
     }
-
-    List<String> _kProductIds = packages
-        .map((e) =>
-            Platform.isIOS ? e.inAppPurchaseIdIOS : e.inAppPurchaseIdAndroid)
-        .toList();
-    ProductDetailsResponse productDetailResponse =
-        await inAppPurchase.queryProductDetails(_kProductIds.toSet());
-
-    products.value = productDetailResponse.productDetails;
   }
 
   showRewardedAds() {
@@ -65,95 +77,38 @@ class SubscriptionPackageController extends GetxController {
     // }).loadInterstitialAd();
   }
 
-  void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
-    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
-      if (purchaseDetails.status == PurchaseStatus.pending) {
-        //showPending error
-      } else {
-        if (purchaseDetails.status == PurchaseStatus.error) {
-          //show error
-          // AppUtil.showToast(
-          //     message: LocalizationString.purchaseError, isSuccess: false);
-        } else if (purchaseDetails.status == PurchaseStatus.purchased) {
-          //show success
-
-          AppUtil.checkInternet().then((value) {
-            if (value) {
-              // ApiController()
-              //     .subscribePackage(
-              //     packages[selectedPackage.value].id.toString(),
-              //     purchaseDetails.purchaseID!,
-              //     packages[selectedPackage.value].price.toString())
-              //     .then((response) {
-              //   AppUtil.showToast(
-              //       message: LocalizationString.coinsAdded, isSuccess: true);
-              //   getIt<UserProfileManager>().refreshProfile();
-              //   if (response.success) {
-              //     user.value.coins = packages[selectedPackage.value].coin;
-              //   }
-              // });
-            }
-          });
-        }
-        if (Platform.isAndroid) {
-          if (!kAutoConsume &&
-              purchaseDetails.productID == selectedPurchaseId.value) {
-            final InAppPurchaseAndroidPlatformAddition androidAddition =
-                inAppPurchase.getPlatformAddition<
-                    InAppPurchaseAndroidPlatformAddition>();
-            await androidAddition.consumePurchase(purchaseDetails);
-          }
-        }
-        if (purchaseDetails.pendingCompletePurchase) {
-          await inAppPurchase.completePurchase(purchaseDetails);
-        }
-      }
+  purchasePremium(String productId) {
+    FlutterInappPurchase.instance.requestPurchase(productId).then((value) {
+      // print(value);
     });
   }
 
-  updatedSubscriptionStatus() {
+  restorePurchase() {
+    if (getIt<UserProfileManager>().user?.subscriptionReceipt != null) {
+      FlutterInappPurchase.instance.getAvailablePurchases().then((value) {
+        AppUtil.showToast(
+            message: LocalizationString.restorePurchaseDone, isSuccess: true);
+      });
+    } else {
+      AppUtil.showToast(
+          message: LocalizationString.notSubscribedYet, isSuccess: false);
+    }
+  }
+
+  updateReceipt({required String receipt, required int purchaseDate}) {
     getIt<FirebaseManager>()
-        .updateUserSubscription(numberOfDays: 30, subscriptionTerm: '1 Month')
-        .then((value) {
-      getIt<UserProfileManager>().refreshProfile();
+        .updateUserSubscription(receipt: receipt, purchaseDate: purchaseDate)
+        .then((value) async {
+      await getIt<UserProfileManager>().refreshProfile();
 
       if (value.status == true) {
         AppUtil.showToast(
-            message: LocalizationString.subscribed, isSuccess: true);
+            message: LocalizationString.subscribedSuccessfully,
+            isSuccess: true);
       } else {
         AppUtil.showToast(
             message: LocalizationString.errorMessage, isSuccess: true);
       }
     });
   }
-
-  getSubscriptionStatus() {
-    DateTime? subscriptionDate =
-        getIt<UserProfileManager>().user!.subscriptionDate;
-    if (subscriptionDate != null) {
-      DateTime todayDate = getIt<UserProfileManager>().user!.todayDate;
-      int daysConsumed = todayDate.difference(subscriptionDate).inDays;
-      int noOfDaysInSubscription =
-          getIt<UserProfileManager>().user!.subscriptionDays;
-      String? subscriptionTerm =
-          getIt<UserProfileManager>().user!.subscriptionTerm;
-
-      if (noOfDaysInSubscription > daysConsumed) {
-        DateTime subscriptionsExpiredDate = todayDate
-            .add(Duration(days: (noOfDaysInSubscription - daysConsumed)));
-        String formattedDate =
-            DateFormat('dd-MM-yyyy').format(subscriptionsExpiredDate);
-
-        subscriptionStatus.value =
-            '(${subscriptionTerm!} ${LocalizationString.subscriptionValidTill} $formattedDate)';
-      } else {
-        subscriptionStatus.value = LocalizationString.subscriptionExpired;
-      }
-    } else {
-      subscriptionStatus.value = LocalizationString.noSubscription;
-    }
-
-    update();
-  }
-
 }

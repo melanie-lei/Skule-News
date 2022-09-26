@@ -9,12 +9,17 @@ class UserController extends GetxController {
   Rx<TextEditingController> bioTf = TextEditingController().obs;
 
   Uint8List? thumbnailImageBytes;
+  Uint8List? coverImageBytes;
+
   RxString imagePath = ''.obs;
+  RxString coverImagePath = ''.obs;
 
   setProfileData() {
     nameTf.value.text = getIt<UserProfileManager>().user!.name;
     bioTf.value.text = getIt<UserProfileManager>().user!.bio ?? '';
     imagePath.value = getIt<UserProfileManager>().user!.image;
+    coverImagePath.value = getIt<UserProfileManager>().user!.coverImage;
+
     update();
   }
 
@@ -28,9 +33,14 @@ class UserController extends GetxController {
     getIt<UserProfileManager>().user!.name = nameTf.value.text;
     getIt<UserProfileManager>().user!.bio = bioTf.value.text;
     getIt<UserProfileManager>().user!.image = imagePath.value;
+    getIt<UserProfileManager>().user!.coverImage = coverImagePath.value;
 
     getIt<FirebaseManager>()
-        .updateUser(name: nameTf.value.text, bio: bioTf.value.text,image: imagePath.value)
+        .updateUser(
+            name: nameTf.value.text,
+            bio: bioTf.value.text,
+            image: imagePath.value,
+            coverImage: coverImagePath.value)
         .then((value) {
       EasyLoading.dismiss();
       showMessage(LocalizationString.profileUpdated, false);
@@ -51,12 +61,37 @@ class UserController extends GetxController {
       EasyLoading.show(status: LocalizationString.loading);
       getIt<FirebaseManager>()
           .updateProfileImage(
-              uniqueId: getIt<UserProfileManager>().user!.id,
               bytes: thumbnailImageBytes!,
-              fileName: getIt<UserProfileManager>().user!.name)
+              fileName:
+                  '${getIt<UserProfileManager>().user!.name}_profileImage')
           .then((value) {
         EasyLoading.dismiss();
         imagePath.value = value;
+        updateUser(onlyUploadingProfileImage: true);
+      });
+    } else {
+      // User canceled the picker
+    }
+  }
+
+  uploadCoverImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'png', 'jpeg'],
+    );
+
+    if (result != null) {
+      PlatformFile pFile = result.files.first;
+
+      coverImageBytes = pFile.bytes!;
+      EasyLoading.show(status: LocalizationString.loading);
+      getIt<FirebaseManager>()
+          .updateProfileImage(
+              bytes: coverImageBytes!,
+              fileName: '${getIt<UserProfileManager>().user!.name}_coverImage')
+          .then((value) {
+        EasyLoading.dismiss();
+        coverImagePath.value = value;
         updateUser(onlyUploadingProfileImage: true);
       });
     } else {

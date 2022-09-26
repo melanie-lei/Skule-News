@@ -1,8 +1,7 @@
 import 'package:music_streaming_mobile/helper/pub_imports.dart';
 
 class LocalizationString {
-  static String appTagline =
-      'Music is everything, Start streaming music with MUSICY'.tr();
+  static String appTagline = 'Conversation is king'.tr();
 
   static String success = 'Success'.tr();
   static String error = 'Error'.tr();
@@ -33,6 +32,8 @@ class LocalizationString {
 
   static String followers = 'Followers'.tr();
   static String posts = 'Posts'.tr();
+  static String blogs = 'Blogs'.tr();
+  static String noBlogs = 'No Blog'.tr();
 
   static String share = 'Share'.tr();
   static String hide = 'Hide'.tr();
@@ -45,20 +46,20 @@ class LocalizationString {
   static String reviewsStr = 'Reviews'.tr();
   static String seeAll = 'See All'.tr();
 
-  static String newsSources = 'News source'.tr();
+  static String authors = 'Authors'.tr();
 
   static String shareTweet = 'Share Tweet'.tr();
 
   static String account = 'Account'.tr();
   static String continueStr = 'Continue'.tr();
 
-  static String selectLangauge = 'Select language'.tr();
+  static String selectLanguage = 'Select language'.tr();
   static String canChangeLangFromSetting =
       'You can change it from settings anytime'.tr();
   static String termsOfUse = 'Terms of use'.tr();
 
-  static String recomendedHashtags = 'Recommended hashtags'.tr();
-  static String recomendedHashtagsForYou =
+  static String recommendedHashtags = 'Recommended hashtags'.tr();
+  static String recommendedHashtagsForYou =
       'Recommended hashtags trending over world'.tr();
 
   static String followedProfile = 'Followed profiles'.tr();
@@ -76,7 +77,7 @@ class LocalizationString {
 
   static String recommended = 'Recommended'.tr();
 
-  static String recomendedLocation = 'Recommended locations'.tr();
+  static String recommendedLocation = 'Recommended locations'.tr();
   static String recommendedLocationsForYou =
       'Recommended locations for you to explore'.tr();
 
@@ -112,8 +113,7 @@ class LocalizationString {
           .tr();
 
   static String enterOtpMessage =
-  'Please enter 6 digit Code sent to you phone number'
-      .tr();
+      'Please enter 6 digit Code sent to you phone number'.tr();
 
   static String signIn = 'Sign in'.tr();
   static String login = 'Login'.tr();
@@ -123,7 +123,8 @@ class LocalizationString {
   static String loginAnotherAccount = 'Login another account'.tr();
   static String yourEmail = 'Your Email'.tr();
   static String forgotPwd = 'Forgot Password?'.tr();
-  static String forgotPwdSubtitle = 'Enter your email, we will send you and email to reset password'.tr();
+  static String forgotPwdSubtitle =
+      'Enter your email, we will send you and email to reset password'.tr();
 
   static String passwordIsEmpty = 'Please enter password'.tr();
   static String emailPwdIsIncorrect = 'Email or password is incorrect'.tr();
@@ -150,82 +151,15 @@ class LocalizationString {
   static String bio = 'Bio'.tr();
 
   static String messageSent = 'Message sent successfully'.tr();
-  static String raisedBy = 'Raised by :'.tr();
-
-  static String ringtoneAdded = 'Ringtone added successfully'.tr();
-  static String ringtoneUpdated = 'Ringtone updated successfully'.tr();
 
   static String categoryAdded = 'Category added successfully'.tr();
   static String categoryUpdated = 'Category updated successfully'.tr();
-
-  static String colors = 'Colors'.tr();
-  static String colorAdded = 'Color added successfully'.tr();
-  static String colorUpdated = 'Color updated successfully'.tr();
-
-  static String sliderAdded = 'Home slider added successfully'.tr();
-  static String sliderUpdated = 'Home slider updated successfully'.tr();
-
-  static String playlist = 'Playlist'.tr();
-  static String playlists = 'Playlists'.tr();
-  static String listeners = 'Listeners'.tr();
-  static String deActivatedPlaylists = 'De-Activated Playlists'.tr();
-  static String usersPlaylists = 'Users Playlists'.tr();
-
-  static String createPlaylist = 'Create Playlist'.tr();
-
-  static String playlistName = 'Playlist Name'.tr();
-  static String playlistAdded = 'Playlist added successfully'.tr();
-  static String playlistUpdated = 'Playlist updated successfully'.tr();
 
   static String pleaseSelectCategory = 'Please select category'.tr();
   static String pleaseSelectSomeCategories =
       'Please select some categories'.tr();
 
-  static String pleaseSelectLanguage = 'Please select language'.tr();
-
-  static String albumName = 'Album Name'.tr();
-
-  static String albumAdded = 'Album added successfully'.tr();
-  static String albumUpdated = 'Album updated successfully'.tr();
-  static String wallpaperAdded = 'Wallpaper added successfully'.tr();
-  static String wallpaperUpdated = 'Wallpaper updated successfully'.tr();
-  static String pleaseSelectArtist = 'Please select artist'.tr();
-  static String pleaseSelectWallpaperImage =
-      'Please select wallpaper Image'.tr();
-  static String pleaseSelectWallpaper = 'Please select wallpaper'.tr();
-  static String pleaseSelectWallpapers = 'Please select wallpaper'.tr();
-  static String pleaseSelectPlaylist = 'Please select playlist'.tr();
-  static String pleaseSelectAlbum = 'Please select album'.tr();
-  static String pleaseSelectRingtone = 'Please select ringtone'.tr();
-
-  static String ringtone = 'Ringtone'.tr();
-  static String ringtones = 'Ringtones'.tr();
-  static String deActivatedRingtone = 'De-Activated Ringtones'.tr();
-
-  static String searchRingtone = 'Search Ringtone'.tr();
-  static String ringtoneName = 'Ringtone Name'.tr();
-
-  static String wallpaperName = 'Wallpaper Name'.tr();
-  static String wallpaper = 'Wallpaper'.tr();
-  static String wallpapers = 'Wallpapers'.tr();
-  static String download = 'Download'.tr();
-  static String downloads = 'Downloads'.tr();
-
-  static String downloadedWallpapers = 'Downloaded Wallpapers'.tr();
-  static String downloadedRingtones = 'Downloaded Ringtones'.tr();
-
-  static String likedWallpapers = 'Liked Wallpapers'.tr();
-  static String likedRingtones = 'Liked Ringtones'.tr();
-
   static String hashTags = 'Hashtags'.tr();
-  static String locations = 'Locations'.tr();
-
-  static String album = 'Album'.tr();
-  static String albums = 'Albums'.tr();
-  static String addAlbum = 'Add Album'.tr();
-  static String deactivatedWallpaper = 'De-Activated Wallpapers'.tr();
-  static String addRingtone = 'Add Ringtone'.tr();
-  static String coverImage = 'Cover Image'.tr();
 
   static String pleaseEnterName = 'Please enter name'.tr();
   static String pleaseEnterOTP = 'Please enter OTP'.tr();
@@ -237,27 +171,11 @@ class LocalizationString {
   static String pleaseEnterConfirmPassword =
       'Please enter confirm password'.tr();
   static String passwordsDoesNotMatched = 'Password does not matched'.tr();
-  static String createAccountForTopPicks =
-      'Create an account to our top picks for you!'.tr();
-  static String pleaseEnterUserName = 'Please enter user name'.tr();
-  static String pleaseEnterPlaylistName = 'Please enter playlist name'.tr();
-  static String pleaseEnterPlaylistDesc =
-      'Please enter playlist description'.tr();
-  static String pleaseEnterWallpaperName = 'Please enter wallpaper name'.tr();
-
-  static String pleaseEnterAlbumName = 'Please enter album name'.tr();
-  static String pleaseEnterAlbumDesc = 'Please enter album description'.tr();
-
-  static String pleaseEnterAlbumSong = 'Please enter song description'.tr();
 
   static String enterNewPassword = 'Enter new password'.tr();
   static String enterConfirmPassword = 'Enter confirm password'.tr();
   static String enterOldPassword = 'Enter old password'.tr();
   static String pleaseEnterCategoryName = 'Please enter category name'.tr();
-  static String pleaseEnterSliderName = 'Please enter slider name'.tr();
-
-  static String pleaseEnterColorName = 'Please enter color name'.tr();
-  static String pleaseSelectColor = 'Please select color'.tr();
 
   static String userNameOrPasswordIsWrong =
       'User name or password is wrong'.tr();
@@ -274,35 +192,20 @@ class LocalizationString {
 
   static String categories = 'Categories'.tr();
   static String categoryName = 'Category Name'.tr();
-  static String sliderName = 'Slider Name'.tr();
-  static String sliders = 'Home Sliders'.tr();
 
   static String requestSent = 'Request sent'.tr();
 
   static String errorMessage =
       'There is some problem, Please try again later'.tr();
 
-  static String wallpaperImage = 'Wallpaper image'.tr();
-
-  static String ringtoneImage = 'Ringtone cover image'.tr();
-
   static String addCategory = 'Add Category'.tr();
   static String addColor = 'Add Color'.tr();
-
-  static String addHomeSlider = 'Add Home Slider'.tr();
-  static String homeSliders = 'Home Sliders'.tr();
-  static String deactivatedHomeSliders = 'De-Activated Home Sliders'.tr();
 
   static String colorName = 'Color name'.tr();
   static String colorCode = 'Category code'.tr();
 
   static String categoryImage = 'Category image'.tr();
-  static String albumImage = 'Album image'.tr();
-  static String sliderImage = 'Slider image'.tr();
-  static String selectSliderType = 'Select slider type'.tr();
 
-  static String camera = 'Camera'.tr();
-  static String photo = 'Photo'.tr();
   static String cancel = 'Cancel'.tr();
 
   static String close = 'Close'.tr();
@@ -310,50 +213,31 @@ class LocalizationString {
 
   static String accountDeleted = 'Account is deleted';
   static String deleteRequest = 'Delete Request'.tr();
-  static String deActivateWallpaper = 'De-Activate Wallpaper'.tr();
-  static String deActivateAlbum = 'De-Activate Album'.tr();
-  static String deActivatePlaylist = 'De-Activate Playlist'.tr();
-  static String markAsClosed = 'Mark as closed'.tr();
-
   static String category = 'Category'.tr();
-  static String deActivatedCategory = 'De-Activated Categories'.tr();
-
   static String search = 'Search'.tr();
   static String searchAnything = 'Search anything'.tr();
 
   static String searchCategory = 'Search category'.tr();
-
-  static String searchPlaylist = 'Search playlist'.tr();
-  static String searchWallpaper = 'Search Wallpaper'.tr();
-
   static String selectCategory = 'Select category'.tr();
-  static String selectColor = 'Select color'.tr();
-
-  static String selectWallpaper = 'Select wallpaper'.tr();
-  static String selectWallpapers = 'Select wallpaper'.tr();
-
-  static String selectPlaylist = 'Select playlist'.tr();
-  static String selectRingtone = 'Select Ringtone'.tr();
-
-  static String addWallpaper = 'Add wallpaper'.tr();
 
   static String choose = 'Choose'.tr();
 
   static String chooseYourInterest = 'Choose your interest'.tr();
   static String subscription = 'Subscription'.tr();
+  static String goPremium = 'Go Premium'.tr();
+
   static String restore = 'Restore'.tr();
   static String subscriptionExpired = 'Subscription expired, activate it'.tr();
   static String noSubscription = 'Not subscribed yet'.tr();
 
   static String subscriptionValidTill = 'subscription active till'.tr();
 
-  static String subscribed =
-      'Congratulations, you are subscribed successfully'.tr();
+  static String subscribedSuccessfully = 'Congratulations, you are subscribed successfully'.tr();
 
   static String premiumAccess = 'PREMIUM ACCESS'.tr();
   static String thisIsPremiumBlog = 'This is a premium blog'.tr();
 
-  static String accessToAllBlogs = 'Get access to all premium blogs'.tr();
+  static String accessToAllBlogs = 'Get access to all premium blogs and remove ads'.tr();
   static String tryStr = 'Try'.tr();
   static String daysForFree = 'days for free'.tr();
   static String then = 'then'.tr();
@@ -411,8 +295,17 @@ class LocalizationString {
   static String update = 'Update'.tr();
   static String updateProfile = 'Update profile'.tr();
 
-  static String goPremium = 'Go Premium'.tr();
   static String restorePurchase = 'Restore in app purchases'.tr();
+  static String restorePurchaseDone = 'Purchased restored successfully'.tr();
+  static String subscribed = 'Subscribed'.tr();
+  static String notSubscribedYet =
+      'You are not subscribed to any plan, So no purchase to be restored'.tr();
+
+  static String premium = 'Premium'.tr();
+
+  static String alreadyProUser = 'You are already a pro user'.tr();
+  static String becomePremium = 'Become pro user'.tr();
+
   static String aboutUs = 'About us'.tr();
   static String contactUs = 'Contact us'.tr();
   static String privacyPolicy = 'Privacy policy'.tr();
@@ -431,17 +324,15 @@ class LocalizationString {
   static String report = 'Report'.tr();
   static String replied = 'Replied'.tr();
 
-  static String newsReported = 'News post reported successfully'.tr();
-  static String sourceReported = 'News source reported successfully'.tr();
+  static String blogPostReported = 'Blog post reported successfully'.tr();
+  static String authorReported = 'Author reported successfully'.tr();
 
-  static String getPersonalisedExperience =
-      'Get a personalised experience, and access all wallpaper and ringtones'
-          .tr();
-  static String installApp = 'To create your account, install Zedgy app'.tr();
-
-  static String wallpaperNotSaved = 'Wallpaper not saved'.tr();
-  static String wallpaperSaved = 'Wallpaper saved'.tr();
-  static String ringtoneSaved = 'Ringtone saved'.tr();
   static String noDataFound = 'No data found'.tr();
 
+  static String onBoardingTitle1 = 'onBoardingTitle1'.tr();
+  static String onBoardingTitle2 = 'onBoardingTitle2'.tr();
+  static String onBoardingTitle3 = 'onBoardingTitle3'.tr();
+  static String onBoardingDescription1 = 'onBoardingDescription1'.tr();
+  static String onBoardingDescription2 = 'onBoardingDescription2'.tr();
+  static String onBoardingDescription3 = 'onBoardingDescription3'.tr();
 }

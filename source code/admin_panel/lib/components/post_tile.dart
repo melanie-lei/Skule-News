@@ -223,11 +223,11 @@ class PostTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const Spacer(),
+                    const SizedBox(height: 8,),
                     Text(model.title.toUpperCase(),
                         maxLines: 1,
                         style: Theme.of(context).textTheme.titleLarge),
-                    const Spacer(),
+                    const SizedBox(height: 8,),
                     Row(
                       children: [
                         Row(
@@ -257,7 +257,7 @@ class PostTile extends StatelessWidget {
                             )).round(5),
                       ],
                     ),
-                    const Spacer(),
+                    const SizedBox(height: 8,),
                     Row(
                       children: [
                         const ThemeIconWidget(
@@ -427,7 +427,7 @@ class PostTile extends StatelessWidget {
                                 premiumBlog(context);
                               }),
                       ],
-                    ).vP8
+                    )
                   ],
                 ),
                 // const Spacer(),

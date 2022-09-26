@@ -27,7 +27,7 @@ class PostTileShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 140,
+      height: 160,
       child: Column(
         children: [
           Row(
@@ -188,8 +188,8 @@ class RecommendationShimmer extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             headingType6(
-                title: LocalizationString.recomendedHashtags,
-                subTitle: LocalizationString.recomendedHashtagsForYou,
+                title: LocalizationString.recommendedHashtags,
+                subTitle: LocalizationString.recommendedHashtagsForYou,
                 context: context),
             const SizedBox(
               height: 10,

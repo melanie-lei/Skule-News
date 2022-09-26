@@ -48,10 +48,10 @@ class _DashboardState extends State<Dashboard> {
             itemCount: 4,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 childAspectRatio: Responsive.isDesktop(context)
-                    ? 2.1
+                    ? 1.8
                     : Responsive.isTablet(context)
-                    ? 3.2
-                    : 2,
+                        ? 3.2
+                        : 2,
                 crossAxisSpacing: 20,
                 mainAxisSpacing: 20,
                 crossAxisCount: Responsive.isDesktop(context) ? 4 : 2),
@@ -65,7 +65,7 @@ class _DashboardState extends State<Dashboard> {
                       Colors.grey.lighten(0.25));
                 case 1:
                   return cardItem(
-                      '${dashboardController.recordCounter.value?.users ?? 0}',
+                      '${dashboardController.recordCounter.value?.readers ?? 0}',
                       LocalizationString.users,
                       ThemeIcon.account,
                       Colors.yellow.lighten(0.25));
@@ -173,18 +173,21 @@ class _DashboardState extends State<Dashboard> {
             child: GetBuilder<BlogsController>(
                 init: blogsController,
                 builder: (ctx) {
-                  return blogsController.activeBlogs.isNotEmpty ? ListView.separated(
-                      itemCount: blogsController.activeBlogs.length,
-                      itemBuilder: (BuildContext ctx, int index) {
-                        return Container(
-                            color: Theme.of(context).backgroundColor.darken(),
-                            child: PostTile(
-                              model: blogsController.activeBlogs[index],
-                            )).round(10);
-                      },
-                      separatorBuilder: (BuildContext ctx, int index) {
-                        return const SizedBox(height: 10);
-                      }) : noDataFound(context);
+                  return blogsController.activeBlogs.isNotEmpty
+                      ? ListView.separated(
+                          itemCount: blogsController.activeBlogs.length,
+                          itemBuilder: (BuildContext ctx, int index) {
+                            return Container(
+                                color:
+                                    Theme.of(context).backgroundColor.darken(),
+                                child: PostTile(
+                                  model: blogsController.activeBlogs[index],
+                                )).round(10);
+                          },
+                          separatorBuilder: (BuildContext ctx, int index) {
+                            return const SizedBox(height: 10);
+                          })
+                      : noDataFound(context);
                 }),
           ),
         ],

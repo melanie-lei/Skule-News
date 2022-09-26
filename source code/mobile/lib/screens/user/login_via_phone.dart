@@ -25,6 +25,7 @@ class LoginViaPhoneState extends State<LoginViaPhone> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).backgroundColor,
       body: Stack(
         children: [
@@ -69,7 +70,7 @@ class LoginViaPhoneState extends State<LoginViaPhone> {
                       Container(
                           height: 40,
                           width: 40,
-                          color: Theme.of(context).backgroundColor,
+                          color: Theme.of(context).backgroundColor.lighten(0.05),
                           child: Image.asset(
                             'assets/images/logo.png',
                             height: 20,
@@ -103,7 +104,7 @@ class LoginViaPhoneState extends State<LoginViaPhone> {
               Container(
                 height: 160,
                 width: MediaQuery.of(context).size.width - 32,
-                color: Theme.of(context).backgroundColor,
+                color: Theme.of(context).backgroundColor.lighten(0.05),
                 child: Column(
                   children: [
                     const SizedBox(
@@ -170,7 +171,7 @@ class LoginViaPhoneState extends State<LoginViaPhone> {
               Container(
                   height: 80,
                   width: MediaQuery.of(context).size.width - 32,
-                  color: Theme.of(context).backgroundColor,
+                  color: Theme.of(context).backgroundColor.lighten(0.05),
                   child: const SocialLogin())
                   .round(20),
               const Spacer(),

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
 
-class SourceTile extends StatelessWidget {
+class AuthorTile extends StatelessWidget {
   final AuthorModel model;
   final VoidCallback actionCallback;
   final VoidCallback? tapHandler;
 
-  const SourceTile(
+  const AuthorTile(
       {Key? key,
       required this.model,
       required this.actionCallback,
@@ -50,7 +50,7 @@ class SourceTile extends StatelessWidget {
               ),
               Text(
                 '${model.totalFollowers} ${LocalizationString.followers.toLowerCase()}',
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
               ),
             ],
           ).lP8,

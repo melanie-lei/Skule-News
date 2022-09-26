@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,6 +44,8 @@ void main() async{
   Get.put(SupportRequestsController());
   Get.put(SideMenuContainer());
   Get.put(UserController());
+
+  setPathUrlStrategy();
 
   runApp(
     EasyLocalization(

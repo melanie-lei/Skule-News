@@ -85,6 +85,7 @@ dev_dependencies:
   get: ^4.6.5
   flick_video_player: ^0.5.0
   flutter_widget_from_html: ^0.8.5
+  url_strategy: ^0.2.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -108,6 +109,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/translations/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

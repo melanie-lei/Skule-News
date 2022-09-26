@@ -34,13 +34,13 @@ class _RecommendedSourceSectionState extends State<RecommendedSourceSection> {
             headingType6(
                 title: LocalizationString.recommendedSources,
                 subTitle: LocalizationString.recommendedSourcesInfo,
-                context: context),
+                context: context).hP16,
             const SizedBox(
               height: 10,
             ),
             Expanded(
               child: ListView.separated(
-                  padding: EdgeInsets.zero,
+                  padding: const EdgeInsets.only(left: 16,right: 16),
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.items.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -53,7 +53,7 @@ class _RecommendedSourceSectionState extends State<RecommendedSourceSection> {
                   }),
             ),
           ],
-        )).hP16;
+        ));
   }
 
   Widget authorCard(AuthorModel item, int index) {
@@ -141,13 +141,13 @@ class _RecommendedProfilesSectionState
             headingType6(
                 title: LocalizationString.recommendedForYou,
                 subTitle: LocalizationString.recommendedProfile,
-                context: context),
+                context: context).hP16,
             const SizedBox(
               height: 10,
             ),
             Expanded(
               child: ListView.separated(
-                  padding: EdgeInsets.zero,
+                  padding: const EdgeInsets.only(left: 16,right: 16),
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.items.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -160,7 +160,7 @@ class _RecommendedProfilesSectionState
                   }),
             ),
           ],
-        )).hP16;
+        ));
   }
 
   Widget profileCard(UserModel item, int index) {
@@ -239,20 +239,20 @@ class _RecommendedHashtagSectionState extends State<RecommendedHashtagSection> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 180,
+        height: 200,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             headingType6(
-                title: LocalizationString.recomendedHashtags,
-                subTitle: LocalizationString.recomendedHashtagsForYou,
-                context: context),
+                title: LocalizationString.recommendedHashtags,
+                subTitle: LocalizationString.recommendedHashtagsForYou,
+                context: context).hP16,
             const SizedBox(
               height: 10,
             ),
             Expanded(
               child: ListView.separated(
-                  padding: EdgeInsets.zero,
+                  padding: const EdgeInsets.only(left: 16,right: 16),
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.items.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -264,8 +264,11 @@ class _RecommendedHashtagSectionState extends State<RecommendedHashtagSection> {
                     );
                   }),
             ),
+            const SizedBox(
+              height: 10,
+            ),
           ],
-        )).hP16;
+        ));
   }
 
   Widget hashtagCard(Hashtag item, int index) {
@@ -275,26 +278,21 @@ class _RecommendedHashtagSectionState extends State<RecommendedHashtagSection> {
       child: Column(
         children: [
           const Spacer(),
-
           SizedBox(
             height: 60,
             child: Center(
               child: Text(
                 '#${item.name}',
+                textAlign: TextAlign.center,
                 style: Theme.of(context)
                     .textTheme
                     .titleMedium!
-                    .copyWith(color: Theme.of(context).primaryColor),
-              ),
+                    .copyWith(color: Theme.of(context).primaryColor,fontWeight: FontWeight.w600),
+              ).hP4,
             ),
           ).ripple(() {
             Get.to(() => HashtagDetail(hashTag: item));
           }),
-          const Spacer(),
-          // Text(
-          //   item.name,
-          //   style: Theme.of(context).textTheme.titleMedium,
-          // ).vP4,
           SizedBox(
             height: 30,
             width: 90,
@@ -312,9 +310,9 @@ class _RecommendedHashtagSectionState extends State<RecommendedHashtagSection> {
                 recommendationController.followUnfollowHashtag(item);
               },
             ),
-          ).tP4
+          ).vP8
         ],
-      ).vP8,
+      ),
     ).borderWithRadius(value: 0.2, radius: 5, context: context);
   }
 }

@@ -71,26 +71,30 @@ class _CategoriesState extends State<Categories> {
     return GetBuilder<CategoryController>(
         init: categoryController,
         builder: (ctx) {
-          return categoryController.isLoading == true ? const CategoryShimmer() : SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
-            child: GridView.builder(
-              padding:  const EdgeInsets.only(top: 20),
-              itemCount: categoryController.categories.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 1,
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5),
-              itemBuilder: (BuildContext context, int index) {
-                return CategoryTile(
-                        category: categoryController.categories[index])
-                    .ripple(() {
-                  Get.to(() => CategoryPosts(
-                      category: categoryController.categories[index]));
-                });
-              },
-            ),
-          );
+          return categoryController.isLoading == true
+              ? const CategoryShimmer()
+              : SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.7,
+                  child: GridView.builder(
+                    padding: const EdgeInsets.only(top: 20),
+                    itemCount: categoryController.categories.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            childAspectRatio: 1,
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 5,
+                            mainAxisSpacing: 5),
+                    itemBuilder: (BuildContext context, int index) {
+                      return CategoryTile(
+                              isLargeText: true,
+                              category: categoryController.categories[index])
+                          .ripple(() {
+                        Get.to(() => CategoryPosts(
+                            category: categoryController.categories[index]));
+                      });
+                    },
+                  ),
+                );
         });
   }
 }
