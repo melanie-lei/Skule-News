@@ -710,7 +710,7 @@ class FirebaseManager {
         list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;

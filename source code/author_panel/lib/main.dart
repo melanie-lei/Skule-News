@@ -10,13 +10,13 @@ void main() async{
   await Firebase.initializeApp(
     // Replace with actual values
     options: const FirebaseOptions(
-        apiKey: "AIzaSyDf5AWPJF4hhQly7P_U0uu6g17HhxbRR8U",
-        authDomain: "musicy-46533.firebaseapp.com",
-        projectId: "musicy-46533",
-        storageBucket: "musicy-46533.appspot.com",
-        messagingSenderId: "226596893656",
-        appId: "1:226596893656:web:2ae630fb0a954aa138b8ad",
-        measurementId: "G-LE910VELB1"
+        apiKey: "AIzaSyC7C-de4bewAn2W7I8p9cIB3Q_y7Cef0Sc",
+        authDomain: "skule-news.firebaseapp.com",
+        projectId: "skule-news",
+        storageBucket: "skule-news.appspot.com",
+        messagingSenderId: "472349549744",
+        appId: "1:472349549744:web:2f3177dc0ef7c496f40775",
+        measurementId: "G-ZVTL9XD6EX"
     ),
   );
 
