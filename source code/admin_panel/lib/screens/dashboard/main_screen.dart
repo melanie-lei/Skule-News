@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
 import 'package:music_streaming_admin_panel/screens/misc/reported_authors.dart';
 
-
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey(); // Create a key
 
 class MainScreen extends StatefulWidget {
@@ -72,10 +71,14 @@ class _MainScreenState extends State<MainScreen> {
         return const Dashboard();
       case MenuType.categories:
         // do something else
-        return const CategoriesList(statusType: CategoryStatusType.active,);
+        return const CategoriesList(
+          statusType: CategoryStatusType.active,
+        );
       case MenuType.deactivatedCategories:
         // do something else
-        return const CategoriesList(statusType: CategoryStatusType.deactivated,);
+        return const CategoriesList(
+          statusType: CategoryStatusType.deactivated,
+        );
       case MenuType.addCategory:
         // do something else
         return const AddNewCategory();
@@ -101,8 +104,8 @@ class _MainScreenState extends State<MainScreen> {
         // do something else
         return const UsersList(statusType: AccountStatusType.deactivated);
       case MenuType.settings:
-        // do something else
-        return const Settings();
+      // do something else
+      //return const Settings();
       case MenuType.supportRequests:
         // do something else
         return const SupportRequests();
@@ -110,7 +113,7 @@ class _MainScreenState extends State<MainScreen> {
         // do something else
         return const ReportedBlogPost();
       case MenuType.reportAbusedAuthors:
-      // do something else
+        // do something else
         return const ReportedAuthors();
       case MenuType.changePassword:
         // do something else

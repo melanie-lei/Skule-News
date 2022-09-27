@@ -107,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: FilledButtonType1(
                         text: LocalizationString.signIn,
                         enabledTextStyle:
-                        Theme.of(context).textTheme.titleMedium,
+                            Theme.of(context).textTheme.titleMedium,
                         onPress: () {
                           loginController.loginUser();
                         },
@@ -134,27 +134,27 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Obx(() => InputField(
-              key: UniqueKey(),
-              controller: loginController.userName.value,
-              hintText: 'adam@zedge.com',
-              icon: ThemeIcon.email,
-              showBorder: true,
-              cornerRadius: 5,
-              backgroundColor: Colors.black.withOpacity(0.05),
-            )),
+                  key: UniqueKey(),
+                  controller: loginController.userName.value,
+                  hintText: 'adam@zedge.com',
+                  icon: ThemeIcon.email,
+                  showBorder: true,
+                  cornerRadius: 5,
+                  backgroundColor: Colors.black.withOpacity(0.05),
+                )),
             const SizedBox(
               height: 10,
             ),
             Obx(() => PasswordField(
-              onChanged: (txt) {},
-              key: UniqueKey(),
-              controller: loginController.password.value,
-              hintText: '*********',
-              icon: ThemeIcon.lock,
-              cornerRadius: 5,
-              showBorder: true,
-              backgroundColor: Colors.black.withOpacity(0.05),
-            )),
+                  onChanged: (txt) {},
+                  key: UniqueKey(),
+                  controller: loginController.password.value,
+                  hintText: '*********',
+                  icon: ThemeIcon.lock,
+                  cornerRadius: 5,
+                  showBorder: true,
+                  backgroundColor: Colors.black.withOpacity(0.05),
+                )),
             const SizedBox(
               height: 10,
             ),

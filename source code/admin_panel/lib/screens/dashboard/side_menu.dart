@@ -43,7 +43,7 @@ class _SideMenuState extends State<SideMenu> {
                               children: [
                                 Container(
                                   child: ThemeIconWidget(
-                                    ThemeIcon.bookMark,
+                                    ThemeIcon.book,
                                     size: 40,
                                     color: Theme.of(context).primaryColorLight,
                                   ).p(12),
@@ -324,7 +324,8 @@ class _SideMenuState extends State<SideMenu> {
                     ).ripple(() {
                       scaffoldKey.currentState!.openEndDrawer();
                       selectionHandler(MenuType.reportAbusedAuthors);
-                      sideMenuContainer.selectMenu(MenuType.reportAbusedAuthors);
+                      sideMenuContainer
+                          .selectMenu(MenuType.reportAbusedAuthors);
                     }),
                   ], title: LocalizationString.report),
                   DrawerListItemGroup(items: [
