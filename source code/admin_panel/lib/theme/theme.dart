@@ -49,7 +49,7 @@ class AppTheme {
       hoverColor: Colors.transparent,
       primaryColor: const Color(0xff1652af),
       primaryColorDark: const Color(0xff000000),
-      primaryColorLight: const Color(0xff808080),
+      primaryColorLight: const Color(0xffe8e8e8),
       shadowColor: Colors.yellow,
       dividerColor: const Color(0xfff1f2f6),
       errorColor: const Color(0xffff4757),
