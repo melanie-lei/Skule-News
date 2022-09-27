@@ -1,6 +1,6 @@
 class AppConfig {
-  static String projectName = 'Blog Master';
-  static String projectTagline = 'Welcome to Blog Master, enjoy the best blogs';
+  static String projectName = 'Skule News';
+  static String projectTagline = 'School Newspaper App';
 
   static String firebaseStorageBucketUrl = 'skule-news.appspot.com';
 
