@@ -7,87 +7,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:226596893656:android:d1854cf4e06dee3538b8ad",
+        "mobilesdk_app_id": "1:472349549744:android:5bfb12c1e82f4628f40775",
         "android_client_info": {
-          "package_name": "com.appsworld.blogmaster"
+          "package_name": "com.melanie"
         }
       },
       "oauth_client": [
         {
-          "client_id": "226596893656-arnpir9lodf1pjvdubaditoc9ftr4nbr.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.appsworld.blogmaster",
-            "certificate_hash": "d663e775b091bb03ea8b70b0be4db50f716f4667"
-          }
-        },
-        {
-          "client_id": "226596893656-ibnib40i0lhpijv0csuplaplrqcnsirc.apps.googleusercontent.com",
+          "client_id": "472349549744-2kp8frm2rmuciktois1b7bok2fm4nkn6.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBbB_tbOD-uQNBzrTHXz26Ogilxg57QHmg"
+          "current_key": "AIzaSyCaTmj_h3-Ygj0DQm_Y4qKHxr4oIY09arA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "226596893656-ibnib40i0lhpijv0csuplaplrqcnsirc.apps.googleusercontent.com",
+              "client_id": "472349549744-2kp8frm2rmuciktois1b7bok2fm4nkn6.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "226596893656-3kfi7c74g9cfmogvhk1atmqfp9kfoc8n.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.appsworld.blogmaster"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:226596893656:android:c631336c1235724038b8ad",
-        "android_client_info": {
-          "package_name": "com.myapp.musicy"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "226596893656-j8hplfqebdll0quq81upvih7r42h0guc.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.myapp.musicy",
-            "certificate_hash": "d663e775b091bb03ea8b70b0be4db50f716f4667"
-          }
-        },
-        {
-          "client_id": "226596893656-ibnib40i0lhpijv0csuplaplrqcnsirc.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBbB_tbOD-uQNBzrTHXz26Ogilxg57QHmg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "226596893656-ibnib40i0lhpijv0csuplaplrqcnsirc.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "226596893656-3kfi7c74g9cfmogvhk1atmqfp9kfoc8n.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.appsworld.blogmaster"
-              }
             }
           ]
         }
