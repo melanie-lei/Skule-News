@@ -250,10 +250,11 @@ class FirebaseManager {
   Future<FirebaseResponse> approveBlogPost(BlogPostModel model) async {
     DocumentReference activeBlogPost = blogPostsCollection.doc(model.id);
     DocumentReference artistDoc = authorsCollection.doc(model.authorId);
-    DocumentReference categoryDoc = authorsCollection
-        .doc(model.authorId)
-        .collection('categories')
-        .doc(model.categoryId);
+    // DocumentReference categoryDoc = authorsCollection
+    //     .doc(model.authorId)
+    //     .collection('categories')
+    //     .doc(model.categoryId);
+    DocumentReference categoryDoc = categoriesCollection.doc(model.categoryId);
     DocumentReference counterDoc = counter.doc('counter');
 
     await FirebaseFirestore.instance.runTransaction((transaction) async {
@@ -306,7 +307,7 @@ class FirebaseManager {
         response = FirebaseResponse(true, null);
       },
       onError: (error) {
-        FirebaseResponse(false, error);
+        FirebaseResponse(false, error.toString());
       },
     );
     return response!;
