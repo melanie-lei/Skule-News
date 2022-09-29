@@ -123,7 +123,7 @@ class FirebaseManager {
     }).catchError((error) {
       print('error');
       print(error);
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return user;
