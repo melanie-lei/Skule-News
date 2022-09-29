@@ -44,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
           children: [
             Responsive.isDesktop(context) || Responsive.isTablet(context)
                 ? Expanded(
-                    flex: Responsive.isMobile(context) ? 2 : 3,
+                    flex: Responsive.isMobile(context) ? 2 : 2,
                     child: Container(
                       color: Theme.of(context).primaryColor.withOpacity(0.2),
                       child: SideMenu(
