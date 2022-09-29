@@ -44,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
           children: [
             Responsive.isDesktop(context) || Responsive.isTablet(context)
                 ? Expanded(
-                    flex: Responsive.isMobile(context) ? 2 : 1,
+                    flex: Responsive.isMobile(context) ? 2 : 3,
                     child: Container(
                       color: Theme.of(context).primaryColor.withOpacity(0.2),
                       child: SideMenu(
@@ -56,7 +56,7 @@ class _MainScreenState extends State<MainScreen> {
                     ).round(20).setPadding(top: 25, bottom: 25, left: 16))
                 : Container(),
             Expanded(
-                flex: Responsive.isDesktop(context) ? 5 : 4,
+                flex: Responsive.isDesktop(context) ? 8 : 4,
                 child: loadScreen(menuType))
           ],
         ),
