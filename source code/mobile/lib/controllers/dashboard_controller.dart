@@ -81,7 +81,9 @@ class DashboardController extends GetxController {
   loadFeaturedPosts({required VoidCallback callBack}) {
     isLoading.value = true;
     update();
-    getIt<FirebaseManager>().getFeaturedPosts(postSearchParamModel).then((result) {
+    getIt<FirebaseManager>()
+        .getFeaturedPosts(postSearchParamModel)
+        .then((result) {
       featuredPosts.addAll(result.result as List<BlogPostModel>);
       isLoading.value = false;
       // postSearchParamModel.startsAt = result.lastDoc;
@@ -91,7 +93,7 @@ class DashboardController extends GetxController {
   }
 
   loadFollowingUsersPosts({required VoidCallback callBack}) {
-    if((postSearchParamModel.userIds ?? []).isEmpty){
+    if ((postSearchParamModel.userIds ?? []).isEmpty) {
       posts.value = [];
       update();
       return;
@@ -99,7 +101,9 @@ class DashboardController extends GetxController {
     isLoading.value = true;
     update();
 
-    getIt<FirebaseManager>().followingUsersPosts(searchModel: postSearchParamModel).then((result) {
+    getIt<FirebaseManager>()
+        .followingUsersPosts(searchModel: postSearchParamModel)
+        .then((result) {
       posts.addAll(result.result as List<BlogPostModel>);
       isLoading.value = false;
       // postSearchParamModel.startsAt = result.lastDoc;
@@ -114,7 +118,9 @@ class DashboardController extends GetxController {
     getIt<FirebaseManager>()
         .searchPosts(searchModel: postSearchParamModel)
         .then((result) {
-      posts.addAll(result.result as List<BlogPostModel>);
+      try {
+        posts.addAll(result.result as List<BlogPostModel>);
+      } catch (e) {}
       isLoading.value = false;
       // postSearchParamModel.startsAt = result.lastDoc;
 

@@ -673,7 +673,7 @@ class FirebaseManager {
 
       response = FirebaseResponse(true, null, result: list);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return response!;
