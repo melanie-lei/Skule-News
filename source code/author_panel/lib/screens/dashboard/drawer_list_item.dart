@@ -95,7 +95,9 @@ class DrawerListItem extends StatelessWidget {
                       title,
                       style: Theme.of(context).textTheme.titleSmall,
                     ),
-                    const SizedBox(width: 20,),
+                    const SizedBox(
+                      width: 20,
+                    ),
                     isSelected == true
                         ? Container(
                             height: 10,

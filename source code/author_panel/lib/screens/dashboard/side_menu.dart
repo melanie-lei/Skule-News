@@ -110,7 +110,7 @@ class _SideMenuState extends State<SideMenu> {
                   }),
                   DrawerListItemGroup(items: [
                     DrawerListItem(
-                        icon: ThemeIconWidget(ThemeIcon.book,
+                      icon: ThemeIconWidget(ThemeIcon.book,
                           color: Theme.of(context).iconTheme.color, size: 20),
                       title: LocalizationString.blogs,
                       isSelected: sideMenuContainer.selectedMenu.value ==
