@@ -131,7 +131,7 @@ class _DashboardState extends State<Dashboard> {
                       : 60)
         ],
       ).p(Responsive.isDesktop(context)
-          ? 16
+          ? 14
           : Responsive.isTablet(context)
               ? 8
               : 5),
