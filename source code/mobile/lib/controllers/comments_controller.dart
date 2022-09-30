@@ -5,6 +5,7 @@ class CommentsController extends GetxController {
   RxList<CommentModel> comments = <CommentModel>[].obs;
 
   void getComments(String postId) {
+    print('POST ID :    ' + postId);
     AppUtil.checkInternet().then((value) async {
       if (value) {
         getIt<FirebaseManager>().getComments(posId: postId).then((result) {

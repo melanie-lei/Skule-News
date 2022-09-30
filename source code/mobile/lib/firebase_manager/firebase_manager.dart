@@ -927,7 +927,7 @@ class FirebaseManager {
     List<CommentModel> list = [];
 
     Query query = commentsCollection
-        .where("posId", isEqualTo: posId)
+        .where("postId", isEqualTo: posId)
         .orderBy("createdAt", descending: true);
 
     await query.get().then((QuerySnapshot snapshot) {
@@ -935,7 +935,7 @@ class FirebaseManager {
         list.add(CommentModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
