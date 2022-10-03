@@ -87,6 +87,12 @@ class AddBlogController extends GetxController {
           isSuccess: false);
 
       return;
+    } else if (categoryName.isEmpty) {
+      AppUtil.showToast(
+        message: LocalizationString.pleaseEnterCategoryName,
+        isSuccess: false);
+
+        return;
     }
 
     EasyLoading.show(status: LocalizationString.loading);
@@ -145,7 +151,7 @@ class AddBlogController extends GetxController {
                 : LocalizationString.blogUpdated,
             isSuccess: true);
       } else {
-        AppUtil.showToast(message: response.message ?? '', isSuccess: false);
+        AppUtil.showToast(message: response.message ?? 'Bad Response', isSuccess: false);
       }
     });
   }

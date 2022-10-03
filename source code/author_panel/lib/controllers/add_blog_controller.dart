@@ -87,6 +87,12 @@ class AddBlogController extends GetxController {
           isSuccess: false);
 
       return;
+    } else if (categoryName.isEmpty) {
+      AppUtil.showToast(
+        message: LocalizationString.pleaseEnterCategoryName,
+        isSuccess: false);
+
+        return;
     }
 
     EasyLoading.show(status: LocalizationString.loading);
