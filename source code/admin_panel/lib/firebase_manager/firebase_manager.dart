@@ -607,8 +607,11 @@ class FirebaseManager {
         }
 
         transaction.set(postDoc, postJson);
+        /*
         transaction
             .update(counterDoc, {'totalBlogPosts': FieldValue.increment(1)});
+
+         */
         transaction.update(author, {'totalBlogPosts': FieldValue.increment(1)});
         transaction
             .update(categoryDoc, {'totalBlogPosts': FieldValue.increment(1)});
