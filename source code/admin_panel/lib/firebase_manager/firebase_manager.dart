@@ -133,7 +133,7 @@ class FirebaseManager {
     await FirebaseAuth.instance.currentUser?.updatePassword(pwd).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -144,7 +144,7 @@ class FirebaseManager {
         .then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -184,7 +184,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -197,7 +197,7 @@ class FirebaseManager {
     await doc.update({'name': name, 'bio': bio, 'image': image}).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -214,7 +214,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -224,7 +224,7 @@ class FirebaseManager {
     await authorsCollection.doc(id).get().then((doc) {
       source = AuthorsModel.fromJson(doc.data() as Map<String, dynamic>);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return source;
@@ -241,7 +241,7 @@ class FirebaseManager {
         list.add(CategoryModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -319,7 +319,7 @@ class FirebaseManager {
     await pendingBlogPost.update({'approvedStatus': -1}).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -338,7 +338,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -352,7 +352,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -368,7 +368,7 @@ class FirebaseManager {
         list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -383,7 +383,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -442,7 +442,7 @@ class FirebaseManager {
     }).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -550,12 +550,14 @@ class FirebaseManager {
         transaction.update(categoryDoc, {
           'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
         });
-
+/*
         if (postCounterIncrementFactor != 0) {
           transaction.update(counterDoc, {
             'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
           });
         }
+
+ */
       }).then(
         (value) {
           response = FirebaseResponse(true, null);
@@ -640,7 +642,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -662,7 +664,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -727,7 +729,7 @@ class FirebaseManager {
         list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -760,7 +762,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -779,7 +781,7 @@ class FirebaseManager {
     }).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -800,7 +802,7 @@ class FirebaseManager {
             .add(CategoryModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return categoriesList;
@@ -825,7 +827,7 @@ class FirebaseManager {
         list.add(AuthorsModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -842,7 +844,7 @@ class FirebaseManager {
         list.add(AuthorsModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -867,7 +869,7 @@ class FirebaseManager {
         list.add(Hashtag.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -892,7 +894,7 @@ class FirebaseManager {
         list.add(AuthorsModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -915,7 +917,7 @@ class FirebaseManager {
         list.add(UserModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -933,7 +935,7 @@ class FirebaseManager {
         list.add(CommentModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -957,7 +959,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -969,7 +971,7 @@ class FirebaseManager {
         list.add(PackageModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -998,13 +1000,13 @@ class FirebaseManager {
       await categoryDoc.update(categoryJson).then((value) {
         response = FirebaseResponse(true, null);
       }).catchError((error) {
-        response = FirebaseResponse(false, error);
+        response = FirebaseResponse(false, error.toString());
       });
     } else {
       await categoryDoc.set(categoryJson).then((value) {
         response = FirebaseResponse(true, null);
       }).catchError((error) {
-        response = FirebaseResponse(false, error);
+        response = FirebaseResponse(false, error.toString());
       });
     }
 
@@ -1047,7 +1049,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -1068,7 +1070,7 @@ class FirebaseManager {
             .add(CategoryModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return categoryList;
@@ -1080,7 +1082,7 @@ class FirebaseManager {
     await categoriesCollection.doc(id).get().then((doc) {
       category = CategoryModel.fromJson(doc.data() as Map<String, dynamic>);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return category;
@@ -1093,7 +1095,7 @@ class FirebaseManager {
       recordCounter =
           RecordCounterModel.fromJson(doc.data() as Map<String, dynamic>);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return recordCounter;
@@ -1124,7 +1126,7 @@ class FirebaseManager {
     await doc.set(settingsData).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return response!;
@@ -1136,7 +1138,7 @@ class FirebaseManager {
     await settings.doc('settings').get().then((doc) {
       setting = SettingsModel.fromJson(doc.data() as Map<String, dynamic>);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return setting;
@@ -1151,7 +1153,7 @@ class FirebaseManager {
             .add(SupportModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return supportTickets;
@@ -1170,7 +1172,7 @@ class FirebaseManager {
     await doc.update(reply).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return response!;
@@ -1187,7 +1189,7 @@ class FirebaseManager {
     await doc.update(reply).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return response!;
@@ -1217,13 +1219,13 @@ class FirebaseManager {
       await doc.update(json).then((value) {
         response = FirebaseResponse(true, null);
       }).catchError((error) {
-        response = FirebaseResponse(false, error);
+        response = FirebaseResponse(false, error.toString());
       });
     } else {
       await doc.set(json).then((value) {
         response = FirebaseResponse(true, null);
       }).catchError((error) {
-        response = FirebaseResponse(false, error);
+        response = FirebaseResponse(false, error.toString());
       });
     }
 
@@ -1240,7 +1242,7 @@ class FirebaseManager {
         list.add(PackageModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -1252,7 +1254,7 @@ class FirebaseManager {
     await doc.delete().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }

@@ -77,7 +77,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -89,7 +89,7 @@ class FirebaseManager {
     await doc.update({'name': name, 'bio': bio}).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -214,7 +214,7 @@ class FirebaseManager {
         user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
       }).catchError((error) {
         print(error);
-        response = FirebaseResponse(false, error);
+        response = FirebaseResponse(false, error.toString());
       });
     }).catchError((error) {});
 
@@ -226,7 +226,7 @@ class FirebaseManager {
     await userCollection.doc(id).get().then((doc) {
       user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return user;
@@ -244,7 +244,7 @@ class FirebaseManager {
     }).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -253,7 +253,7 @@ class FirebaseManager {
     await FirebaseAuth.instance.currentUser?.updatePassword(pwd).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -264,7 +264,7 @@ class FirebaseManager {
         .then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -286,7 +286,7 @@ class FirebaseManager {
     }).then((value) {
       // response = FirebaseResponse(true, null);
     }).catchError((error) {
-      // response = FirebaseResponse(false, error);
+      // response = FirebaseResponse(false, error.toString(;
     });
     return path;
   }
@@ -296,7 +296,7 @@ class FirebaseManager {
     await authorsCollection.doc(id).get().then((doc) {
       source = AuthorModel.fromJson(doc.data() as Map<String, dynamic>);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return source;
@@ -314,7 +314,7 @@ class FirebaseManager {
         list.add(CategoryModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -339,7 +339,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -363,7 +363,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -397,7 +397,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -430,7 +430,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -455,7 +455,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -480,7 +480,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -505,7 +505,7 @@ class FirebaseManager {
   //   await batch.commit().then((value) {
   //     response = FirebaseResponse(true, null);
   //   }).catchError((error) {
-  //     response = FirebaseResponse(false, error);
+  //     response = FirebaseResponse(false, error.toString(;
   //   });
   //   return response!;
   // }
@@ -530,7 +530,7 @@ class FirebaseManager {
   //   await batch.commit().then((value) {
   //     response = FirebaseResponse(true, null);
   //   }).catchError((error) {
-  //     response = FirebaseResponse(false, error);
+  //     response = FirebaseResponse(false, error.toString(;
   //   });
   //   return response!;
   // }
@@ -554,7 +554,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -578,7 +578,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -592,7 +592,7 @@ class FirebaseManager {
     }).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -606,7 +606,7 @@ class FirebaseManager {
     }).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -703,7 +703,7 @@ class FirebaseManager {
 
       response = FirebaseResponse(true, null, result: list);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return response!;
@@ -728,7 +728,7 @@ class FirebaseManager {
 
       response = FirebaseResponse(true, null, result: list);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return response!;
@@ -762,7 +762,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -781,7 +781,7 @@ class FirebaseManager {
     }).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -801,7 +801,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -823,7 +823,7 @@ class FirebaseManager {
             .add(CategoryModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return categoriesList;
@@ -849,7 +849,7 @@ class FirebaseManager {
         list.add(AuthorModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -874,7 +874,7 @@ class FirebaseManager {
   //       list.add(NewsLocation.fromJson(doc.data() as Map<String, dynamic>));
   //     }
   //   }).catchError((error) {
-  //     response = FirebaseResponse(false, error);
+  //     response = FirebaseResponse(false, error.toString(;
   //   });
   //
   //   return list;
@@ -885,7 +885,7 @@ class FirebaseManager {
     await hashtagsCollection.doc(id).get().then((doc) {
       hashtag = Hashtag.fromJson(doc.data() as Map<String, dynamic>);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return hashtag;
@@ -917,7 +917,7 @@ class FirebaseManager {
         list.add(Hashtag.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -959,7 +959,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }

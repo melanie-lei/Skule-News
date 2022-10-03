@@ -79,7 +79,13 @@ class FirebaseManager {
     DocumentReference doc = authorsCollection.doc(id);
 
     await doc
-        .set({'id': id, 'name': name, 'status': 1, 'email': email,'keywords':name!.allPossibleSubstrings()})
+        .set({
+          'id': id,
+          'name': name,
+          'status': 1,
+          'email': email,
+          'keywords': name!.allPossibleSubstrings()
+        })
         .then((value) {})
         .catchError((error) {
           // AppUtil.showToast(message: 'insertUser $error', isSuccess: true);
@@ -99,7 +105,7 @@ class FirebaseManager {
     }).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -173,7 +179,7 @@ class FirebaseManager {
     await authorsCollection.doc(id).get().then((doc) {
       user = AuthorsModel.fromJson(doc.data() as Map<String, dynamic>);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return user;
@@ -183,7 +189,7 @@ class FirebaseManager {
     await FirebaseAuth.instance.currentUser?.updatePassword(pwd).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -194,7 +200,7 @@ class FirebaseManager {
         .then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -211,7 +217,7 @@ class FirebaseManager {
   //   await batch.commit().then((value) {
   //     response = FirebaseResponse(true, null);
   //   }).catchError((error) {
-  //     response = FirebaseResponse(false, error);
+  //     response = FirebaseResponse(false, error.toString());
   //   });
   //   return response!;
   // }
@@ -247,7 +253,7 @@ class FirebaseManager {
         list.add(CategoryModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -267,7 +273,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -281,7 +287,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -298,7 +304,7 @@ class FirebaseManager {
             .add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return ringtonesList;
@@ -358,7 +364,7 @@ class FirebaseManager {
     }).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -428,14 +434,15 @@ class FirebaseManager {
           {'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)});
 
       if (postCounterIncrementFactor != 0) {
-        batch.update(counterDoc,
-            {'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)});
+        batch.update(counterDoc, {
+          'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
+        });
       }
 
       await batch.commit().then((value) {
         response = FirebaseResponse(true, null);
       }).catchError((error) {
-        response = FirebaseResponse(false, error);
+        response = FirebaseResponse(false, error.toString());
       });
     } else {
       postJson['createdAt'] = FieldValue.serverTimestamp();
@@ -451,7 +458,7 @@ class FirebaseManager {
       await batch.commit().then((value) {
         response = FirebaseResponse(true, null);
       }).catchError((error) {
-        response = FirebaseResponse(false, error);
+        response = FirebaseResponse(false, error.toString());
       });
     }
 
@@ -475,7 +482,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -497,7 +504,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -546,7 +553,7 @@ class FirebaseManager {
     }).catchError((error) {
       print(error);
 
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -562,7 +569,7 @@ class FirebaseManager {
         list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -579,7 +586,7 @@ class FirebaseManager {
             .add(CategoryModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return categoriesList;
@@ -600,7 +607,7 @@ class FirebaseManager {
             .add(CategoryModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return categoriesList;
@@ -625,7 +632,7 @@ class FirebaseManager {
         list.add(AuthorsModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -643,7 +650,7 @@ class FirebaseManager {
         list.add(CommentModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return list;
@@ -667,7 +674,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -697,13 +704,13 @@ class FirebaseManager {
       await categoryDoc.update(categoryJson).then((value) {
         response = FirebaseResponse(true, null);
       }).catchError((error) {
-        response = FirebaseResponse(false, error);
+        response = FirebaseResponse(false, error.toString());
       });
     } else {
       await categoryDoc.set(categoryJson).then((value) {
         response = FirebaseResponse(true, null);
       }).catchError((error) {
-        response = FirebaseResponse(false, error);
+        response = FirebaseResponse(false, error.toString());
       });
     }
 
@@ -746,7 +753,7 @@ class FirebaseManager {
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
     return response!;
   }
@@ -758,7 +765,7 @@ class FirebaseManager {
       recordCounter =
           RecordCounterModel.fromJson(doc.data() as Map<String, dynamic>);
     }).catchError((error) {
-      response = FirebaseResponse(false, error);
+      response = FirebaseResponse(false, error.toString());
     });
 
     return recordCounter;

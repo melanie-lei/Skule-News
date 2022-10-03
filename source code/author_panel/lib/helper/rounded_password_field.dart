@@ -103,15 +103,16 @@ class _PasswordFieldState extends State<PasswordField> {
         color: isError == false
             ? backgroundColor ?? Theme.of(context).backgroundColor.darken(0.05)
             : (showDivider == false && showBorder == false)
-            ? Theme.of(context).errorColor
-            : backgroundColor ?? Theme.of(context).backgroundColor.darken(0.05),
+                ? Theme.of(context).errorColor
+                : backgroundColor ??
+                    Theme.of(context).backgroundColor.darken(0.05),
         borderRadius: BorderRadius.circular(cornerRadius ?? 0),
         border: showBorder == true
             ? Border.all(
-            width: 0.5,
-            color: isError == true
-                ? Theme.of(context).errorColor
-                : borderColor ?? Theme.of(context).primaryColorLight)
+                width: 0.5,
+                color: isError == true
+                    ? Theme.of(context).errorColor
+                    : borderColor ?? Theme.of(context).primaryColorLight)
             : null,
       ),
       // margin: EdgeInsets.symmetric(vertical: 5),
@@ -127,33 +128,36 @@ class _PasswordFieldState extends State<PasswordField> {
               children: [
                 (label != null && showLabelInNewLine == false)
                     ? Text(label!, style: Theme.of(context).textTheme.subtitle1)
-                    .bP4
+                        .bP4
                     : Container(),
                 iconView(),
                 Expanded(
                     child: Focus(
-                      child: TextField(
-                          style:
-                          textStyle ?? Theme.of(context).textTheme.titleSmall,
-                          controller: controller,
-                          onChanged: onChanged,
-                          cursorColor: cursorColor ?? Theme.of(context).hoverColor,
-                          obscureText: !showPassword,
-                          decoration: InputDecoration(
-                            contentPadding:
-                            const EdgeInsets.only(left: 0, right: 10),
-                            // labelText: hintText,
-                            hintText: hintText,
-                            labelStyle: Theme.of(context).textTheme.bodyMedium,
-                            hintStyle: Theme.of(context).textTheme.titleSmall,
-                            border: InputBorder.none,
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                          )),
-                      onFocusChange: (hasFocus) {
-                        startedEditing = hasFocus;
-                        setState(() {});
-                      },
-                    )),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: TextField(
+                        style:
+                            textStyle ?? Theme.of(context).textTheme.titleSmall,
+                        controller: controller,
+                        onChanged: onChanged,
+                        cursorColor: cursorColor,
+                        obscureText: !showPassword,
+                        decoration: InputDecoration(
+                          contentPadding:
+                              const EdgeInsets.only(left: 0, right: 10),
+                          // labelText: hintText,
+                          hintText: hintText,
+                          labelStyle: Theme.of(context).textTheme.bodyMedium,
+                          hintStyle: Theme.of(context).textTheme.titleSmall,
+                          border: InputBorder.none,
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                        )),
+                  ),
+                  onFocusChange: (hasFocus) {
+                    startedEditing = hasFocus;
+                    setState(() {});
+                  },
+                )),
                 revealPasswordIcon()
               ],
             ),
@@ -167,43 +171,43 @@ class _PasswordFieldState extends State<PasswordField> {
   Widget revealPasswordIcon() {
     return showRevealPasswordIcon == true
         ? Row(
-      children: [
-        ThemeIconWidget(
-          showPassword == false ? ThemeIcon.reveal : ThemeIcon.hide,
-          color: Theme.of(context).primaryColor,
-          size: 20,
-        ).ripple(() {
-          setState(() {
-            showPassword = !showPassword;
-          });
-        }),
-        const SizedBox(
-          width: 16,
-        )
-      ],
-    )
+            children: [
+              ThemeIconWidget(
+                showPassword == false ? ThemeIcon.reveal : ThemeIcon.hide,
+                color: Theme.of(context).primaryColor,
+                size: 20,
+              ).ripple(() {
+                setState(() {
+                  showPassword = !showPassword;
+                });
+              }),
+              const SizedBox(
+                width: 16,
+              )
+            ],
+          )
         : Container();
   }
 
   Widget line() {
     return showDivider == true
         ? Container(
-        height: 0.5,
-        color: startedEditing == true
-            ? Theme.of(context).primaryColor
-            : isError == true
-            ? Theme.of(context).errorColor
-            : Theme.of(context).dividerColor)
+            height: 0.5,
+            color: startedEditing == true
+                ? Theme.of(context).primaryColor
+                : isError == true
+                    ? Theme.of(context).errorColor
+                    : Theme.of(context).dividerColor)
         : Container();
   }
 
   Widget iconView() {
     return icon != null
         ? ThemeIconWidget(
-      icon!,
-      color: iconColor ?? Theme.of(context).primaryColor,
-      size: 20,
-    ).hP16
+            icon!,
+            color: iconColor ?? Theme.of(context).primaryColor,
+            size: 20,
+          ).hP16
         : Container();
   }
 }
