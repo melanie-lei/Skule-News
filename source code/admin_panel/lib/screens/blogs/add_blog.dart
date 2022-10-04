@@ -171,6 +171,7 @@ class _AddBlogState extends State<AddBlog> {
               showBorder: true,
               cornerRadius: 5,
               maxLines: 5,
+              keyboardType: TextInputType.multiline,
             ))
       ],
     );

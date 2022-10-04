@@ -26,7 +26,10 @@ class InputField extends StatefulWidget {
   final Color? cursorColor;
   final TextStyle? textStyle;
 
+  final TextInputType? keyboardType;
+
   const InputField({
+    this.keyboardType,
     Key? key,
     this.label,
     this.showLabelInNewLine = true,
@@ -80,9 +83,12 @@ class _InputFieldState extends State<InputField> {
   late Color cursorColor;
   late TextStyle textStyle;
 
+  late TextInputType? keyboardType;
+
   @override
   void initState() {
     // TODO: implement initState
+    keyboardType = widget.keyboardType;
     label = widget.label;
     showLabelInNewLine = widget.showLabelInNewLine;
     hintText = widget.hintText;
@@ -153,9 +159,7 @@ class _InputFieldState extends State<InputField> {
                 child: Focus(
                   child: TextField(
                     controller: controller,
-                    keyboardType: hintText == hintText
-                        ? TextInputType.emailAddress
-                        : TextInputType.text,
+                    keyboardType: keyboardType ?? TextInputType.emailAddress,
                     textAlign: TextAlign.left,
                     style: Theme.of(context).textTheme.titleSmall,
                     onChanged: widget.onChanged,
