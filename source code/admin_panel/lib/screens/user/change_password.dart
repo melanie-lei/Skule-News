@@ -42,6 +42,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 height: 10,
               ),
               Obx(() => PasswordField(
+                    padding: 15,
                     controller: changePasswordController.newPassword.value,
                     showBorder: true,
                     cornerRadius: 5,
@@ -63,6 +64,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     showBorder: true,
                     cornerRadius: 5,
                     cursorColor: Colors.white70,
+                    padding: 15,
                     onChanged: (text) {},
                   )),
               const SizedBox(

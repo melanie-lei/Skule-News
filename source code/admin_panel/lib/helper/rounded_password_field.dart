@@ -18,6 +18,7 @@ class PasswordField extends StatefulWidget {
   final bool? isError;
   final bool? startedEditing;
   final double? cornerRadius;
+  final double? padding;
 
   final Color? cursorColor;
   final TextStyle? textStyle;
@@ -42,6 +43,7 @@ class PasswordField extends StatefulWidget {
     this.cornerRadius = 0,
     this.cursorColor,
     this.textStyle,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -66,6 +68,7 @@ class _PasswordFieldState extends State<PasswordField> {
   late double? cornerRadius;
   late ValueChanged<String> onChanged;
   late TextEditingController? controller;
+  late double? padding;
 
   late Color? cursorColor;
   late TextStyle? textStyle;
@@ -89,6 +92,7 @@ class _PasswordFieldState extends State<PasswordField> {
     isError = widget.isError;
     startedEditing = widget.startedEditing;
     cornerRadius = widget.cornerRadius;
+    padding = widget.padding;
 
     cursorColor = widget.cursorColor;
     textStyle = widget.textStyle;
@@ -134,7 +138,9 @@ class _PasswordFieldState extends State<PasswordField> {
                 Expanded(
                     child: Focus(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: padding != null
+                        ? EdgeInsets.symmetric(horizontal: padding!)
+                        : EdgeInsets.symmetric(horizontal: 0),
                     child: TextField(
                         style:
                             textStyle ?? Theme.of(context).textTheme.titleSmall,
