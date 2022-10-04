@@ -550,14 +550,13 @@ class FirebaseManager {
         transaction.update(categoryDoc, {
           'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
         });
-/*
+
         if (postCounterIncrementFactor != 0) {
           transaction.update(counterDoc, {
             'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
           });
         }
 
- */
       }).then(
         (value) {
           response = FirebaseResponse(true, null);
@@ -607,11 +606,8 @@ class FirebaseManager {
         }
 
         transaction.set(postDoc, postJson);
-        /*
         transaction
             .update(counterDoc, {'totalBlogPosts': FieldValue.increment(1)});
-
-         */
         transaction.update(author, {'totalBlogPosts': FieldValue.increment(1)});
         transaction
             .update(categoryDoc, {'totalBlogPosts': FieldValue.increment(1)});
