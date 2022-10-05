@@ -53,15 +53,15 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const ThemeIconWidget(
-                    ThemeIcon.backArrow,
-                    color: Colors.white,
-                    size: 25,
-                  ).ripple(() {
-                    Get.back();
-                  }),
-                ],
+                // children: [
+                //   const ThemeIconWidget(
+                //     ThemeIcon.backArrow,
+                //     color: Colors.white,
+                //     size: 25,
+                //   ).ripple(() {
+                //     Get.back();
+                //   }),
+                // ],
               ),
               Container(
                   height: 120,

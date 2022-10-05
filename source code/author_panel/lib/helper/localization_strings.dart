@@ -1,8 +1,7 @@
 import 'package:music_streaming_admin_panel/helper/pub_imports.dart';
 
 class LocalizationString {
-  static String appTagline =
-      'Music is everything, Start streaming music with MUSICY'.tr();
+  static String appTagline = 'School Newspaper App'.tr();
 
   static String success = 'Success'.tr();
   static String error = 'Error'.tr();

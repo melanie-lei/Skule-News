@@ -38,6 +38,8 @@ void main() async {
 
   bool onBoardingShown = await SharedPrefs().isOnBoardingShown();
 
+  EasyLoading.instance.userInteractions = false;
+
   runApp(
     EasyLocalization(
         useOnlyLangCode: true,
