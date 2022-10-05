@@ -550,6 +550,8 @@ class FirebaseManager {
       query =
           query.where("approvedStatus", isEqualTo: searchModel.approvedStatus);
     }
+    
+    query = query.orderBy("createdAt", descending: true);
 
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
