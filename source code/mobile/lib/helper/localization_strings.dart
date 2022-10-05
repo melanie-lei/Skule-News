@@ -32,7 +32,7 @@ class LocalizationString {
 
   static String followers = 'Followers'.tr();
   static String posts = 'Posts'.tr();
-  static String blogs = 'Blogs'.tr();
+  static String blogs = 'Articles'.tr();
   static String noBlogs = 'No Blog'.tr();
 
   static String share = 'Share'.tr();
@@ -232,12 +232,14 @@ class LocalizationString {
 
   static String subscriptionValidTill = 'subscription active till'.tr();
 
-  static String subscribedSuccessfully = 'Congratulations, you are subscribed successfully'.tr();
+  static String subscribedSuccessfully =
+      'Congratulations, you are subscribed successfully'.tr();
 
   static String premiumAccess = 'PREMIUM ACCESS'.tr();
   static String thisIsPremiumBlog = 'This is a premium blog'.tr();
 
-  static String accessToAllBlogs = 'Get access to all premium blogs and remove ads'.tr();
+  static String accessToAllBlogs =
+      'Get access to all premium blogs and remove ads'.tr();
   static String tryStr = 'Try'.tr();
   static String daysForFree = 'days for free'.tr();
   static String then = 'then'.tr();

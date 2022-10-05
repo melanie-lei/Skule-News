@@ -166,7 +166,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               onChanged: (txt) {},
               key: UniqueKey(),
               controller: confirmNewPassword,
-              hintText: 'conform new password',
+              hintText: 'confirm new password',
               icon: ThemeIcon.lock,
               cornerRadius: 5,
               showBorder: true,
