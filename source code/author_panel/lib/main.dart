@@ -42,6 +42,8 @@ void main() async{
 
   setPathUrlStrategy();
 
+  EasyLoading.instance.userInteractions = false;
+
   runApp(
     EasyLocalization(
         useOnlyLangCode: true,
