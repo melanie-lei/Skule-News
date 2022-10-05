@@ -100,7 +100,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
                     Obx(() => InputField(
                           icon: ThemeIcon.email,
                           cornerRadius: 5,
-                          hintText: 'adam@gmail.com',
+                          hintText: 'email',
                           controller: loginController.email.value,
                           onChanged: (phone) {},
                           showBorder: true,
