@@ -4,9 +4,9 @@ import 'package:music_streaming_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
 
 class BlogPostFullDetail extends StatefulWidget {
-  final BlogPostModel model;
+  BlogPostModel model;
 
-  const BlogPostFullDetail({Key? key, required this.model}) : super(key: key);
+  BlogPostFullDetail({Key? key, required this.model}) : super(key: key);
 
   @override
   _BlogPostFullDetailState createState() => _BlogPostFullDetailState();
@@ -15,10 +15,9 @@ class BlogPostFullDetail extends StatefulWidget {
 class _BlogPostFullDetailState extends State<BlogPostFullDetail>
     with TickerProviderStateMixin {
   final controller = PageController(viewportFraction: 1, keepPage: true);
-  final NewsDetailController newsDetailController = Get.find();
-  final AuthorController sourceController = Get.find();
-  final SubscriptionPackageController subscriptionPackageController =
-      Get.find();
+  NewsDetailController newsDetailController = Get.find();
+  AuthorController sourceController = Get.find();
+  SubscriptionPackageController subscriptionPackageController = Get.find();
 
   late TabController tabController;
   int selectedSegment = 0;
@@ -31,10 +30,13 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
   }
 
   loadData(BlogPostModel model) {
-    newsDetailController.setCurrentNewsPost(model);
-    newsDetailController.loadSimilarPosts(
-        categoryId: model.categoryId, hashtags: model.hashtags);
-    sourceController.getAuthorDetail(id: model.authorId);
+    setState(() {
+      widget.model = model;
+      newsDetailController.setCurrentNewsPost(model);
+      newsDetailController.loadSimilarPosts(
+          categoryId: model.categoryId, hashtags: model.hashtags);
+      sourceController.getAuthorDetail(id: model.authorId);
+    });
   }
 
   @override
@@ -351,6 +353,7 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                         child: BlogPostTile(
                                 model: newsDetailController.similarNews[index])
                             .ripple(() {
+                          print(newsDetailController.similarNews[index].title);
                           loadData(newsDetailController.similarNews[index]);
                         }),
                       );
