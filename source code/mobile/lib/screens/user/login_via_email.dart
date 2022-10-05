@@ -75,7 +75,8 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                       Container(
                           height: 40,
                           width: 40,
-                          color: Theme.of(context).backgroundColor.lighten(0.05),
+                          color:
+                              Theme.of(context).backgroundColor.lighten(0.05),
                           child: Image.asset(
                             'assets/images/logo.png',
                             height: 20,
@@ -183,7 +184,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                     width: 50,
                   ),
                 ],
-              ).ripple((){
+              ).ripple(() {
                 getIt<UserProfileManager>().loginAnonymously();
               }),
               const SizedBox(
@@ -206,7 +207,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
             InputField(
               // key: UniqueKey(),
               controller: loginEmail,
-              hintText: 'adam@zedge.com',
+              hintText: 'email',
               icon: ThemeIcon.email,
               showBorder: true,
               cornerRadius: 5,
@@ -219,7 +220,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
               onChanged: (txt) {},
               // key: UniqueKey(),
               controller: loginPassword,
-              hintText: '*********',
+              hintText: 'password',
               icon: ThemeIcon.lock,
               cornerRadius: 5,
               showBorder: true,
@@ -275,7 +276,8 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
               } else {
                 getIt<UserProfileManager>().logout();
                 AppUtil.showToast(
-                    message: LocalizationString.accountDeleted, isSuccess: false);
+                    message: LocalizationString.accountDeleted,
+                    isSuccess: false);
               }
             }
           } else {

@@ -73,7 +73,8 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
                       Container(
                           height: 40,
                           width: 40,
-                          color: Theme.of(context).backgroundColor.lighten(0.05),
+                          color:
+                              Theme.of(context).backgroundColor.lighten(0.05),
                           child: Image.asset(
                             'assets/images/logo.png',
                             height: 20,
@@ -185,7 +186,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
                     width: 50,
                   ),
                 ],
-              ).ripple((){
+              ).ripple(() {
                 getIt<UserProfileManager>().loginAnonymously();
               }),
               const SizedBox(
@@ -208,7 +209,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
             InputField(
               // key: UniqueKey(),
               controller: signUpEmail,
-              hintText: "admin@gmail.com",
+              hintText: "email",
               icon: ThemeIcon.email,
               showBorder: true,
               cornerRadius: 5,
@@ -220,7 +221,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
             InputField(
               // key: UniqueKey(),
               controller: name,
-              hintText: 'Adam',
+              hintText: 'name',
               icon: ThemeIcon.account,
               showBorder: true,
               cornerRadius: 5,
@@ -233,7 +234,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
               onChanged: (txt) {},
               // key: UniqueKey(),
               controller: signUpPassword,
-              hintText: '********',
+              hintText: 'password',
               icon: ThemeIcon.lock,
               cornerRadius: 5,
               showBorder: true,

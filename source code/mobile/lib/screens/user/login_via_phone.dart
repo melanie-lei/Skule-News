@@ -70,7 +70,8 @@ class LoginViaPhoneState extends State<LoginViaPhone> {
                       Container(
                           height: 40,
                           width: 40,
-                          color: Theme.of(context).backgroundColor.lighten(0.05),
+                          color:
+                              Theme.of(context).backgroundColor.lighten(0.05),
                           child: Image.asset(
                             'assets/images/logo.png',
                             height: 20,
@@ -113,7 +114,7 @@ class LoginViaPhoneState extends State<LoginViaPhone> {
                     InputMobileNumberField(
                         cornerRadius: 5,
                         // textStyle: Theme.of(context).textTheme.bodyMedium,
-                        hintText: '(1234)-456-789',
+                        hintText: '(123)-456-7890',
                         controller: phoneNumber,
                         phoneCodeText: phoneCode,
                         onChanged: (phone) {},
@@ -133,8 +134,8 @@ class LoginViaPhoneState extends State<LoginViaPhone> {
                             .textTheme
                             .titleMedium!
                             .copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600),
                         onPress: () {
                           loginUser();
                         },
@@ -169,10 +170,10 @@ class LoginViaPhoneState extends State<LoginViaPhone> {
                 height: 50,
               ),
               Container(
-                  height: 80,
-                  width: MediaQuery.of(context).size.width - 32,
-                  color: Theme.of(context).backgroundColor.lighten(0.05),
-                  child: const SocialLogin())
+                      height: 80,
+                      width: MediaQuery.of(context).size.width - 32,
+                      color: Theme.of(context).backgroundColor.lighten(0.05),
+                      child: const SocialLogin())
                   .round(20),
               const Spacer(),
               Column(
@@ -193,7 +194,7 @@ class LoginViaPhoneState extends State<LoginViaPhone> {
                     width: 50,
                   ),
                 ],
-              ).ripple((){
+              ).ripple(() {
                 getIt<UserProfileManager>().loginAnonymously();
               }),
               const SizedBox(
@@ -228,6 +229,5 @@ class LoginViaPhoneState extends State<LoginViaPhone> {
 
   showMessage(String message, bool isError) {
     AppUtil.showToast(message: message, isSuccess: !isError);
-
   }
 }

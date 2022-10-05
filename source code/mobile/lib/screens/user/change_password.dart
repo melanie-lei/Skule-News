@@ -68,7 +68,8 @@ class _ChangePasswordState extends State<ChangePassword> {
                       Container(
                           height: 40,
                           width: 40,
-                          color: Theme.of(context).backgroundColor.lighten(0.05),
+                          color:
+                              Theme.of(context).backgroundColor.lighten(0.05),
                           child: Image.asset(
                             'assets/images/logo.png',
                             height: 20,
@@ -133,9 +134,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               const SizedBox(
                 height: 40,
               ),
-
               const Spacer(),
-
             ],
           ).hP16,
         ],
@@ -154,7 +153,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               onChanged: (txt) {},
               key: UniqueKey(),
               controller: newPassword,
-              hintText: '********',
+              hintText: 'new password',
               icon: ThemeIcon.lock,
               cornerRadius: 5,
               showBorder: true,
@@ -167,7 +166,7 @@ class _ChangePasswordState extends State<ChangePassword> {
               onChanged: (txt) {},
               key: UniqueKey(),
               controller: confirmNewPassword,
-              hintText: '********',
+              hintText: 'conform new password',
               icon: ThemeIcon.lock,
               cornerRadius: 5,
               showBorder: true,

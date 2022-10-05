@@ -70,7 +70,8 @@ class ForgotPasswordState extends State<ForgotPassword> {
                       Container(
                           height: 40,
                           width: 40,
-                          color: Theme.of(context).backgroundColor.lighten(0.05),
+                          color:
+                              Theme.of(context).backgroundColor.lighten(0.05),
                           child: Image.asset(
                             'assets/images/logo.png',
                             height: 20,
@@ -113,7 +114,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
                     InputField(
                       icon: ThemeIcon.email,
                       cornerRadius: 5,
-                      hintText: 'adam@gmail.com',
+                      hintText: 'email',
                       controller: enterEmail,
                       onChanged: (phone) {},
                       showBorder: true,
