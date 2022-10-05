@@ -1,4 +1,7 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
 
@@ -133,7 +136,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
             Obx(() => InputField(
                   key: UniqueKey(),
                   controller: loginController.userName.value,
-                  hintText: 'adam@zedge.com',
+                  hintText: 'email',
                   icon: ThemeIcon.email,
                   showBorder: true,
                   cornerRadius: 5,
@@ -142,15 +145,23 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
             const SizedBox(
               height: 10,
             ),
-            Obx(() => PasswordField(
-                  onChanged: (txt) {},
-                  key: UniqueKey(),
-                  controller: loginController.password.value,
-                  hintText: '*********',
-                  icon: ThemeIcon.lock,
-                  cornerRadius: 5,
-                  showBorder: true,
-                  backgroundColor: Colors.black.withOpacity(0.05),
+            Obx(() => KeyboardListener(
+                  focusNode: FocusNode(onKeyEvent: (focus, key) {
+                    if (key.logicalKey == LogicalKeyboardKey(0x0010000000d)) {
+                      loginUser();
+                    }
+                    return KeyEventResult.handled;
+                  }),
+                  child: PasswordField(
+                    onChanged: (txt) {},
+                    key: UniqueKey(),
+                    controller: loginController.password.value,
+                    hintText: 'password',
+                    icon: ThemeIcon.lock,
+                    cornerRadius: 5,
+                    showBorder: true,
+                    backgroundColor: Colors.black.withOpacity(0.05),
+                  ),
                 )),
             const SizedBox(
               height: 10,

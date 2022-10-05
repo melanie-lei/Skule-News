@@ -25,9 +25,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .backgroundColor,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -40,7 +38,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   init: userController,
                   builder: (context) {
                     return AvatarView(
-                        size: 100, url: userController.imagePath.value)
+                            size: 100, url: userController.imagePath.value)
                         .ripple(() {
                       userController.uploadProfileImage();
                     });
@@ -60,24 +58,23 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           child: CachedNetworkImage(
                             imageUrl: userController.coverImagePath.value,
                             fit: BoxFit.cover,
-                            placeholder: (context, url) =>
-                                Container(
-                                  color: Colors.black12,
-                                ),
+                            placeholder: (context, url) => Container(
+                              color: Colors.black12,
+                            ),
                             errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                                const Icon(Icons.error),
                           ).round(18).p(2),
                         ),
                         Positioned(
-                          left: 0,
-                          right: 0,
-                          top: 0,
-                          bottom: 0,
-                          child: Container(
-                            height: 200,
-                            width: double.infinity,
-                            color: Colors.black38,
-                          )),
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            child: Container(
+                              height: 200,
+                              width: double.infinity,
+                              color: Colors.black38,
+                            )),
                         Positioned(
                           left: 0,
                           right: 0,
@@ -86,8 +83,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           child: Center(
                             child: Text(
                               LocalizationString.updateCoverImage,
-                              style: Theme
-                                  .of(context)
+                              style: Theme.of(context)
                                   .textTheme
                                   .displayLarge!
                                   .copyWith(color: Colors.white),
@@ -97,12 +93,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       ],
                     )
                         .borderWithRadius(
-                        value: 2,
-                        radius: 20,
-                        color: Theme
-                            .of(context)
-                            .primaryColor,
-                        context: context)
+                            value: 2,
+                            radius: 20,
+                            color: Theme.of(context).primaryColor,
+                            context: context)
                         .ripple(() {
                       userController.uploadCoverImage();
                     });
@@ -110,34 +104,23 @@ class _UpdateProfileState extends State<UpdateProfile> {
           const SizedBox(
             height: 20,
           ),
-          Obx(() =>
-              InputField(
+          Obx(() => InputField(
                 controller: userController.nameTf.value,
                 // showDivider: true,
                 hintText: LocalizationString.name,
               )),
-          const SizedBox(
-            height: 10,
-          ),
-          Obx(() =>
-              InputField(
+          Obx(() => InputField(
                 controller: userController.bioTf.value,
                 // showDivider: true,
                 hintText: LocalizationString.bio,
                 maxLines: 5,
               )),
-          const SizedBox(
-            height: 10,
-          ),
           SizedBox(
             height: 50,
             width: 200,
             child: BorderButtonType1(
               text: LocalizationString.update,
-              textStyle: Theme
-                  .of(context)
-                  .textTheme
-                  .titleMedium,
+              textStyle: Theme.of(context).textTheme.titleMedium,
               cornerRadius: 10,
               onPress: () {
                 userController.updateUser(onlyUploadingProfileImage: false);

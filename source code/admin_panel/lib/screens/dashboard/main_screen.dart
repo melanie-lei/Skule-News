@@ -104,8 +104,8 @@ class _MainScreenState extends State<MainScreen> {
         // do something else
         return const UsersList(statusType: AccountStatusType.deactivated);
       case MenuType.settings:
-      // do something else
-      //return const Settings();
+        // do something else
+        return const Settings();
       case MenuType.supportRequests:
         // do something else
         return const SupportRequests();
