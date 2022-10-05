@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Obx(() => InputField(
                   key: UniqueKey(),
                   controller: loginController.userName.value,
-                  hintText: 'adam@zedge.com',
+                  hintText: 'email',
                   icon: ThemeIcon.email,
                   showBorder: true,
                   cornerRadius: 5,
@@ -149,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onChanged: (txt) {},
                   key: UniqueKey(),
                   controller: loginController.password.value,
-                  hintText: '*********',
+                  hintText: 'password',
                   icon: ThemeIcon.lock,
                   cornerRadius: 5,
                   showBorder: true,

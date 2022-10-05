@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:music_streaming_admin_panel/helper/common_import.dart';
+import 'package:get/get.dart';
 
 class PasswordField extends StatefulWidget {
   final String? hintText;
@@ -72,6 +73,8 @@ class _PasswordFieldState extends State<PasswordField> {
 
   late Color? cursorColor;
   late TextStyle? textStyle;
+
+  final loginController = Get.put(LoginController());
 
   @override
   void initState() {
@@ -146,6 +149,9 @@ class _PasswordFieldState extends State<PasswordField> {
                             textStyle ?? Theme.of(context).textTheme.titleSmall,
                         controller: controller,
                         onChanged: onChanged,
+                        onSubmitted: (value) {
+                          loginController.loginUser();
+                        },
                         cursorColor: cursorColor,
                         obscureText: !showPassword,
                         decoration: InputDecoration(
