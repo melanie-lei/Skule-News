@@ -145,24 +145,18 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
             const SizedBox(
               height: 10,
             ),
-            Obx(() => KeyboardListener(
-                  focusNode: FocusNode(onKeyEvent: (focus, key) {
-                    if (key.logicalKey == LogicalKeyboardKey(0x0010000000d)) {
-                      loginUser();
-                    }
-                    return KeyEventResult.handled;
-                  }),
-                  child: PasswordField(
-                    onChanged: (txt) {},
-                    key: UniqueKey(),
-                    controller: loginController.password.value,
-                    hintText: 'password',
-                    icon: ThemeIcon.lock,
-                    cornerRadius: 5,
-                    showBorder: true,
-                    backgroundColor: Colors.black.withOpacity(0.05),
-                  ),
-                )),
+            Obx(
+              () => PasswordField(
+                onChanged: (txt) {},
+                key: UniqueKey(),
+                controller: loginController.password.value,
+                hintText: 'password',
+                icon: ThemeIcon.lock,
+                cornerRadius: 5,
+                showBorder: true,
+                backgroundColor: Colors.black.withOpacity(0.05),
+              ),
+            ),
             const SizedBox(
               height: 10,
             ),
