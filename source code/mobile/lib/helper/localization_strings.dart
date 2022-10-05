@@ -1,7 +1,7 @@
 import 'package:music_streaming_mobile/helper/pub_imports.dart';
 
 class LocalizationString {
-  static String appTagline = 'Conversation is king'.tr();
+  static String appTagline = 'School Newspaper App'.tr();
 
   static String success = 'Success'.tr();
   static String error = 'Error'.tr();
