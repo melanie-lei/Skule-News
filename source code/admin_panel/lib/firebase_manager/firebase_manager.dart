@@ -995,7 +995,7 @@ class FirebaseManager {
       'image': image,
       'status': status == AvailabilityStatus.active ? 1 : 0,
       'keywords': name.allPossibleSubstrings(),
-      'totalBlogPosts': 1,
+      'totalBlogPosts': 0,
     };
 
     if (category != null) {
