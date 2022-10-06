@@ -22,8 +22,10 @@ class _SeeAllPostsState extends State<SeeAllPosts> {
     // TODO: implement initState
     seeAllPostController.clear();
     if (getIt<UserProfileManager>().user!.savedPost.isNotEmpty) {
-      seeAllPostController.loadPosts(widget.postSearchQuery);
+      print('loaded');
+      // seeAllPostController.loadPosts(widget.postSearchQuery);
     }
+    seeAllPostController.loadPosts(widget.postSearchQuery);
     super.initState();
   }
 
@@ -52,13 +54,19 @@ class _SeeAllPostsState extends State<SeeAllPosts> {
                     height: MediaQuery.of(context).size.height,
                     child: const HomeScreenShimmer())
                 : ListView.separated(
-                    padding: const EdgeInsets.only(left: 16,right: 16,top: 25),
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, top: 25),
                     itemBuilder: (BuildContext context, index) {
                       return GetBuilder<PostCardController>(
                           init: postCardController,
                           builder: (ctx) {
                             return PostTile(
                               model: seeAllPostController.posts[index],
+                              tapHandler: () {
+                                var modelData =
+                                    seeAllPostController.posts[index];
+                                Get.back(result: modelData);
+                              },
                             );
                           });
                     },

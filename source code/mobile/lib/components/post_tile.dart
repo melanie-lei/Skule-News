@@ -6,11 +6,8 @@ class PostTile extends StatefulWidget {
   final BlogPostModel model;
   final VoidCallback? tapHandler;
 
-  const PostTile({
-    Key? key,
-    required this.model,
-    this.tapHandler
-  }) : super(key: key);
+  const PostTile({Key? key, required this.model, this.tapHandler})
+      : super(key: key);
 
   @override
   State<PostTile> createState() => _PostTileState();
@@ -48,7 +45,8 @@ class _PostTileState extends State<PostTile> {
                     fit: BoxFit.cover,
                     // placeholder: (context, url) =>
                     // const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                     width: 100,
                     height: 80,
                   ).round(5),
@@ -76,12 +74,15 @@ class _PostTileState extends State<PostTile> {
               // divider(context: context).vP16,
             ],
           ).ripple(() {
-            Get.to(() => BlogPostFullDetail(model: widget.model));
-            if(widget.tapHandler != null){
+            if (widget.tapHandler != null) {
               widget.tapHandler!();
+            } else {
+              Get.to(() => BlogPostFullDetail(model: widget.model));
             }
           }),
-          const SizedBox(height: 15,),
+          const SizedBox(
+            height: 15,
+          ),
           // divider(context: context).vP16,
           bottomBar(),
         ],
@@ -103,7 +104,6 @@ class _PostTileState extends State<PostTile> {
         Text(widget.model.date,
             maxLines: 2, style: Theme.of(context).textTheme.bodyMedium),
         const Spacer(),
-
         InkWell(
           onTap: () {
             postcardController.saveOrDeletePost(widget.model);
@@ -127,7 +127,10 @@ class _PostTileState extends State<PostTile> {
       children: [
         userInfo(),
         Text(widget.model.title,
-            maxLines: 2, style: Theme.of(context).textTheme.titleMedium!
+            maxLines: 2,
+            style: Theme.of(context)
+                .textTheme
+                .titleMedium!
                 .copyWith(fontWeight: FontWeight.w600)),
       ],
     );
@@ -151,7 +154,10 @@ class _PostTileState extends State<PostTile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(widget.model.authorName,
-                      style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w600)),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge!
+                          .copyWith(fontWeight: FontWeight.w600)),
                   Text(
                       '${snapshot.data!.totalFollowers} ${LocalizationString.followers.toLowerCase()}',
                       style: Theme.of(context).textTheme.bodyMedium),
