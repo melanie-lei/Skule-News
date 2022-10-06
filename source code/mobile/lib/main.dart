@@ -84,7 +84,7 @@ class MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
+      darkTheme: AppTheme.lightTheme,
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: context.localizationDelegates,

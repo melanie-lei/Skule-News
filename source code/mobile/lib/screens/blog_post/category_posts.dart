@@ -69,6 +69,7 @@ class _CategoryPostsState extends State<CategoryPosts> {
                             .textTheme
                             .displayMedium!
                             .copyWith(color: Colors.white),
+                        textAlign: TextAlign.center,
                       ),
                     )),
                 Positioned(
@@ -108,7 +109,7 @@ class _CategoryPostsState extends State<CategoryPosts> {
                       .addPullToRefresh(
                           refreshController: _refreshController,
                           onRefresh: loadData,
-                          onLoading: (){});
+                          onLoading: () {});
                 }),
           ),
         ],

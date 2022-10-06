@@ -86,8 +86,6 @@ class MiscMenusState extends State<MiscMenus> {
                                   return privacyPolicyTile();
                                 } else if (index == 7) {
                                   return termsOfUseTile();
-                                } else if (index == 8) {
-                                  return darkModeTile();
                                 }
                                 return Container();
                               } else {
@@ -97,8 +95,6 @@ class MiscMenusState extends State<MiscMenus> {
                                   return privacyPolicyTile();
                                 } else if (index == 2) {
                                   return termsOfUseTile();
-                                } else if (index == 3) {
-                                  return darkModeTile();
                                 }
                                 return Container();
                               }
@@ -227,25 +223,25 @@ class MiscMenusState extends State<MiscMenus> {
       Get.to(() => const TermsOfUse());
     });
   }
-
-  Widget darkModeTile() {
-    return SizedBox(
-        height: 35,
-        child: Row(
-          children: [
-            Text(
-              LocalizationString.darkMode,
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            const Spacer(),
-            Obx(() => Switch(
-                value: myAccountController.darkMode.value,
-                onChanged: (value) {
-                  myAccountController.setDarkMode(value);
-                }))
-          ],
-        ));
-  }
+  //
+  // Widget darkModeTile() {
+  //   return SizedBox(
+  //       height: 35,
+  //       child: Row(
+  //         children: [
+  //           Text(
+  //             LocalizationString.darkMode,
+  //             style: Theme.of(context).textTheme.titleMedium,
+  //           ),
+  //           const Spacer(),
+  //           Obx(() => Switch(
+  //               value: myAccountController.darkMode.value,
+  //               onChanged: (value) {
+  //                 myAccountController.setDarkMode(value);
+  //               }))
+  //         ],
+  //       ));
+  // }
 
   Widget loginTile() {
     return Text(
