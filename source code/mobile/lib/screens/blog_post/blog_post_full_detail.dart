@@ -188,7 +188,8 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                       children: [
                         Container(
                             constraints: const BoxConstraints(maxWidth: 100),
-                            color: Theme.of(context).primaryColor,
+                            color:
+                                Theme.of(context).primaryColor.withOpacity(.5),
                             child: Center(
                               child: Text(widget.model.category.toUpperCase(),
                                       style: Theme.of(context)
@@ -197,16 +198,27 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                                           .copyWith(color: Colors.white))
                                   .p8,
                             )).round(5),
-                        Text(widget.model.title.toUpperCase(),
-                                maxLines: 2,
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall)
-                            .vP8,
-                        Row(
-                          children: [
+                        Container(
+                          width: double.infinity,
+                          padding: EdgeInsets.only(
+                              bottom: 8.0, left: 10.0, right: 10.0),
+                          color: Colors.white.withOpacity(.5),
+                          child: Column(children: [
+                            Text(
+                              widget.model.title.toUpperCase(),
+                              maxLines: 2,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall!
+                                  .copyWith(color: Colors.black),
+                              textAlign: TextAlign.center,
+                            ).vP8,
                             Text(widget.model.date,
-                                style: Theme.of(context).textTheme.bodySmall),
-                          ],
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(fontSize: 12)),
+                          ]),
                         ),
                       ],
                     ).hP8,

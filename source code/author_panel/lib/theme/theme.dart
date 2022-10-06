@@ -33,7 +33,7 @@ class AppTheme {
         headlineSmall: TextStyle(
             fontSize: FontSizes.sizeXl, color: const Color(0xffecf0f1)),
         bodyLarge:
-        TextStyle(fontSize: FontSizes.body, color: const Color(0xffffffff)),
+            TextStyle(fontSize: FontSizes.body, color: const Color(0xffffffff)),
         bodyMedium: TextStyle(
             fontSize: FontSizes.bodySm, color: const Color(0xffffffff)),
         bodySmall: TextStyle(
@@ -47,7 +47,7 @@ class AppTheme {
       bottomAppBarColor: const Color(0xffffffff),
       brightness: Brightness.dark,
       hoverColor: Colors.transparent,
-      primaryColor: const Color(0xff25D1AC),
+      primaryColor: const Color(0xff154874),
       primaryColorDark: const Color(0xff000000),
       primaryColorLight: const Color(0xff808080),
       shadowColor: Colors.yellow,
@@ -69,7 +69,7 @@ class AppTheme {
         headlineSmall: TextStyle(
             fontSize: FontSizes.sizeXl, color: const Color(0xff576574)),
         bodyLarge:
-        TextStyle(fontSize: FontSizes.body, color: const Color(0xff000000)),
+            TextStyle(fontSize: FontSizes.body, color: const Color(0xff000000)),
         bodyMedium: TextStyle(
             fontSize: FontSizes.bodySm, color: const Color(0xff000000)),
         bodySmall: TextStyle(
@@ -84,7 +84,7 @@ class AppTheme {
       fontFamily: AppTheme.fontName,
       brightness: Brightness.light,
       hoverColor: Colors.transparent,
-      primaryColor: const Color(0xff25D1AC),
+      primaryColor: const Color(0xff154874),
       primaryColorDark: const Color(0xff000000),
       primaryColorLight: const Color(0xffecf0f1),
       shadowColor: const Color(0xffa4b0be),
