@@ -696,9 +696,6 @@ class FirebaseManager {
     if (searchModel.featured != null) {
       query = query.where("featured", isEqualTo: searchModel.featured);
     }
-    if (searchModel.isRecent != null) {
-      query = query.orderBy("createdAt", descending: true).limit(10);
-    }
     if (searchModel.status != null) {
       query = query.where("status", isEqualTo: searchModel.status);
     }
@@ -708,6 +705,10 @@ class FirebaseManager {
     }
 
     query = query.orderBy("createdAt", descending: true);
+    
+    if (searchModel.isRecent != null) {
+      query = query.limit(10);
+    }
 
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
