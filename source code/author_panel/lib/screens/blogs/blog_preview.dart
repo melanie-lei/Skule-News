@@ -160,7 +160,8 @@ class _BlogPreviewState extends State<BlogPreview>
 
   Widget contentInfo() {
     return HtmlWidget(
-      widget.model.content,
+      // note: if things act up with whitespace, remove replaceAll()
+      widget.model.content.replaceAll('\n', '<br>'),
       textStyle: Theme.of(context).textTheme.titleMedium,
     ).hP16.vP16;
   }

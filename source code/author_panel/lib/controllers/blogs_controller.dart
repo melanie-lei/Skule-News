@@ -17,21 +17,31 @@ class BlogsController extends GetxController {
   }
 
   getLatestBlogs() {
+    BlogPostSearchParamModel searchParamModel = BlogPostSearchParamModel();
+    searchParamModel
+      ..categoryId = selectedCategory.value?.id
+      ..searchText = (searchText ?? '').isNotEmpty ? searchText : null
+      ..approvedStatus = 1
+      ..isRecent = true
+      ..status = 1;
+
     getIt<FirebaseManager>()
-        .searchPosts(searchModel: BlogPostSearchParamModel(isRecent: true,approvedStatus: 1))
-        .then((response) {
-      activeBlogs.value = response;
+        .searchPosts(
+      searchModel: searchParamModel,
+    )
+        .then((result) {
+      activeBlogs.value = result;
       update();
     });
   }
 
   getActiveBlogs() {
     BlogPostSearchParamModel searchParamModel = BlogPostSearchParamModel();
-    searchParamModel.categoryId = selectedCategory.value?.id;
-    searchParamModel.searchText =
-        (searchText ?? '').isNotEmpty ? searchText : null;
-    searchParamModel.approvedStatus = 1;
-    searchParamModel.status = 1;
+    searchParamModel
+      ..categoryId = selectedCategory.value?.id
+      ..searchText = (searchText ?? '').isNotEmpty ? searchText : null
+      ..approvedStatus = 1
+      ..status = 1;
 
     getIt<FirebaseManager>()
         .searchPosts(
