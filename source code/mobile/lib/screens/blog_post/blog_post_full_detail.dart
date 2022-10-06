@@ -330,13 +330,15 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
             children: [
               headingType5(
                   title: LocalizationString.similar,
-                  seeAllPress: () {
+                  seeAllPress: () async {
                     PostSearchParamModel query = PostSearchParamModel();
                     query.categoryId = widget.model.categoryId;
                     // query.locationId = widget.model.locationId;
                     query.hashtags = widget.model.hashtags;
 
-                    Get.to(() => SeeAllPosts(postSearchQuery: query));
+                    var mod =
+                        await Get.to(() => SeeAllPosts(postSearchQuery: query));
+                    loadData(mod);
                     // NavigationService.instance.navigateToRoute(
                     //     MaterialPageRoute(builder: (ctx) => const AllNewsScreen()));
                   },
