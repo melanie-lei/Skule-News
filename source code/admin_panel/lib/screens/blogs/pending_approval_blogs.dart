@@ -58,6 +58,7 @@ class _PendingApprovalsBlogsState extends State<PendingApprovalsBlogs> {
                 text: pendingBlogsController.selectedCategory.value?.name,
                 // showBorder: true,
                 cornerRadius: 5,
+                hintText: "(none selected)",
                 onPress: () {
                   showDialog(
                     context: context,
