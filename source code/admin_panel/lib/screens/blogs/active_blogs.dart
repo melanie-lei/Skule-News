@@ -79,6 +79,7 @@ class _BlogsListState extends State<BlogsList> {
                 text: blogsController.selectedCategory.value?.name,
                 // showBorder: true,
                 cornerRadius: 5,
+                hintText: "(none selected)",
                 onPress: () {
                   showDialog(
                     context: context,

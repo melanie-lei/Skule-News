@@ -269,6 +269,7 @@ class _AddBlogState extends State<AddBlog> {
                 text: addBlogController.categoryName.value,
                 // showBorder: true,
                 cornerRadius: 5,
+                hintText: "(none selected)",
                 onPress: () {
                   showDialog(
                     context: context,
