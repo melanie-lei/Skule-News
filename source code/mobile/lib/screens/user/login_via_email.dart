@@ -94,6 +94,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                     LocalizationString.signIn,
                     style: Theme.of(context).textTheme.displaySmall!.copyWith(
                         color: Colors.white, fontWeight: FontWeight.w600),
+                    textAlign: TextAlign.center,
                   ),
                   Text(
                     LocalizationString.signInMessage,
@@ -101,11 +102,12 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                         .textTheme
                         .titleSmall!
                         .copyWith(color: Colors.white),
+                    textAlign: TextAlign.center,
                   )
                 ],
               ),
               const SizedBox(
-                height: 50,
+                height: 30,
               ),
               Container(
                 height: 260,
@@ -124,8 +126,10 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                       height: 40,
                       child: FilledButtonType1(
                         text: LocalizationString.signIn,
-                        enabledTextStyle:
-                            Theme.of(context).textTheme.titleMedium,
+                        enabledTextStyle: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(color: Colors.white),
                         onPress: () {
                           loginUser();
                         },
@@ -135,7 +139,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                 ).hP16,
               ).round(20),
               const SizedBox(
-                height: 40,
+                height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -157,7 +161,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                 ],
               ),
               const SizedBox(
-                height: 50,
+                height: 20,
               ),
               Container(
                       height: 80,
@@ -188,7 +192,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                 getIt<UserProfileManager>().loginAnonymously();
               }),
               const SizedBox(
-                height: 50,
+                height: 30,
               )
             ],
           ).hP16,

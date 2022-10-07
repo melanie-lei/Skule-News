@@ -55,7 +55,10 @@ class _AskForLoginState extends State<AskForLogin> {
               ),
               Text(
                 AppConfig.projectName,
-                style: Theme.of(context).textTheme.titleLarge,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(color: Colors.white),
               ),
               const SizedBox(
                 height: 40,
@@ -91,8 +94,10 @@ class _AskForLoginState extends State<AskForLogin> {
                         height: 40,
                         child: FilledButtonType1(
                           text: LocalizationString.signIn,
-                          enabledTextStyle:
-                              Theme.of(context).textTheme.titleMedium,
+                          enabledTextStyle: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(color: Colors.white),
                           onPress: () {
                             Get.to(() => const LoginViaEmail());
                           },

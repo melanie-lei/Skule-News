@@ -87,6 +87,9 @@ class MiscMenusState extends State<MiscMenus> {
                                 } else if (index == 7) {
                                   return termsOfUseTile();
                                 }
+                                // else if (index == 8) {
+                                //   return darkModeTile();
+                                // }
                                 return Container();
                               } else {
                                 if (index == 0) {
@@ -96,6 +99,9 @@ class MiscMenusState extends State<MiscMenus> {
                                 } else if (index == 2) {
                                   return termsOfUseTile();
                                 }
+                                // else if (index == 3) {
+                                //   return darkModeTile();
+                                // }
                                 return Container();
                               }
                             },

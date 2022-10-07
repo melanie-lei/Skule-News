@@ -7,7 +7,7 @@ class FilledButtonType1 extends StatelessWidget {
   final double? height;
   final double? width;
   final double? cornerRadius;
-  bool? isEnabled ;
+  bool? isEnabled;
   final Widget? leading;
   final Widget? trailing;
   final Color? enabledBackgroundColor;
@@ -27,7 +27,6 @@ class FilledButtonType1 extends StatelessWidget {
     this.cornerRadius,
     this.leading,
     this.trailing,
-
     this.enabledBackgroundColor,
     this.disabledBackgroundColor,
     this.enabledTextStyle,
@@ -40,7 +39,8 @@ class FilledButtonType1 extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: height ?? 50,
-      color: isEnabled == true ? enabledBackgroundColor ?? Theme.of(context).primaryColor
+      color: isEnabled == true
+          ? enabledBackgroundColor ?? Theme.of(context).primaryColor
           : disabledBackgroundColor ?? Theme.of(context).primaryColorDark,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -79,9 +79,8 @@ class BorderButtonType1 extends StatelessWidget {
       this.height,
       this.cornerRadius,
       this.borderColor,
-        this.backgroundColor,
-        this.textStyle
-      })
+      this.backgroundColor,
+      this.textStyle})
       : super(key: key);
 
   @override
@@ -100,7 +99,8 @@ class BorderButtonType1 extends StatelessWidget {
         .borderWithRadius(
             value: 1,
             radius: cornerRadius ?? 5,
-            color: borderColor ?? Theme.of(context).dividerColor,context: context)
+            color: borderColor ?? Theme.of(context).dividerColor,
+            context: context)
         .ripple(onPress!);
   }
 }

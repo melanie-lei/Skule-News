@@ -253,7 +253,11 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                 AvatarView(
                   url: widget.model.authorPicture,
                   size: 35,
-                ),
+                ).ripple(() {
+                  print('going');
+                  Get.to(() => AuthorDetail(
+                      userId: sourceController.author.value?.id ?? ''));
+                }),
                 const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

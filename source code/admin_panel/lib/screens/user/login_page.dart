@@ -106,8 +106,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 40,
                       child: FilledButtonType1(
                         text: LocalizationString.signIn,
-                        enabledTextStyle:
-                            Theme.of(context).textTheme.titleMedium,
+                        enabledTextStyle: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(color: Colors.white),
                         onPress: () {
                           loginController.loginUser();
                         },

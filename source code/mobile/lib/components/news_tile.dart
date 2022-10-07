@@ -36,7 +36,10 @@ class BlogPostTile extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                       child: Center(
                         child: Text(model.category.toUpperCase(),
-                                style: Theme.of(context).textTheme.bodyMedium)
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(color: Colors.white))
                             .p8,
                       )).round(5))
             ],
@@ -52,8 +55,7 @@ class BlogPostTile extends StatelessWidget {
                     .tP8,
                 const Spacer(),
                 Text(model.content,
-                        maxLines: 2,
-                        style: Theme.of(context).textTheme.titleSmall),
+                    maxLines: 2, style: Theme.of(context).textTheme.titleSmall),
                 const Spacer(),
                 Text(model.date, style: Theme.of(context).textTheme.bodySmall)
                     .bP8

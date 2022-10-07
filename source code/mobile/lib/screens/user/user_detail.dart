@@ -88,16 +88,16 @@ class _UserDetailState extends State<UserDetail> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               userController.reporter.value!.image != null
-                  ?
-              CachedNetworkImage(
-                imageUrl: userController.reporter.value!.image!,
-                fit: BoxFit.cover,
-                placeholder: (context, url) =>
-                const CircularProgressIndicator(),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-                height: 80,
-                width: 80,
-              ).circular
+                  ? CachedNetworkImage(
+                      imageUrl: userController.reporter.value!.image!,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) =>
+                          const CircularProgressIndicator(),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
+                      height: 80,
+                      width: 80,
+                    ).circular
                   : Image.asset(
                       'assets/common/profile.png',
                       height: 80,
@@ -148,7 +148,7 @@ class _UserDetailState extends State<UserDetail> {
                             : Theme.of(context).backgroundColor,
                     textStyle: userController.reporter.value!.isFollowing()
                         ? Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: Colors.white, fontWeight: FontWeight.w600)
+                            color: Colors.white, fontWeight: FontWeight.w600)
                         : Theme.of(context).textTheme.bodyMedium,
                     onPress: () {
                       userController.followUnfollowUser();
