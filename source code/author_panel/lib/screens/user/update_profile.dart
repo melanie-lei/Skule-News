@@ -114,6 +114,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 // showDivider: true,
                 hintText: LocalizationString.bio,
                 maxLines: 5,
+                keyboardType: TextInputType.multiline,
               )),
           SizedBox(
             height: 50,
