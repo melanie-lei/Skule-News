@@ -60,7 +60,7 @@ class _AskForLoginState extends State<AskForLogin> {
                     ?.copyWith(color: Colors.white),
               ),
               const SizedBox(
-                height: 70,
+                height: 20,
               ),
               Center(
                 child: Container(
@@ -150,7 +150,7 @@ class _AskForLoginState extends State<AskForLogin> {
           Positioned(
               left: 0,
               right: 0,
-              bottom: 40,
+              bottom: 20,
               child: Center(
                 child: Column(
                   children: [

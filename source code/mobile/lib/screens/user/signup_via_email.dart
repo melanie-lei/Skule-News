@@ -103,7 +103,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
                 ],
               ),
               const SizedBox(
-                height: 50,
+                height: 30,
               ),
               Container(
                 height: 300,
@@ -137,7 +137,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
                 ).hP16,
               ).round(20),
               const SizedBox(
-                height: 40,
+                height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -159,7 +159,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
                 ],
               ),
               const SizedBox(
-                height: 50,
+                height: 20,
               ),
               Container(
                       height: 80,
@@ -190,7 +190,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
                 getIt<UserProfileManager>().loginAnonymously();
               }),
               const SizedBox(
-                height: 50,
+                height: 30,
               )
             ],
           ).hP16,

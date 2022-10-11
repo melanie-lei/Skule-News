@@ -33,7 +33,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   AnimatedContainer _buildDots({int? index}) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      decoration:  BoxDecoration(
+      decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
           Radius.circular(50),
         ),
@@ -51,7 +51,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     SizeConfig().init(context);
     double width = SizeConfig.screenW!;
     double height = SizeConfig.screenH!;
-
 
     return Scaffold(
       backgroundColor: colors[_currentPage],
@@ -79,15 +78,14 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         Text(
                           contents[i].title,
                           textAlign: TextAlign.center,
-                          style:Theme.of(context).textTheme.titleLarge,
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
                         const SizedBox(
                           height: 15,
                         ),
                         Text(
                           contents[i].desc,
-                          style:Theme.of(context).textTheme.titleSmall,
-
+                          style: Theme.of(context).textTheme.titleSmall,
                           textAlign: TextAlign.center,
                         )
                       ],
@@ -130,8 +128,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                       horizontal: 100, vertical: 20)
                                   : EdgeInsets.symmetric(
                                       horizontal: width * 0.2, vertical: 25),
-                              textStyle:
-                                  TextStyle(fontSize: (width <= 550) ? 13 : 17),
+                              textStyle: TextStyle(
+                                  fontSize: (width <= 550) ? 13 : 17,
+                                  color: Colors.white),
                             ),
                           ),
                         )
@@ -168,7 +167,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  primary: Theme.of(context).primaryColor,
+                                  backgroundColor:
+                                      Theme.of(context).primaryColor,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50),
                                   ),
@@ -179,7 +179,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                       : const EdgeInsets.symmetric(
                                           horizontal: 40, vertical: 15),
                                   textStyle: TextStyle(
-                                      fontSize: (width <= 550) ? 13 : 17),
+                                      fontSize: (width <= 550) ? 13 : 17,
+                                      color: Colors.white),
                                 ),
                               ),
                             ],
