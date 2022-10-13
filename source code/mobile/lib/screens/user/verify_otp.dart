@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:music_streaming_mobile/helper/common_import.dart';
+import 'package:skule_news_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
-import 'package:music_streaming_mobile/screens/user/social_login.dart';
+import 'package:skule_news_mobile/screens/user/social_login.dart';
 
 //ignore: must_be_immutable
 class VerifyOTP extends StatefulWidget {

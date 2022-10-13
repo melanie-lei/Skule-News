@@ -1,5 +1,5 @@
-import 'package:music_streaming_admin_panel/Helper/constant_util.dart';
-import 'package:music_streaming_admin_panel/helper/pub_imports.dart';
+import 'package:skule_news_admin_panel/Helper/constant_util.dart';
+import 'package:skule_news_admin_panel/helper/pub_imports.dart';
 
 class SharedPrefs {
   //Set/Get UserLoggedIn Status

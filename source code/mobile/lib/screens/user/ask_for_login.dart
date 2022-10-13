@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:music_streaming_mobile/helper/common_import.dart';
+import 'package:skule_news_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
-import 'package:music_streaming_mobile/screens/user/signup_via_email.dart';
-import 'package:music_streaming_mobile/screens/user/social_login.dart';
+import 'package:skule_news_mobile/screens/user/signup_via_email.dart';
+import 'package:skule_news_mobile/screens/user/social_login.dart';
 
 class AskForLogin extends StatefulWidget {
   const AskForLogin({Key? key}) : super(key: key);

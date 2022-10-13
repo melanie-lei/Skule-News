@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_streaming_mobile/theme/extention.dart';
+import 'package:skule_news_mobile/theme/extention.dart';
 
 class SocalIcon extends StatelessWidget {
   final String? icon;

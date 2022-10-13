@@ -1,5 +1,5 @@
 // import 'package:flutter/material.dart';
-// import 'package:music_streaming_admin_panel/helper/navigator_key.dart';
+// import 'package:skule_news_admin_panel/helper/navigator_key.dart';
 //
 // GlobalKey<NavigatorState> navigationKey = NoomiKeys.navKey;
 //

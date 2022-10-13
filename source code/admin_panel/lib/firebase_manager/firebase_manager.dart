@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:music_streaming_admin_panel/helper/common_import.dart';
+import 'package:skule_news_admin_panel/helper/common_import.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart' as p;

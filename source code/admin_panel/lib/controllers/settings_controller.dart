@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:music_streaming_admin_panel/helper/common_import.dart';
+import 'package:skule_news_admin_panel/helper/common_import.dart';
 
 class SettingsController extends GetxController {
   Rx<TextEditingController> phone = TextEditingController().obs;

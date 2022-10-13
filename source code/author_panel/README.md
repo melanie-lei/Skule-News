@@ -1,4 +1,4 @@
-# music_streaming_admin_panel
+# skule_news_admin_panel
 
 A new Flutter project.
 

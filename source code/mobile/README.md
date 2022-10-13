@@ -1,4 +1,4 @@
-# music_streaming_mobile
+# skule_news_mobile
 
 A new Flutter project.
 

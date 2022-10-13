@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_streaming_mobile/helper/common_import.dart';
+import 'package:skule_news_mobile/helper/common_import.dart';
 
 class FilledButtonType1 extends StatelessWidget {
   final String? text;

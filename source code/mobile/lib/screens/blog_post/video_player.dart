@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flick_video_player/flick_video_player.dart';
 import 'package:video_player/video_player.dart';
-import 'package:music_streaming_mobile/helper/common_import.dart';
+import 'package:skule_news_mobile/helper/common_import.dart';
 
 class VideoPlayer extends StatefulWidget {
   final BlogPostModel videoObject;

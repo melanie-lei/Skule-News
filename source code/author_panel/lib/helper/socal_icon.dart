@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
-// import 'package:music_streaming_admin_panel/theme/theme.dart';
-// import 'package:music_streaming_admin_panel/theme/text_styles.dart';
-// import 'package:music_streaming_admin_panel/theme/extention.dart';
+// import 'package:skule_news_admin_panel/theme/theme.dart';
+// import 'package:skule_news_admin_panel/theme/text_styles.dart';
+// import 'package:skule_news_admin_panel/theme/extention.dart';
 //
 // class SocalIcon extends StatelessWidget {
 //   final String? icon;

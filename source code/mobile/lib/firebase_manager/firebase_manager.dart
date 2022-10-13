@@ -1,10 +1,10 @@
 import 'dart:math';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:music_streaming_mobile/helper/common_import.dart';
+import 'package:skule_news_mobile/helper/common_import.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:music_streaming_mobile/model/setting.dart';
+import 'package:skule_news_mobile/model/setting.dart';
 
 String getRandString(int len) {
   var random = Random.secure();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:music_streaming_mobile/components/triangle_shape.dart';
-import 'package:music_streaming_mobile/helper/common_import.dart';
+import 'package:skule_news_mobile/components/triangle_shape.dart';
+import 'package:skule_news_mobile/helper/common_import.dart';
 
 class HorizontalMenuBar extends StatefulWidget {
   final Function(int) onSegmentChange;

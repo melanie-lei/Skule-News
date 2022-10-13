@@ -1,6 +1,6 @@
 // import 'dart:typed_data';
 // import 'package:flutter/material.dart';
-// import 'package:music_streaming_admin_panel/helper/common_import.dart';
+// import 'package:skule_news_admin_panel/helper/common_import.dart';
 //
 // class AddNewBanner extends StatefulWidget {
 //   final BannerModel? banner;

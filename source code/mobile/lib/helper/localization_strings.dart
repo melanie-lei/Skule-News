@@ -1,4 +1,4 @@
-import 'package:music_streaming_mobile/helper/pub_imports.dart';
+import 'package:skule_news_mobile/helper/pub_imports.dart';
 
 class LocalizationString {
   static String appTagline = 'School Newspaper App'.tr();

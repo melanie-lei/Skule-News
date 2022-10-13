@@ -1,4 +1,4 @@
-package com.example.music_streaming_mobile
+package com.example.skule_news_mobile
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,7 +1,7 @@
 // import 'dart:convert';
-// import 'package:music_streaming_mobile/helper/common_import.dart';
+// import 'package:skule_news_mobile/helper/common_import.dart';
 // import 'package:http/http.dart' as http;
-// import 'package:music_streaming_mobile/screens/user/instagram_constant.dart';
+// import 'package:skule_news_mobile/screens/user/instagram_constant.dart';
 //
 // class InstagramModel {
 //   List<String> userFields = ['id', 'username'];

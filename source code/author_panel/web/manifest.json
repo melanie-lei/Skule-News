@@ -1,6 +1,6 @@
 {
-    "name": "music_streaming_admin_panel",
-    "short_name": "music_streaming_admin_panel",
+    "name": "skule_news_admin_panel",
+    "short_name": "skule_news_admin_panel",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
