@@ -207,17 +207,17 @@ class _SideMenuState extends State<SideMenu> {
                       sideMenuContainer
                           .selectMenu(MenuType.deactivatedCategories);
                     }),
-                    DrawerListItem(
-                      icon: ThemeIconWidget(ThemeIcon.add,
-                          color: Theme.of(context).iconTheme.color, size: 20),
-                      title: LocalizationString.addCategory,
-                      isSelected: sideMenuContainer.selectedMenu.value ==
-                          MenuType.addCategory,
-                    ).ripple(() {
-                      scaffoldKey.currentState!.openEndDrawer();
-                      selectionHandler(MenuType.addCategory);
-                      sideMenuContainer.selectMenu(MenuType.addCategory);
-                    }),
+                    // DrawerListItem(
+                    //   icon: ThemeIconWidget(ThemeIcon.add,
+                    //       color: Theme.of(context).iconTheme.color, size: 20),
+                    //   title: LocalizationString.addCategory,
+                    //   isSelected: sideMenuContainer.selectedMenu.value ==
+                    //       MenuType.addCategory,
+                    // ).ripple(() {
+                    //   scaffoldKey.currentState!.openEndDrawer();
+                    //   selectionHandler(MenuType.addCategory);
+                    //   sideMenuContainer.selectMenu(MenuType.addCategory);
+                    // }),
                   ], title: LocalizationString.categories),
                   DrawerListItemGroup(items: [
                     DrawerListItem(

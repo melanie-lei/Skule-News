@@ -18,18 +18,18 @@ class CategoryController extends GetxController {
     categories.clear();
     if (statusType == 1) {
       var responses = await Future.wait([
-        getAuthorCategories(),
+        // getAuthorCategories(),
         getAdminCategories(),
       ]);
 
       categories.addAll(responses[0]);
-      categories.addAll(responses[1]);
+      // categories.addAll(responses[1]);
     } else {
       var responses = await Future.wait([
-        getAuthorCategories(),
+        // getAuthorCategories(),
       ]);
 
-      categories.addAll(responses[0]);
+      // categories.addAll(responses[0]);
     }
     update();
   }
