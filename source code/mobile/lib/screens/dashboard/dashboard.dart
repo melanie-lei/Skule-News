@@ -32,7 +32,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadInitialData();
     });
-
     super.initState();
   }
 
@@ -128,9 +127,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 height: MediaQuery.of(context).size.height,
                                 child: const HomeScreenShimmer())
                             : SizedBox(
-                                height: (dashboardController.posts.length *
-                                        160) +
-                                    (dashboardController.posts.length * 30),
+                                height:
+                                    (dashboardController.posts.length * 160) +
+                                        (dashboardController.posts.length * 30),
                                 child: ListView.separated(
                                     physics:
                                         const NeverScrollableScrollPhysics(),

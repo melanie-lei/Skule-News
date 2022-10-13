@@ -43,7 +43,10 @@ class _ChooseCategoriesState extends State<ChooseCategories> {
                 child: FilledButtonType1(
                   cornerRadius: 25,
                   text: LocalizationString.done,
-                  enabledTextStyle: Theme.of(context).textTheme.titleLarge,
+                  enabledTextStyle: Theme.of(context)
+                      .textTheme
+                      .titleLarge!
+                      .copyWith(color: Colors.white),
                   onPress: () {
                     if (categoryController.selectedCategories.isNotEmpty) {
                       categoryController.updateInterest(() {
@@ -92,7 +95,7 @@ class _ChooseCategoriesState extends State<ChooseCategories> {
                       return Stack(
                         children: [
                           CategoryTile(
-                            isLargeText: false,
+                              isLargeText: false,
                               category: categoryController.categories[index]),
                           Positioned(
                               left: 0,

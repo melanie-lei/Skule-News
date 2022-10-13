@@ -35,9 +35,11 @@ class _LandingPageState extends State<LandingPage> {
                             begin: FractionalOffset.topCenter,
                             end: FractionalOffset.bottomCenter,
                             colors: [
-                              Theme.of(context).backgroundColor
+                              Theme.of(context)
+                                  .backgroundColor
                                   .withOpacity(0.8),
-                              Theme.of(context).backgroundColor
+                              Theme.of(context)
+                                  .backgroundColor
                                   .withOpacity(0.5),
                             ],
                             stops: const [
@@ -65,9 +67,7 @@ class _LandingPageState extends State<LandingPage> {
                               onPress: () {
                                 signIn();
                               },
-                              isEnabled: true,
-                              enabledTextStyle:
-                                  Theme.of(context).textTheme.titleMedium)),
+                              isEnabled: true)),
                       const Spacer(),
                     ],
                   ).hP50

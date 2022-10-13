@@ -119,7 +119,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             style: ElevatedButton.styleFrom(
-                              primary: Theme.of(context).primaryColor,
+                              backgroundColor: Theme.of(context).primaryColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(50),
                               ),
@@ -150,9 +150,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 style: TextButton.styleFrom(
                                   elevation: 0,
                                   textStyle: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: (width <= 550) ? 13 : 17,
-                                  ),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: (width <= 550) ? 13 : 17,
+                                      color: Colors.white),
                                 ),
                               ),
                               ElevatedButton(

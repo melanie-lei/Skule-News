@@ -92,7 +92,7 @@ class AppTheme {
       bottomAppBarColor: const Color(0xff000000),
       errorColor: const Color(0xffff4757),
       buttonTheme: const ButtonThemeData(
-        buttonColor: Color(0xff25D1AC),
+        buttonColor: Color(0xff154874),
         disabledColor: Color(0xff808080),
       ));
 }

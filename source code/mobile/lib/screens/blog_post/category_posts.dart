@@ -17,6 +17,7 @@ class _CategoryPostsState extends State<CategoryPosts> {
   final PostCardController postCardController = Get.find();
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+  final CategoryController categoryController = Get.find();
 
   @override
   void initState() {
@@ -80,7 +81,25 @@ class _CategoryPostsState extends State<CategoryPosts> {
                       color: Colors.white,
                     ).ripple(() {
                       Get.back();
-                    }))
+                    })),
+                Positioned(
+                  left: 320,
+                  top: 180,
+                  child: Container(
+                    child: categoryController.selectedCategories
+                            .contains(widget.category)
+                        ? Icon(Icons.check)
+                        : Icon(Icons.check_box_outline_blank),
+                  ).ripple(() {
+                    setState(() {
+                      categoryController.selectCategory(
+                          category: widget.category);
+                      categoryController.updateInterest(() {
+                        getIt<UserProfileManager>().refreshProfile();
+                      });
+                    });
+                  }),
+                ),
               ],
             ),
           ),
