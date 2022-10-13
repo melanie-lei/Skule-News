@@ -55,7 +55,7 @@ class _CategoriesListState extends State<CategoriesList> {
             Row(
               children: [
                 Obx(() => Text(
-                      '${categoryController.categories.length} ${LocalizationString.category.toLowerCase()}',
+                      '${categoryController.categories.length} ${LocalizationString.categories.toLowerCase()}',
                       style: Theme.of(context).textTheme.bodyLarge,
                     )),
                 const Spacer(),
