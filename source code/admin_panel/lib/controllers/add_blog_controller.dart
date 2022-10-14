@@ -44,7 +44,8 @@ class AddBlogController extends GetxController {
     categoryId.value = model.categoryId;
     categoryName.value = model.categoryName;
     thumbnailImage.value.text = model.thumbnailImage;
-    isPremium.value = model.isPremium;
+    // isPremium.value = model.isPremium;
+    isPremium.value = false;
     contentType.value = model.contentType;
     availabilityStatus.value = model.status == 0
         ? AvailabilityStatus.deactivated
