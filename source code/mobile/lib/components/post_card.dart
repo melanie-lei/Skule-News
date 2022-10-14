@@ -43,8 +43,9 @@ class _BlogPostCardState extends State<BlogPostCard> {
                     imageUrl: widget.model.thumbnailImage,
                     fit: BoxFit.cover,
                     placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                        const CircularProgressIndicator(),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                     width: double.infinity,
                     height: double.infinity,
                   ).round(10).ripple(() {
@@ -57,19 +58,20 @@ class _BlogPostCardState extends State<BlogPostCard> {
                       bottom: 0,
                       child: widget.model.isVideoNews() == true
                           ? Container(
-                        color: Theme.of(context)
-                            .primaryColorDark
-                            .withOpacity(0.5),
-                        child: Center(
-                          child: ThemeIconWidget(
-                            ThemeIcon.play,
-                            size: 100,
-                            color: Theme.of(context).iconTheme.color,
-                          ),
-                        ),
-                      ).round(10).ripple(() {
-                        Get.to(() => BlogPostFullDetail(model: widget.model));
-                      })
+                              color: Theme.of(context)
+                                  .primaryColorDark
+                                  .withOpacity(0.5),
+                              child: Center(
+                                child: ThemeIconWidget(
+                                  ThemeIcon.play,
+                                  size: 100,
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
+                              ),
+                            ).round(10).ripple(() {
+                              Get.to(() =>
+                                  BlogPostFullDetail(model: widget.model));
+                            })
                           : Container()),
                 ],
               ),
@@ -88,24 +90,24 @@ class _BlogPostCardState extends State<BlogPostCard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(widget.model.title,
-            maxLines: 2, style: Theme.of(context).textTheme.bodyLarge)
+                maxLines: 2, style: Theme.of(context).textTheme.bodyLarge)
             .vP16,
         widget.model.hashtags.isNotEmpty
             ? Wrap(
-          spacing: 5,
-          children: [
-            for (String hashTag in widget.model.hashtags)
-              Container(
-                color: Theme.of(context).primaryColorLight.darken(0.1),
-                child: Text(
-                  '#$hashTag',
-                  style: Theme.of(context).textTheme.bodyLarge,
-                ).p4.ripple(() {
-                  Get.to(() => HashtagDetail(hashTagName: hashTag));
-                }),
-              ).round(5),
-          ],
-        )
+                spacing: 5,
+                children: [
+                  for (String hashTag in widget.model.hashtags)
+                    Container(
+                      color: Theme.of(context).primaryColorLight.darken(0.1),
+                      child: Text(
+                        '#$hashTag',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ).p4.ripple(() {
+                        Get.to(() => HashtagDetail(hashTagName: hashTag));
+                      }),
+                    ).round(5),
+                ],
+              )
             : Container(),
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -184,22 +186,22 @@ class _BlogPostCardState extends State<BlogPostCard> {
         context: context,
         backgroundColor: Colors.transparent,
         builder: (context) => ActionSheet(
-          items: [
-            GenericItem(
-                id: '1',
-                title: LocalizationString.report,
-                icon: ThemeIcon.report),
-            GenericItem(
-                id: '2',
-                title: LocalizationString.cancel,
-                icon: ThemeIcon.close),
-          ],
-          itemCallBack: (item) {
-            if (item.id == '1') {
-              postcardController.reportPost(news);
-            }
-          },
-        ));
+              items: [
+                GenericItem(
+                    id: '1',
+                    title: LocalizationString.report,
+                    icon: ThemeIcon.report),
+                GenericItem(
+                    id: '2',
+                    title: LocalizationString.cancel,
+                    icon: ThemeIcon.close),
+              ],
+              itemCallBack: (item) {
+                if (item.id == '1') {
+                  postcardController.reportPost(news);
+                }
+              },
+            ));
   }
 
   Widget commentAndLikeWidget() {
@@ -216,10 +218,10 @@ class _BlogPostCardState extends State<BlogPostCard> {
             ),
             widget.model.totalComments > 0
                 ? Text('${widget.model.totalComments}',
-                style: Theme.of(context).textTheme.bodyMedium)
-                .ripple(() {
-              openComments();
-            })
+                        style: Theme.of(context).textTheme.bodyMedium)
+                    .ripple(() {
+                    openComments();
+                  })
                 : Container(),
           ])),
       const SizedBox(
@@ -240,12 +242,12 @@ class _BlogPostCardState extends State<BlogPostCard> {
       ),
       widget.model.totalLikes > 0
           ? Text('${widget.model.totalLikes}',
-          style: Theme.of(context).textTheme.bodyMedium)
+              style: Theme.of(context).textTheme.bodyMedium)
           : Container(),
       const Spacer(),
       widget.model.totalSaved > 0
           ? Text('${widget.model.totalSaved}',
-          style: Theme.of(context).textTheme.bodyMedium)
+              style: Theme.of(context).textTheme.bodyMedium)
           : Container(),
       const SizedBox(
         width: 10,
@@ -269,8 +271,8 @@ class _BlogPostCardState extends State<BlogPostCard> {
   void openComments() {
     if (getIt<UserProfileManager>().isLogin()) {
       Get.to(() => CommentsScreen(
-        postId: widget.model.id,
-      ));
+            postId: widget.model.id,
+          ));
     } else {
       Get.to(() => const AskForLogin());
     }

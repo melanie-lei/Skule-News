@@ -29,6 +29,7 @@ class _SavedState extends State<Saved> {
 
   loadData() {
     if (scrollController.position.maxScrollExtent == scrollController.offset) {
+      print('loading data');
       savedPostController.loadPosts(callBack: () {});
     }
   }
@@ -54,6 +55,8 @@ class _SavedState extends State<Saved> {
                       return GetBuilder<PostCardController>(
                           init: postCardController,
                           builder: (ctx) {
+                            print('posts');
+                            print(savedPostController.posts);
                             return PostTile(
                               model: savedPostController.posts[index],
                             );

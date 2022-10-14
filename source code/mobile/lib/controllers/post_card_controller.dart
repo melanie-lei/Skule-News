@@ -69,11 +69,11 @@ class PostCardController extends GetxController {
     bool isSaved = false;
 
     if (model.isSaved() == true) {
-      getIt<UserProfileManager>().user!.savedPost.remove(model.id);
+      // getIt<UserProfileManager>().user!.savedPost.remove(model.id);
       model.totalSaved -= 1;
       isSaved = false;
     } else {
-      getIt<UserProfileManager>().user!.savedPost.add(model.id);
+      // getIt<UserProfileManager>().user!.savedPost.add(model.id);
       model.totalSaved += 1;
       isSaved = true;
     }
@@ -84,6 +84,7 @@ class PostCardController extends GetxController {
       if (value) {
         if (isSaved) {
           getIt<FirebaseManager>().savePost(model.id);
+          print(getIt<UserProfileManager>().user!.savedPost);
         } else {
           getIt<FirebaseManager>().removeSavedPost(model.id);
         }
@@ -108,5 +109,4 @@ class PostCardController extends GetxController {
       //     message: LocalizationString.newsReported, isSuccess: true, context: null);
     });
   }
-
 }

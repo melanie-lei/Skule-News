@@ -25,8 +25,7 @@ class AuthorTile extends StatelessWidget {
           CachedNetworkImage(
             imageUrl: model.image,
             fit: BoxFit.cover,
-            placeholder: (context, url) =>
-            const CircularProgressIndicator(),
+            placeholder: (context, url) => const CircularProgressIndicator(),
             errorWidget: (context, url, error) => const Icon(Icons.error),
             height: 50,
             width: 50,
@@ -50,7 +49,10 @@ class AuthorTile extends StatelessWidget {
               ),
               Text(
                 '${model.totalFollowers} ${LocalizationString.followers.toLowerCase()}',
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w600),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(fontWeight: FontWeight.w600),
               ),
             ],
           ).lP8,
@@ -63,7 +65,10 @@ class AuthorTile extends StatelessWidget {
               text: model.isFollowing()
                   ? LocalizationString.following
                   : LocalizationString.follow,
-              textStyle: Theme.of(context).textTheme.bodyLarge,
+              textStyle: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(color: Colors.white),
               backgroundColor: model.isFollowing()
                   ? Theme.of(context).primaryColor
                   : Theme.of(context).backgroundColor,

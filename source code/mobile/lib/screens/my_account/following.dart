@@ -46,7 +46,9 @@ class _FollowingState extends State<Following> {
                 selectedTextStyle: Theme.of(context)
                     .textTheme
                     .titleMedium!
-                    .copyWith(color: Theme.of(context).primaryColor,fontWeight: FontWeight.w600),
+                    .copyWith(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.w600),
                 textStyle: Theme.of(context).textTheme.titleMedium,
                 onSegmentChange: (segment) {
                   followingController.segmentChanged(segment);

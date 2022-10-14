@@ -13,22 +13,20 @@ class SavedPostsController extends GetxController {
     postIds = List.from(getIt<UserProfileManager>().user?.savedPost ?? []);
   }
 
-  clear(){
-    // posts.clear();
-    // setAllSavedPosts();
+  clear() {
+    posts.clear();
+    setAllSavedPosts();
   }
 
   loadPosts({required VoidCallback callBack}) {
     List<String> firstTenPostIds = [];
-
     if (postIds.length > 10) {
       firstTenPostIds = List.from(postIds.sublist(0, 10));
       postIds.removeRange(0, 10);
     } else if (postIds.isNotEmpty) {
-      firstTenPostIds = List.from(postIds.sublist(0, postIds.lastIndex));
+      firstTenPostIds = List.from(postIds.sublist(0, postIds.lastIndex! + 1));
       postIds.clear();
     }
-
     if (firstTenPostIds.isNotEmpty) {
       postSearchParamModel.postIds = firstTenPostIds;
       isLoading.value = true;
@@ -42,6 +40,7 @@ class SavedPostsController extends GetxController {
         update();
       });
     } else {
+      clear();
       callBack();
       update();
     }
