@@ -298,6 +298,7 @@ class FirebaseManager {
         'totalBlogPosts': FieldValue.increment(1),
         'usedCategories': FieldValue.arrayUnion([model.categoryId])
       });
+      print(model.categoryId);
       transaction
           .update(counterDoc, {'totalBlogPosts': FieldValue.increment(1)});
       transaction
@@ -330,10 +331,12 @@ class FirebaseManager {
     DocumentReference postDoc = blogPostsCollection.doc(model.id);
     DocumentReference userDoc = authorsCollection.doc(model.authorId);
     DocumentReference counterDoc = counter.doc('counter');
+    DocumentReference categoryDoc = categoriesCollection.doc(model.categoryId);
 
     batch.update(postDoc, {'status': 0});
     batch.update(userDoc, {'totalBlogPosts': FieldValue.increment(-1)});
     batch.update(counterDoc, {'totalBlogPosts': FieldValue.increment(-1)});
+    batch.update(categoryDoc, {'totalBlogPosts': FieldValue.increment(-1)});
 
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
@@ -556,7 +559,6 @@ class FirebaseManager {
             'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
           });
         }
-
       }).then(
         (value) {
           response = FirebaseResponse(true, null);
@@ -705,7 +707,7 @@ class FirebaseManager {
     }
 
     query = query.orderBy("createdAt", descending: true);
-    
+
     if (searchModel.isRecent != null) {
       query = query.limit(10);
     }
