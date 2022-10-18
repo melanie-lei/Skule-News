@@ -104,14 +104,14 @@ class AppUtil {
                 Get.back();
                 yesHandler();
               },
-            ),
+            ).paddingOnly(bottom: 10),
             TextButton(
               child: Text(LocalizationString.no,
                   style: Theme.of(context).textTheme.titleMedium),
               onPressed: () {
                 Get.back();
               },
-            )
+            ).paddingOnly(bottom: 10),
           ],
         );
       },

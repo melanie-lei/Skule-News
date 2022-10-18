@@ -494,8 +494,8 @@ class LocalizationString {
 
   static String areYourSure = 'Are you sure?'.tr();
   static String wantToRemoveFromFeatured =
-      'Do you want to remove this blog from premium list?'.tr();
-  static String wantToAddToFeatured = 'Do you want to featured this blog?'.tr();
+      'Do you want to remove this blog from the featured list?'.tr();
+  static String wantToAddToFeatured = 'Do you want to feature this blog?'.tr();
   static String wantToRemoveFromPremium =
       'Do you want to remove this blog from premium list?'.tr();
   static String wantToAddToPremium =
