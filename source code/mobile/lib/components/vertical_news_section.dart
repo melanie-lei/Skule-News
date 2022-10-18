@@ -32,15 +32,16 @@ class _RecommendedSourceSectionState extends State<RecommendedSourceSection> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             headingType6(
-                title: LocalizationString.recommendedSources,
-                subTitle: LocalizationString.recommendedSourcesInfo,
-                context: context).hP16,
+                    title: LocalizationString.recommendedSources,
+                    subTitle: LocalizationString.recommendedSourcesInfo,
+                    context: context)
+                .hP16,
             const SizedBox(
               height: 10,
             ),
             Expanded(
               child: ListView.separated(
-                  padding: const EdgeInsets.only(left: 16,right: 16),
+                  padding: const EdgeInsets.only(left: 16, right: 16),
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.items.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -91,7 +92,12 @@ class _RecommendedSourceSectionState extends State<RecommendedSourceSection> {
               text: item.isFollowing()
                   ? LocalizationString.following
                   : LocalizationString.follow,
-              textStyle: Theme.of(context).textTheme.bodyLarge,
+              textStyle: item.isFollowing()
+                  ? Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.white)
+                  : Theme.of(context).textTheme.bodyLarge,
               backgroundColor: item.isFollowing()
                   ? Theme.of(context).primaryColor
                   : Theme.of(context).backgroundColor,
@@ -139,15 +145,16 @@ class _RecommendedProfilesSectionState
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             headingType6(
-                title: LocalizationString.recommendedForYou,
-                subTitle: LocalizationString.recommendedProfile,
-                context: context).hP16,
+                    title: LocalizationString.recommendedForYou,
+                    subTitle: LocalizationString.recommendedProfile,
+                    context: context)
+                .hP16,
             const SizedBox(
               height: 10,
             ),
             Expanded(
               child: ListView.separated(
-                  padding: const EdgeInsets.only(left: 16,right: 16),
+                  padding: const EdgeInsets.only(left: 16, right: 16),
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.items.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -244,15 +251,16 @@ class _RecommendedHashtagSectionState extends State<RecommendedHashtagSection> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             headingType6(
-                title: LocalizationString.recommendedHashtags,
-                subTitle: LocalizationString.recommendedHashtagsForYou,
-                context: context).hP16,
+                    title: LocalizationString.recommendedHashtags,
+                    subTitle: LocalizationString.recommendedHashtagsForYou,
+                    context: context)
+                .hP16,
             const SizedBox(
               height: 10,
             ),
             Expanded(
               child: ListView.separated(
-                  padding: const EdgeInsets.only(left: 16,right: 16),
+                  padding: const EdgeInsets.only(left: 16, right: 16),
                   scrollDirection: Axis.horizontal,
                   itemCount: widget.items.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -284,10 +292,9 @@ class _RecommendedHashtagSectionState extends State<RecommendedHashtagSection> {
               child: Text(
                 '#${item.name}',
                 textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleMedium!
-                    .copyWith(color: Theme.of(context).primaryColor,fontWeight: FontWeight.w600),
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.w600),
               ).hP4,
             ),
           ).ripple(() {
@@ -301,7 +308,12 @@ class _RecommendedHashtagSectionState extends State<RecommendedHashtagSection> {
               text: item.isFollowing()
                   ? LocalizationString.following
                   : LocalizationString.follow,
-              textStyle: Theme.of(context).textTheme.bodyLarge,
+              textStyle: item.isFollowing()
+                  ? Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.white)
+                  : Theme.of(context).textTheme.bodyLarge,
               backgroundColor: item.isFollowing()
                   ? Theme.of(context).primaryColor
                   : Theme.of(context).backgroundColor,

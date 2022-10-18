@@ -38,7 +38,9 @@ class _SearchAnythingState extends State<SearchAnything> {
                 selectedTextStyle: Theme.of(context)
                     .textTheme
                     .titleMedium!
-                    .copyWith(color: Theme.of(context).primaryColor,fontWeight: FontWeight.w600),
+                    .copyWith(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.w600),
                 textStyle: Theme.of(context).textTheme.titleMedium,
                 onSegmentChange: (segment) {
                   recommendationController.segmentChanged(segment);
@@ -78,21 +80,23 @@ class _SearchAnythingState extends State<SearchAnything> {
           return recommendationController.isLoadingPosts.value
               ? const HomeScreenShimmer()
               : ListView.separated(
-                  padding: const EdgeInsets.only(top: 25),
-                  itemBuilder: (BuildContext context, index) {
-                    return PostTile(
-                      model: recommendationController.posts[index],
-                      tapHandler: (){
-                        recommendationController.searchedPostOpened(recommendationController.posts[index]);
+                      padding: const EdgeInsets.only(top: 25),
+                      itemBuilder: (BuildContext context, index) {
+                        return PostTile(
+                          model: recommendationController.posts[index],
+                          tapHandler: () {
+                            recommendationController.searchedPostOpened(
+                                recommendationController.posts[index]);
+                          },
+                        );
                       },
-                    );
-                  },
-                  separatorBuilder: (BuildContext context, index) {
-                    return const SizedBox(
-                      height: 40,
-                    );
-                  },
-                  itemCount: recommendationController.posts.length).hP16;
+                      separatorBuilder: (BuildContext context, index) {
+                        return const SizedBox(
+                          height: 40,
+                        );
+                      },
+                      itemCount: recommendationController.posts.length)
+                  .hP16;
         });
   }
 
@@ -112,8 +116,9 @@ class _SearchAnythingState extends State<SearchAnything> {
                             newsSource: recommendationController.sources[index],
                             isSource: true);
                       },
-                      tapHandler: (){
-                        recommendationController.searchedPostOpened(recommendationController.posts[index]);
+                      tapHandler: () {
+                        recommendationController.searchedPostOpened(
+                            recommendationController.posts[index]);
                       },
                     );
                   },
