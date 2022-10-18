@@ -154,8 +154,8 @@ class LocalizationString {
   static String messageSent = 'Message sent successfully'.tr();
   static String raisedBy = 'Raised by :'.tr();
 
-  static String blogAdded = 'Blog added successfully'.tr();
-  static String blogUpdated = 'Blog updated successfully'.tr();
+  static String blogAdded = 'Article added successfully'.tr();
+  static String blogUpdated = 'Article updated successfully'.tr();
 
   static String categoryAdded = 'Category added successfully'.tr();
   static String categoryUpdated = 'Category updated successfully'.tr();
@@ -204,12 +204,12 @@ class LocalizationString {
 
   static String video = 'Video (mp4 or mov)'.tr();
 
-  static String blog = 'Blog'.tr();
-  static String blogs = 'Blogs'.tr();
-  static String recentBlogs = 'Recent Blogs'.tr();
+  static String blog = 'Article'.tr();
+  static String blogs = 'Articles'.tr();
+  static String recentBlogs = 'Recent Articles'.tr();
 
-  static String deActivatedBlogs = 'De-Activated Blogs'.tr();
-  static String featuredBlogs = 'Featured Blogs'.tr();
+  static String deActivatedBlogs = 'De-Activated Articles'.tr();
+  static String featuredBlogs = 'Featured Articles'.tr();
 
   static String addedOn = 'Added on'.tr();
 
@@ -224,9 +224,9 @@ class LocalizationString {
   static String searchUser = 'Search users'.tr();
   static String searchAuthor = 'Search authors'.tr();
 
-  static String searchBlog = 'Search blogs'.tr();
-  static String blogTitle = 'Blog Title'.tr();
-  static String blogContent = 'Blog Content(HTML supported)'.tr();
+  static String searchBlog = 'Search articles'.tr();
+  static String blogTitle = 'Article Title'.tr();
+  static String blogContent = 'Article Content(HTML supported)'.tr();
 
   static String hashTags = 'Hashtags'.tr();
   static String commaSeparatedHashtags =
@@ -238,7 +238,7 @@ class LocalizationString {
   static String albums = 'Albums'.tr();
   static String addAlbum = 'Add Album'.tr();
   static String deactivatedWallpaper = 'De-Activated Wallpapers'.tr();
-  static String addBlog = 'Add Blog'.tr();
+  static String addBlog = 'Add Article'.tr();
   static String thumbnailImage = 'Thumbnail Image'.tr();
 
   static String pleaseEnterName = 'Please enter name'.tr();
@@ -379,9 +379,9 @@ class LocalizationString {
       'Congratulations, you are subscribed successfully'.tr();
 
   static String premiumAccess = 'PREMIUM ACCESS'.tr();
-  static String thisIsPremiumBlog = 'This is a premium blog'.tr();
+  static String thisIsPremiumBlog = 'This is a premium article'.tr();
 
-  static String accessToAllBlogs = 'Get access to all premium blogs'.tr();
+  static String accessToAllBlogs = 'Get access to all premium articles'.tr();
   static String tryStr = 'Try'.tr();
   static String daysForFree = 'days for free'.tr();
   static String then = 'then'.tr();
@@ -488,15 +488,16 @@ class LocalizationString {
   static String approve = 'Approve'.tr();
   static String pendingApproval = 'Pending Approval'.tr();
   static String reject = 'Reject'.tr();
-  static String reportedBlogs = 'Reported Blogs'.tr();
+  static String reportedBlogs = 'Reported Articles'.tr();
   static String rejected = 'Rejected'.tr();
 
   static String areYourSure = 'Are you sure?'.tr();
   static String wantToRemoveFromFeatured =
-      'Do you want to remove this blog from the featured list?'.tr();
-  static String wantToAddToFeatured = 'Do you want to feature this blog?'.tr();
+      'Do you want to remove this article from the featured list?'.tr();
+  static String wantToAddToFeatured =
+      'Do you want to feature this article?'.tr();
   static String wantToRemoveFromPremium =
-      'Do you want to remove this blog from premium list?'.tr();
+      'Do you want to remove this article from premium list?'.tr();
   static String wantToAddToPremium =
-      'Do you want to add this blog to premium blogs?'.tr();
+      'Do you want to add this article to premium blogs?'.tr();
 }

@@ -13,8 +13,8 @@ class PendingBlogPostTile extends StatelessWidget {
   PendingBlogPostTile(
       {Key? key,
       required this.model,
-        required this.viewCallback,
-        required this.approvedCallback,
+      required this.viewCallback,
+      required this.approvedCallback,
       required this.rejectedCallback})
       : super(key: key);
 
@@ -29,44 +29,44 @@ class PendingBlogPostTile extends StatelessWidget {
               imageUrl: model.thumbnailImage,
               fit: BoxFit.cover,
               placeholder: (context, url) =>
-              const CircularProgressIndicator().p25,
+                  const CircularProgressIndicator().p25,
               errorWidget: (context, url, error) => const Icon(Icons.error),
               height: 120,
               width: 120,
             ),
             model.isVideoBlog() == true
                 ? Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-              child: Stack(
-                children: [
-                  Positioned(
                     left: 0,
                     right: 0,
                     top: 0,
                     bottom: 0,
-                    child: Container(
-                      color: Colors.black12,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          top: 0,
+                          bottom: 0,
+                          child: Container(
+                            color: Colors.black12,
+                          ),
+                        ),
+                        const Positioned(
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            child: ThemeIconWidget(
+                              ThemeIcon.play,
+                              size: 70,
+                              color: Colors.white,
+                            )),
+                      ],
                     ),
-                  ),
-                  const Positioned(
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      bottom: 0,
-                      child: ThemeIconWidget(
-                        ThemeIcon.play,
-                        size: 70,
-                        color: Colors.white,
-                      )),
-                ],
-              ),
-            )
+                  )
                 : Container()
           ],
-        ).ripple((){
+        ).ripple(() {
           viewCallback();
         }),
         const SizedBox(width: 20),
@@ -89,19 +89,19 @@ class PendingBlogPostTile extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
                 child: Center(
                   child: Text(model.categoryName.toUpperCase(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600))
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600))
                       .p4,
                 )).round(5),
             const SizedBox(
               width: 10,
             ),
           ],
-        ).ripple((){
+        ).ripple(() {
           viewCallback();
         }),
         const Spacer(),
@@ -119,7 +119,10 @@ class PendingBlogPostTile extends StatelessWidget {
                 height: 10,
               ),
               Text(LocalizationString.approve,
-                  style: Theme.of(context).textTheme.bodyLarge)
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.white))
             ],
           ).p16,
         ).round(5).ripple(() {
@@ -142,7 +145,10 @@ class PendingBlogPostTile extends StatelessWidget {
                 height: 10,
               ),
               Text(LocalizationString.reject,
-                  style: Theme.of(context).textTheme.bodyLarge)
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.white))
             ],
           ).p16,
         ).round(5).ripple(() {
@@ -158,11 +164,10 @@ class PostTile extends StatelessWidget {
 
   final BlogsController blogsController = Get.find();
 
-  PostTile(
-      {Key? key,
-      required this.model,
-      })
-      : super(key: key);
+  PostTile({
+    Key? key,
+    required this.model,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -223,11 +228,15 @@ class PostTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 8,),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     Text(model.title.toUpperCase(),
                         maxLines: 1,
                         style: Theme.of(context).textTheme.titleLarge),
-                    const SizedBox(height: 8,),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     Row(
                       children: [
                         Row(
@@ -257,7 +266,9 @@ class PostTile extends StatelessWidget {
                             )).round(5),
                       ],
                     ),
-                    const SizedBox(height: 8,),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     Row(
                       children: [
                         const ThemeIconWidget(

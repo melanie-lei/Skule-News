@@ -106,7 +106,10 @@ class _AddBlogState extends State<AddBlog> {
               width: 150,
               height: 60,
               child: FilledButtonType1(
-                  enabledTextStyle: Theme.of(context).textTheme.titleMedium,
+                  enabledTextStyle: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Colors.white),
                   text: LocalizationString.submit,
                   onPress: () {
                     addBlogController.submitBlog();
@@ -168,12 +171,11 @@ class _AddBlogState extends State<AddBlog> {
           height: 10,
         ),
         Obx(() => InputField(
-              controller: addBlogController.postDescription.value,
-              showBorder: true,
-              cornerRadius: 5,
-              maxLines: 5,
-              keyboardType: TextInputType.multiline
-            ))
+            controller: addBlogController.postDescription.value,
+            showBorder: true,
+            cornerRadius: 5,
+            maxLines: 5,
+            keyboardType: TextInputType.multiline))
       ],
     );
   }
@@ -203,7 +205,10 @@ class _AddBlogState extends State<AddBlog> {
               height: 60,
               width: 120,
               child: FilledButtonType1(
-                  enabledTextStyle: Theme.of(context).textTheme.titleMedium,
+                  enabledTextStyle: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(color: Colors.white),
                   text: LocalizationString.choose,
                   onPress: () {
                     addBlogController.pickThumbnailImage();
