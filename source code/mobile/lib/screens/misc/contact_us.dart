@@ -77,10 +77,7 @@ class _ContactUsState extends State<ContactUs> {
                       isEnabled: true,
                       cornerRadius: 10,
                       text: LocalizationString.submit,
-                      enabledTextStyle: Theme.of(context)
-                          .textTheme
-                          .titleMedium!
-                          .copyWith(color: Colors.white),
+                      enabledTextStyle: Theme.of(context).textTheme.titleMedium,
                       onPress: () {
                         sendMessage();
                       }))

@@ -94,8 +94,7 @@ class ForgotPasswordState extends State<ForgotPassword> {
                     LocalizationString.forgotPwdSubtitle,
                     style: Theme.of(context)
                         .textTheme
-                        .titleSmall!
-                        .copyWith(color: Colors.white),
+                        .titleSmall,
                   )
                 ],
               ),

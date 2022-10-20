@@ -90,10 +90,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                   ),
                   Text(
                     LocalizationString.changePwdMessage,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall!
-                        .copyWith(color: Colors.white),
+                    style: Theme.of(context).textTheme.titleSmall,
                   )
                 ],
               ),

@@ -45,8 +45,7 @@ class _ChooseCategoriesState extends State<ChooseCategories> {
                   text: LocalizationString.done,
                   enabledTextStyle: Theme.of(context)
                       .textTheme
-                      .titleLarge!
-                      .copyWith(color: Colors.white),
+                      .titleLarge,
                   onPress: () {
                     if (categoryController.selectedCategories.isNotEmpty) {
                       categoryController.updateInterest(() {

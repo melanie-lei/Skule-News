@@ -72,8 +72,7 @@ class _AuthorDetailState extends State<AuthorDetail> {
                                     authorController.author.value?.name ?? '',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .titleMedium!
-                                        .copyWith(color: Colors.white),
+                                        .titleMedium,
                                     overflow: TextOverflow.ellipsis,
                                   ).ripple(() {
                                     Get.back();

@@ -98,8 +98,7 @@ class VerifyOTPState extends State<VerifyOTP> {
                     LocalizationString.enterOtpMessage,
                     style: Theme.of(context)
                         .textTheme
-                        .titleSmall!
-                        .copyWith(color: Colors.white),
+                        .titleSmall,
                   )
                 ],
               ),

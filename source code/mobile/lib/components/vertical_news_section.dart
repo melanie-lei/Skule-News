@@ -92,13 +92,13 @@ class _RecommendedSourceSectionState extends State<RecommendedSourceSection> {
               text: item.isFollowing()
                   ? LocalizationString.following
                   : LocalizationString.follow,
-              textStyle: item.isFollowing()
+              textStyle: !item.isFollowing()
                   ? Theme.of(context)
                       .textTheme
                       .bodyLarge!
                       .copyWith(color: Colors.white)
                   : Theme.of(context).textTheme.bodyLarge,
-              backgroundColor: item.isFollowing()
+              backgroundColor: !item.isFollowing()
                   ? Theme.of(context).primaryColor
                   : Theme.of(context).backgroundColor,
               onPress: () {
@@ -204,8 +204,13 @@ class _RecommendedProfilesSectionState
               text: item.isFollowing()
                   ? LocalizationString.following
                   : LocalizationString.follow,
-              textStyle: Theme.of(context).textTheme.bodyLarge,
-              backgroundColor: item.isFollowing()
+              textStyle: !item.isFollowing()
+                  ? Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.white)
+                  : Theme.of(context).textTheme.bodyLarge,
+              backgroundColor: !item.isFollowing()
                   ? Theme.of(context).primaryColor
                   : Theme.of(context).backgroundColor,
               onPress: () {
@@ -308,13 +313,13 @@ class _RecommendedHashtagSectionState extends State<RecommendedHashtagSection> {
               text: item.isFollowing()
                   ? LocalizationString.following
                   : LocalizationString.follow,
-              textStyle: item.isFollowing()
+              textStyle: !item.isFollowing()
                   ? Theme.of(context)
                       .textTheme
                       .bodyLarge!
                       .copyWith(color: Colors.white)
                   : Theme.of(context).textTheme.bodyLarge,
-              backgroundColor: item.isFollowing()
+              backgroundColor: !item.isFollowing()
                   ? Theme.of(context).primaryColor
                   : Theme.of(context).backgroundColor,
               onPress: () {

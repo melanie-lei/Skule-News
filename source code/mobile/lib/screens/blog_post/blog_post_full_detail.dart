@@ -194,8 +194,7 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                               child: Text(widget.model.category.toUpperCase(),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyMedium!
-                                          .copyWith(color: Colors.white))
+                                          .bodyMedium)
                                   .p8,
                             )).round(5),
                         Container(
@@ -284,8 +283,7 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                         Text(LocalizationString.comments,
                                 style: Theme.of(context)
                                     .textTheme
-                                    .bodyLarge!
-                                    .copyWith(color: Colors.white))
+                                    .bodyLarge)
                             .ripple(() {
                           if (getIt<UserProfileManager>().isLogin() == false) {
                             Get.to(() => const AskForLogin());
