@@ -113,9 +113,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
                         enabledTextStyle: Theme.of(context)
                             .textTheme
                             .titleMedium!
-                            .copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600),
+                            .copyWith(fontWeight: FontWeight.w600),
                         onPress: () {
                           signup();
                         },

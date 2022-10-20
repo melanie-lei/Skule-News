@@ -107,10 +107,7 @@ class _AddBlogState extends State<AddBlog> {
               width: 150,
               height: 60,
               child: FilledButtonType1(
-                  enabledTextStyle: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(color: Colors.white),
+                  enabledTextStyle: Theme.of(context).textTheme.titleMedium,
                   text: LocalizationString.submit,
                   onPress: () {
                     addBlogController.submitBlog();
@@ -206,19 +203,18 @@ class _AddBlogState extends State<AddBlog> {
             SizedBox(
               height: 60,
               width: 60,
-              child: Image.memory(addBlogController.thumbnailImageBytes ?? 
-                const Base64Codec().decode("R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"),
-                fit: BoxFit.cover),
+              child: Image.memory(
+                  addBlogController.thumbnailImageBytes ??
+                      const Base64Codec().decode(
+                          "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"),
+                  fit: BoxFit.cover),
             ).round(5),
             const SizedBox(width: 10),
             SizedBox(
               height: 60,
               width: 120,
               child: FilledButtonType1(
-                  enabledTextStyle: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(color: Colors.white),
+                  enabledTextStyle: Theme.of(context).textTheme.titleMedium,
                   text: LocalizationString.choose,
                   onPress: () {
                     setState(() {
