@@ -94,6 +94,8 @@ class FirebaseManager {
     return response!;
   }
 
+  // ----------------------- LOGIN / SIGN UP---------------------------------------
+
   loginAnonymously(VoidCallback callback) async {
     EasyLoading.show(status: LocalizationString.loading);
     await auth.signInAnonymously().then((value) => callback());
@@ -203,6 +205,8 @@ class FirebaseManager {
     }
   }
 
+  // ---------------------------USER INFO----------------------------------------
+
   Future<UserModel?> getCurrentUser(String id) async {
     UserModel? user;
 
@@ -291,6 +295,8 @@ class FirebaseManager {
     return path;
   }
 
+  // --------------------------AUTHOR INFO----------------------------------------
+
   Future<AuthorModel?> getAuthorDetail(String id) async {
     AuthorModel? source;
     await authorsCollection.doc(id).get().then((doc) {
@@ -319,6 +325,8 @@ class FirebaseManager {
 
     return list;
   }
+
+  // --------------FOLLOW LIKE SAVE POSTS USERS HASHTAGS--------------------------
 
   Future<FirebaseResponse> likePost(String id) async {
     getIt<UserProfileManager>().user!.likedPost.add(id);
@@ -583,6 +591,8 @@ class FirebaseManager {
     return response!;
   }
 
+  // -------------------------------SEARCHING-------------------------------------
+
   Future<FirebaseResponse> increasePostSearchCount(BlogPostModel news) async {
     DocumentReference postDoc = blogPostsCollection.doc(news.id);
 
@@ -679,6 +689,8 @@ class FirebaseManager {
     return response!;
   }
 
+  // --------------------------------GET POSTS-----------------------------------
+
   Future<FirebaseResponse> followingUsersPosts(
       {required PostSearchParamModel searchModel}) async {
     List<BlogPostModel> list = [];
@@ -734,6 +746,8 @@ class FirebaseManager {
     return response!;
   }
 
+  // ---------------------------------REPORT-------------------------------------
+
   Future<FirebaseResponse> reportAbuse(
       String id, String name, DataType type) async {
     String reportId = '${id}_${auth.currentUser!.uid}';
@@ -767,6 +781,8 @@ class FirebaseManager {
     return response!;
   }
 
+  // -----------------------------CONTACT----------------------------------------
+
   Future<FirebaseResponse> sendContactusMessage(
       String name, String email, String phone, String message) async {
     String id = getRandString(15);
@@ -785,6 +801,8 @@ class FirebaseManager {
     });
     return response!;
   }
+
+  // ----------------------------CATEGORIES--------------------------------------
 
   Future<FirebaseResponse> updateCategoryPref(
       {required List<String> ids}) async {
@@ -828,6 +846,8 @@ class FirebaseManager {
 
     return categoriesList;
   }
+
+  // ----------------------------AUTHORS-----------------------------------------
 
   Future<List<AuthorModel>> searchAuthors(
       {String? searchText, int? type, List<String>? sourceIds}) async {
@@ -880,6 +900,8 @@ class FirebaseManager {
   //   return list;
   // }
 
+  // -----------------------------HASHTAGS---------------------------------------
+
   Future<Hashtag?> getHashtagDetail(String id) async {
     Hashtag? hashtag;
     await hashtagsCollection.doc(id).get().then((doc) {
@@ -923,6 +945,8 @@ class FirebaseManager {
     return list;
   }
 
+  // ------------------------------COMMENTS--------------------------------------
+
   Future<List<CommentModel>> getComments({required String posId}) async {
     List<CommentModel> list = [];
 
@@ -963,6 +987,8 @@ class FirebaseManager {
     });
     return response!;
   }
+
+  // ------------------------------SETTINGS--------------------------------------
 
   Future<SettingsModel?> getSettings() async {
     SettingsModel? setting;
