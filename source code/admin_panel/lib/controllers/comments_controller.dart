@@ -7,7 +7,7 @@ class CommentsController extends GetxController {
   void getComments(String postId) {
     AppUtil.checkInternet().then((value) async {
       if (value) {
-        getIt<FirebaseManager>().getComments(posId: postId).then((result) {
+        getIt<FirebaseManager>().getComments(postId: postId).then((result) {
           comments.value = result;
           update();
         });
