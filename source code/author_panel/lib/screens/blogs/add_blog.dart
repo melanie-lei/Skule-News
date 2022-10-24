@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:skule_news_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
 
+/// Widget for creating and editing a post.
 class AddBlog extends StatefulWidget {
   final BlogPostModel? post;
 
@@ -185,9 +186,7 @@ class _AddBlogState extends State<AddBlog> {
           LocalizationString.thumbnailImage,
           style: Theme.of(context).textTheme.titleSmall,
         ),
-        const SizedBox(
-          height: 10,
-        ),
+        const SizedBox(height: 10),
         Row(
           children: [
             Expanded(

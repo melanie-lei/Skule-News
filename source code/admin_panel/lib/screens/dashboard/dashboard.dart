@@ -34,10 +34,11 @@ class _DashboardState extends State<Dashboard> {
                   ? dashboardInfoGrid()
                   : SingleChildScrollView(child: dashboardInfoGrid()))
         ],
-      ).p25,
+      ).hP25,
     );
   }
 
+  /// Displays the article, user, author, and featured counters.
   Widget cardsGrid() {
     return GetBuilder<DashboardController>(
         init: dashboardController,
@@ -98,6 +99,7 @@ class _DashboardState extends State<Dashboard> {
         .vP25;
   }
 
+  /// Displays a single counter.
   Widget cardItem(String title, String subTitle, ThemeIcon icon, Color color) {
     return Container(
       color: color.withOpacity(0.5),
