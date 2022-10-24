@@ -44,7 +44,6 @@ class AddBlogController extends GetxController {
     categoryId.value = model.categoryId;
     categoryName.value = model.categoryName;
     thumbnailImage.value.text = model.thumbnailImage;
-    // isPremium.value = model.isPremium;
     isPremium.value = false;
     contentType.value = model.contentType;
     availabilityStatus.value = model.status == 0
@@ -65,6 +64,7 @@ class AddBlogController extends GetxController {
   }
 
   submitBlog() async {
+    // Check if the thumbnail, title, descrption, and category name are uploaded
     if (thumbnailImageBytes == null && post.value?.thumbnailImage == null) {
       AppUtil.showToast(
           message: LocalizationString.pleaseUploadThumbnailImage,
@@ -75,7 +75,6 @@ class AddBlogController extends GetxController {
         contentType.value == 2) {
       AppUtil.showToast(
           message: LocalizationString.pleaseUploadVideo, isSuccess: false);
-
       return;
     } else if (postTitle.value.text.isEmpty) {
       AppUtil.showToast(
@@ -158,17 +157,17 @@ class AddBlogController extends GetxController {
   }
 
   Future<String> uploadImage(String blogId) async {
-    String songCoverPath = '';
+    String thumbnailPath = '';
     await getIt<FirebaseManager>()
         .uploadBlogImage(
             uniqueId: blogId,
             bytes: thumbnailImageBytes!,
             fileName: thumbnailImage.value.text)
         .then((imagePath) {
-      songCoverPath = imagePath;
+      thumbnailPath = imagePath;
     });
 
-    return songCoverPath;
+    return thumbnailPath;
   }
 
   Future<String> uploadBlogFile(String postId) async {

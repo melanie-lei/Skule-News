@@ -7,6 +7,7 @@ class UserModel {
 
   String? bio;
 
+  /// The URL to the profile image.
   String? image;
 
   List<String> followingProfiles;
@@ -92,9 +93,10 @@ class UserModel {
         status: json["status"],
         subscriptionDays: json["numberOfDays"] ?? 0,
         subscriptionTerm: json["subscriptionTerm"],
-        subscriptionDate: json["subscriptionDate"] == null
-            ? null
-            : json["subscriptionDate"].toDate(),
+        subscriptionDate: json["subscriptionDate"]?.toDate(),
+        // subscriptionDate: json["subscriptionDate"] == null
+        //     ? null
+            // : json["subscriptionDate"]?.toDate(),
         todayDate: json["todayDate"] == null
             ? DateTime.now()
             : json["todayDate"].toDate(),

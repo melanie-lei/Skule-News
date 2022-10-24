@@ -63,12 +63,14 @@ class FirebaseManager {
   CollectionReference settings =
       FirebaseFirestore.instance.collection('settings');
 
-  /////////////////////////*********** User ***********//////////////////////////////////
+  /* User */
 
+  /// Signs the current user out.
   Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
   }
 
+  /// Logs the user in with an account, persisting after the browser window closes.
   Future<FirebaseResponse> login(String email, String password) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     await Firebase.initializeApp();
@@ -88,7 +90,6 @@ class FirebaseManager {
 
       response = FirebaseResponse(true, null);
     } catch (error) {
-      print(error);
       response =
           FirebaseResponse(false, LocalizationString.userNameOrPasswordIsWrong);
     }
@@ -96,11 +97,13 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Inserts the admin user into the database.
   insertUser(String id, String email) async {
     await firestore.runTransaction((transaction) async {
       DocumentReference doc = authorsCollection.doc(id);
       final snapshot = await transaction.get(doc);
 
+        // Adds the user to the database if not already in it.
       if (!snapshot.exists) {
         transaction
             .set(doc, {'id': id, 'name': 'Admin', 'status': 1, 'email': email});
@@ -108,27 +111,12 @@ class FirebaseManager {
     });
   }
 
+  /// Logs the user in without an account.
   loginAnonymously() async {
     await auth.signInAnonymously();
   }
 
-  Future<AuthorsModel?> getCurrentUser(String id) async {
-    AuthorsModel? user;
-
-    print(authorsCollection.doc(id));
-    await authorsCollection.doc(id).get().then((doc) {
-      print(doc.data());
-
-      user = AuthorsModel.fromJson(doc.data() as Map<String, dynamic>);
-    }).catchError((error) {
-      print('error');
-      print(error);
-      response = FirebaseResponse(false, error.toString());
-    });
-
-    return user;
-  }
-
+  /// Changes the current user's password to [pwd].
   Future<FirebaseResponse> changeProfilePassword({required String pwd}) async {
     await FirebaseAuth.instance.currentUser?.updatePassword(pwd).then((value) {
       response = FirebaseResponse(true, null);
@@ -138,6 +126,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Resets the current user's password with an email.
   Future<FirebaseResponse> resetPassword(String email) async {
     await FirebaseAuth.instance
         .sendPasswordResetEmail(email: email)
@@ -149,6 +138,9 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Updates the current user's profile image.
+  /// 
+  /// Returns the URL to the image.
   Future<String> updateProfileImage(
       {required String uniqueId,
       required Uint8List bytes,
@@ -163,7 +155,7 @@ class FirebaseManager {
       contentType: mime,
     );
 
-    //Upload to Firebase
+    // Uploads the image to firebase.
     var uploadTask = _firebaseStorage
         .ref('blogmaster/profileImage/$randomImageName')
         .putData(bytes, metadata);
@@ -172,6 +164,9 @@ class FirebaseManager {
     return downloadUrl;
   }
 
+  /// Deletes a user from the database.
+  /// 
+  /// Does not actually remove the user, only "deactivates" it.
   Future<FirebaseResponse> deleteUser(UserModel model) async {
     DocumentReference userDoc = userCollection.doc(model.id);
     DocumentReference counterDoc = counter.doc('counter');
@@ -189,6 +184,9 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Updates the current user's information.
+  /// 
+  /// [image] refers to the profile image, not the cover image.
   Future<FirebaseResponse> updateUser(
       {String? name, String? bio, String? image}) async {
     DocumentReference doc =
@@ -202,6 +200,9 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Deletes an author from the database.
+  /// 
+  /// Does not actually remove the author, only "deactivates" it.
   Future<FirebaseResponse> deleteAuthor(AuthorsModel model) async {
     DocumentReference userDoc = authorsCollection.doc(model.id);
     DocumentReference counterDoc = counter.doc('counter');
@@ -219,6 +220,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Gets the information for a user/author/admin from the database.
   Future<AuthorsModel?> getSourceDetail(String id) async {
     AuthorsModel? source;
     await authorsCollection.doc(id).get().then((doc) {
@@ -230,6 +232,9 @@ class FirebaseManager {
     return source;
   }
 
+  /// Gets a list of the author's categories.
+  /// 
+  /// Author categories are deprecated, this will almost certainly not work.
   Future<List<CategoryModel>> getSourceCategories(String id) async {
     List<CategoryModel> list = [];
     await authorsCollection
@@ -247,13 +252,10 @@ class FirebaseManager {
     return list;
   }
 
+  /// Approves a pending blog post.
   Future<FirebaseResponse> approveBlogPost(BlogPostModel model) async {
-    DocumentReference activeBlogPost = blogPostsCollection.doc(model.id);
-    DocumentReference artistDoc = authorsCollection.doc(model.authorId);
-    // DocumentReference categoryDoc = authorsCollection
-    //     .doc(model.authorId)
-    //     .collection('categories')
-    //     .doc(model.categoryId);
+    DocumentReference pendingBlogPost = blogPostsCollection.doc(model.id); 
+    DocumentReference authorDoc = authorsCollection.doc(model.authorId);
     DocumentReference categoryDoc = categoriesCollection.doc(model.categoryId);
     DocumentReference counterDoc = counter.doc('counter');
 
@@ -261,6 +263,7 @@ class FirebaseManager {
       List<String> newHashtags = [];
       List<Map<String, dynamic>> existingHashtagsData = [];
 
+      // Separate the hashtags by new and existing.
       for (String hashtag in model.hashtags) {
         DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
         final snapshot = await transaction.get(hashtagDoc);
@@ -272,6 +275,7 @@ class FirebaseManager {
         }
       }
 
+      // Create the new hashtags.
       for (String hashtag in newHashtags) {
         DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
 
@@ -283,6 +287,7 @@ class FirebaseManager {
         });
       }
 
+      // Update existing hashtags.
       for (Map<String, dynamic> hashtagData in existingHashtagsData) {
         DocumentReference hashtagDoc =
             hashtagsCollection.doc(hashtagData['name']);
@@ -293,12 +298,14 @@ class FirebaseManager {
         });
       }
 
-      transaction.update(activeBlogPost, {'approvedStatus': 1});
-      transaction.update(artistDoc, {
+      // Approve the blog.
+      transaction.update(pendingBlogPost, {'approvedStatus': 1});
+
+      // Update the blog counters.
+      transaction.update(authorDoc, {
         'totalBlogPosts': FieldValue.increment(1),
         'usedCategories': FieldValue.arrayUnion([model.categoryId])
       });
-      print(model.categoryId);
       transaction
           .update(counterDoc, {'totalBlogPosts': FieldValue.increment(1)});
       transaction
@@ -314,6 +321,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Rejects a pending blog post.
   Future<FirebaseResponse> rejectBlogPost(BlogPostModel model) async {
     DocumentReference pendingBlogPost = blogPostsCollection.doc(model.id);
 
@@ -325,6 +333,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Deactivates a blog post.
   Future<FirebaseResponse> deactivateBlog(BlogPostModel model) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
 
@@ -346,11 +355,12 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Deletes a blog report.
   Future<FirebaseResponse> deleteBlogReport(BlogPostModel model) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
 
-    DocumentReference doc = blogPostsCollection.doc(model.id);
-    batch.update(doc, {'reportCount': 0});
+    DocumentReference blogDoc = blogPostsCollection.doc(model.id);
+    batch.update(blogDoc, {'reportCount': 0});
 
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
@@ -360,6 +370,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Gets all reported blogs.
   Future<List<BlogPostModel>> getAllReportedBlogs() async {
     List<BlogPostModel> list = [];
 
@@ -377,6 +388,7 @@ class FirebaseManager {
     return list;
   }
 
+  /// Deletes all reports of an author.
   Future<FirebaseResponse> deleteAuthorReport(AuthorsModel model) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
 
@@ -391,6 +403,9 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Uploads a blog cover image to the database.
+  /// 
+  /// Returns a URL to the image.
   Future<String> uploadBlogImage(
       {required String uniqueId,
       required Uint8List bytes,
@@ -405,7 +420,7 @@ class FirebaseManager {
       contentType: mime,
     );
 
-    //Upload to Firebase
+    // Uploads to Firebase.
     var uploadTask = _firebaseStorage
         .ref('blogmaster/coverimage/$randomImageName')
         .putData(bytes, metadata);
@@ -414,6 +429,9 @@ class FirebaseManager {
     return downloadUrl;
   }
 
+  /// Uploads a post video to the database.
+  /// 
+  /// Returns a URL to the video.
   Future<String> uploadBlogVideo(
       {required String uniqueId,
       required Uint8List bytes,
@@ -426,7 +444,7 @@ class FirebaseManager {
       contentType: 'video/mp4',
     );
 
-    //Upload to Firebase
+    // Uploads to Firebase.
     var uploadTask = _firebaseStorage
         .ref('blogmaster/files/$randomImageName')
         .putData(bytes, metadata);
@@ -435,6 +453,7 @@ class FirebaseManager {
     return downloadUrl;
   }
 
+  /// Update the popularity metrics for an author.
   Future<FirebaseResponse> increaseSourceSearchCount(
       AuthorsModel source) async {
     DocumentReference sourceDoc = authorsCollection.doc(source.id);
@@ -450,6 +469,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Inserts a post into the database.
   Future<FirebaseResponse> insertBlogPost(
       {required BlogPostModel? post,
       required bool isUpdate,
@@ -490,7 +510,7 @@ class FirebaseManager {
       'totalLikes': 0,
       'totalSaved': 0,
       'videoUrl': postVideoPath,
-      'approvedStatus': 1,
+      'approvedStatus': 1, // 1 means approved, 0 means pending, -1 means rejected
     };
 
     int postCounterIncrementFactor = 1;
@@ -503,8 +523,10 @@ class FirebaseManager {
 
     if (isUpdate == true) {
       if (post!.status == 1 && status == AvailabilityStatus.deactivated) {
+        // Post is approved but deactivated?
         postCounterIncrementFactor = -1;
       } else if (post.status == 0 && status == AvailabilityStatus.active) {
+        // Post is pending but active?
         postCounterIncrementFactor = 1;
       } else {
         postCounterIncrementFactor = 0;
@@ -514,6 +536,7 @@ class FirebaseManager {
       List<Map<String, dynamic>> existingHashtagsData = [];
 
       await firestore.runTransaction((transaction) async {
+        // Separates the hashtags by new and existing.
         for (String hashtag in hashtags) {
           DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
           final snapshot = await transaction.get(hashtagDoc);
@@ -525,6 +548,7 @@ class FirebaseManager {
           }
         }
 
+        // Creates new hashtags.
         for (String hashtag in newHashtags) {
           DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
 
@@ -535,6 +559,7 @@ class FirebaseManager {
           });
         }
 
+        // Updates old hashtags.
         for (Map<String, dynamic> hashtagData in existingHashtagsData) {
           DocumentReference hashtagDoc =
               hashtagsCollection.doc(hashtagData['name']);
@@ -545,6 +570,7 @@ class FirebaseManager {
           });
         }
 
+        // Updates blog counters.
         transaction.update(postDoc, postJson);
         transaction.update(author, {
           'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
@@ -554,20 +580,21 @@ class FirebaseManager {
           'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
         });
 
-        if (postCounterIncrementFactor != 0) {
-          transaction.update(counterDoc, {
-            'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
-          });
-        }
+        // if (postCounterIncrementFactor != 0) {
+        transaction.update(counterDoc, {
+          'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
+        });
+        // }
       }).then(
         (value) {
           response = FirebaseResponse(true, null);
         },
-        onError: (e) {
-          response = FirebaseResponse(false, null);
+        onError: (error) {
+          response = FirebaseResponse(false, error.toString());
         },
       );
     } else {
+      // New post?
       postJson['createdAt'] = FieldValue.serverTimestamp();
 
       postJson['searchedCount'] = 0;
@@ -577,6 +604,7 @@ class FirebaseManager {
       List<String> existingHashtags = [];
 
       await firestore.runTransaction((transaction) async {
+        // Separates hashtags by new and existing.
         for (String hashtag in hashtags) {
           DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
           final snapshot = await transaction.get(hashtagDoc);
@@ -587,6 +615,7 @@ class FirebaseManager {
           }
         }
 
+        // Creates new hashtags.
         for (String hashtag in newHashtags) {
           DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
 
@@ -597,6 +626,7 @@ class FirebaseManager {
           });
         }
 
+        // Updates existing hashtags.
         for (String hashtag in existingHashtags) {
           DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
 
@@ -608,6 +638,8 @@ class FirebaseManager {
         }
 
         transaction.set(postDoc, postJson);
+
+        // Updates counters.
         transaction
             .update(counterDoc, {'totalBlogPosts': FieldValue.increment(1)});
         transaction.update(author, {'totalBlogPosts': FieldValue.increment(1)});
@@ -617,8 +649,8 @@ class FirebaseManager {
         (value) {
           response = FirebaseResponse(true, null);
         },
-        onError: (e) {
-          response = FirebaseResponse(false, null);
+        onError: (error) {
+          response = FirebaseResponse(false, error.toString());
         },
       );
     }
@@ -626,6 +658,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Toggles a post from the featured list.
   addOrRemoveFromFeature(BlogPostModel model) async {
     final batch = FirebaseFirestore.instance.batch();
     DocumentReference postDoc =
@@ -648,6 +681,9 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Toggles post premium status.
+  /// 
+  /// Premium posts are a deprecated feature. This will have no impact on the user experience.
   addOrRemoveFromPremium(BlogPostModel model) async {
     final batch = FirebaseFirestore.instance.batch();
     DocumentReference postDoc =
@@ -670,6 +706,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Gets a list of posts based on search information.
   Future<List<BlogPostModel>> searchPosts(
       {required BlogPostSearchParamModel searchModel}) async {
     List<BlogPostModel> list = [];
@@ -723,6 +760,7 @@ class FirebaseManager {
     return list;
   }
 
+  /// Gets a list of featured posts.
   Future<List<BlogPostModel>> getFeaturedPosts() async {
     List<BlogPostModel> list = [];
 
@@ -739,6 +777,7 @@ class FirebaseManager {
     return list;
   }
 
+  /// Reports a post or user/author/admin.
   Future<FirebaseResponse> reportAbuse(
       String id, String name, DataType type) async {
     String reportId = '${id}_${auth.currentUser!.uid}';
@@ -756,9 +795,11 @@ class FirebaseManager {
     batch.set(doc, reportData);
 
     if (type == DataType.blog) {
+      // Reports a post.
       DocumentReference postDoc = blogPostsCollection.doc(id);
       batch.update(postDoc, {'reportCount': FieldValue.increment(1)});
     } else if (type == DataType.source) {
+      // Reports a user/author/admin.
       DocumentReference sourceDoc = authorsCollection.doc(id);
       batch.update(sourceDoc, {'reportCount': FieldValue.increment(1)});
     }
@@ -771,6 +812,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Inserts a contact us message into the database.
   Future<FirebaseResponse> sendContactusMessage(
       String name, String email, String phone, String message) async {
     String id = getRandString(15);
@@ -790,6 +832,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Gets a list of categories based on a search term.
   Future<List<CategoryModel>> searchCategories(
       {String? searchText, int? type}) async {
     List<CategoryModel> categoriesList = [];
@@ -812,6 +855,7 @@ class FirebaseManager {
     return categoriesList;
   }
 
+  /// Gets a list of authors based on a search term.
   Future<List<AuthorsModel>> searchAuthors(
       {String? searchText, int? type, List<String>? sourceIds}) async {
     List<AuthorsModel> list = [];
@@ -837,6 +881,7 @@ class FirebaseManager {
     return list;
   }
 
+  /// Gets a list of all reported authors.
   Future<List<AuthorsModel>> getAllReportedAuthors() async {
     List<AuthorsModel> list = [];
 
@@ -854,6 +899,7 @@ class FirebaseManager {
     return list;
   }
 
+  /// Gets a list of hashtags based on a search term.
   Future<List<Hashtag>> searchHashtags(
       {String? searchText, int? type, List<String>? hashtags}) async {
     List<Hashtag> list = [];
@@ -879,6 +925,9 @@ class FirebaseManager {
     return list;
   }
 
+  /// Gets a list of authors based on a search term.
+  /// 
+  /// Almost identical to searchAuthors() method.
   Future<List<AuthorsModel>> searchAuthorProfiles(
       {String? searchText, int? type}) async {
     List<AuthorsModel> list = [];
@@ -904,6 +953,7 @@ class FirebaseManager {
     return list;
   }
 
+  /// Gets a list of users based on a search term.
   Future<List<UserModel>> searchUserProfiles(
       {String? searchText, int? type}) async {
     List<UserModel> list = [];
@@ -927,11 +977,12 @@ class FirebaseManager {
     return list;
   }
 
-  Future<List<CommentModel>> getComments({required String posId}) async {
+  /// Gets a list of comments on a post.
+  Future<List<CommentModel>> getComments({required String postId}) async {
     List<CommentModel> list = [];
 
     Query query = commentsCollection
-        .where("posId", isEqualTo: posId)
+        .where("posId", isEqualTo: postId)
         .orderBy("createdAt", descending: true);
 
     await query.get().then((QuerySnapshot snapshot) {
@@ -945,6 +996,7 @@ class FirebaseManager {
     return list;
   }
 
+  /// Inserts a comment into the database.
   Future<FirebaseResponse> sendComment(CommentModel comment) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
 
@@ -981,8 +1033,9 @@ class FirebaseManager {
     return list;
   }
 
-  /////////////////////////////////************* Category *************////////////////////////////////////////
+  /* Category */
 
+  /// Inserts a new category into the database.
   Future<FirebaseResponse> insertNewCategory(
       {CategoryModel? category,
       required String id,
@@ -1017,6 +1070,9 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Uploads a category cover image into the database.
+  /// 
+  /// Returns the URL of the image.
   Future<String> uploadCategoryImage(
       {required String uniqueId,
       required Uint8List bytes,
@@ -1041,6 +1097,9 @@ class FirebaseManager {
     return downloadUrl;
   }
 
+  /// Deletes a category from the database.
+  /// 
+  /// Does not actually remove it, but "deactivates" it.
   Future<FirebaseResponse> deleteCategory(CategoryModel category) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
 
@@ -1058,6 +1117,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Gets a list of categories based on a search term.
   Future<List<CategoryModel>> getAllCategoriesBy(
       {required int status, String? searchKeyword}) async {
     List<CategoryModel> categoryList = [];
@@ -1080,6 +1140,7 @@ class FirebaseManager {
     return categoryList;
   }
 
+  /// Gets a category from the database.
   Future<CategoryModel?> getCategory(String id) async {
     CategoryModel? category;
 
@@ -1092,6 +1153,9 @@ class FirebaseManager {
     return category;
   }
 
+  /* Admin */
+
+  /// Gets the counter doc from the databse.
   Future<RecordCounterModel?> getCounter() async {
     RecordCounterModel? recordCounter;
 
@@ -1105,6 +1169,7 @@ class FirebaseManager {
     return recordCounter;
   }
 
+  /// Updates the app settings.
   Future<FirebaseResponse> saveSetting(
       {required String phone,
       required String email,
@@ -1136,6 +1201,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Gets the app settings.
   Future<SettingsModel?> getSettings() async {
     SettingsModel? setting;
 
@@ -1148,6 +1214,7 @@ class FirebaseManager {
     return setting;
   }
 
+  /// Gets all the support tickets.
   Future<List<SupportModel>> getAllSupportMessages() async {
     List<SupportModel> supportTickets = [];
 
@@ -1163,6 +1230,7 @@ class FirebaseManager {
     return supportTickets;
   }
 
+  /// Inserts a reply to a support ticket.
   Future<FirebaseResponse> sendSupportTicketReply({
     required String ticketId,
     required String replyMessage,
@@ -1182,6 +1250,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// ???
   Future<FirebaseResponse> markRequestAsClosed({
     required String ticketId,
   }) async {
@@ -1199,8 +1268,9 @@ class FirebaseManager {
     return response!;
   }
 
-  /////////////////////////////////************* Packages *************////////////////////////////////////////
+  /* Packages */
 
+  /// Inserts the package information.
   Future<FirebaseResponse> insertPackage({
     PackageModel? package,
     required String id,
@@ -1236,6 +1306,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Gets all the packages.
   Future<List<PackageModel>> getAllPackages() async {
     List<PackageModel> list = [];
 
@@ -1252,6 +1323,7 @@ class FirebaseManager {
     return list;
   }
 
+  /// Deletes a package.
   Future<FirebaseResponse> deletePackage(PackageModel package) async {
     DocumentReference doc = packagesCollection.doc(package.id);
 

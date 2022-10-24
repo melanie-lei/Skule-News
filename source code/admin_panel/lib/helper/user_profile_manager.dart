@@ -12,7 +12,7 @@ class UserProfileManager {
   refreshProfile() async {
     if (auth.currentUser != null) {
       user =
-          await getIt<FirebaseManager>().getCurrentUser(auth.currentUser!.uid);
+          await getIt<FirebaseManager>().getSourceDetail(auth.currentUser!.uid);
     }
   }
 }
