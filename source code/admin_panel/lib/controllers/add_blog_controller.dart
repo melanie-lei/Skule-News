@@ -64,7 +64,7 @@ class AddBlogController extends GetxController {
   }
 
   submitBlog() async {
-    // Check if the thumbnail, title, descrption, and category name are uploaded
+    // Check if the thumbnail, title, descrption, and category name are uploaded.
     if (thumbnailImageBytes == null && post.value?.thumbnailImage == null) {
       AppUtil.showToast(
           message: LocalizationString.pleaseUploadThumbnailImage,
@@ -113,6 +113,7 @@ class AddBlogController extends GetxController {
       videoUrl = post.value?.videoUrl;
     }
 
+    // Insert the blog into the database.
     getIt<FirebaseManager>()
         .insertBlogPost(
             post: post.value,
@@ -133,6 +134,7 @@ class AddBlogController extends GetxController {
         .then((response) {
       EasyLoading.dismiss();
       if (response.status == true) {
+        // Reset all the post values.
         thumbnailImageBytes = null;
         videoFileBytes = null;
 
@@ -156,11 +158,14 @@ class AddBlogController extends GetxController {
     });
   }
 
-  Future<String> uploadImage(String blogId) async {
+  /// Uploads the post thumbnail image to the database. 
+  /// 
+  /// Returns the URL to the image.
+  Future<String> uploadImage(String postId) async {
     String thumbnailPath = '';
     await getIt<FirebaseManager>()
         .uploadBlogImage(
-            uniqueId: blogId,
+            uniqueId: postId,
             bytes: thumbnailImageBytes!,
             fileName: thumbnailImage.value.text)
         .then((imagePath) {
@@ -170,8 +175,11 @@ class AddBlogController extends GetxController {
     return thumbnailPath;
   }
 
+  /// Uploads the post video to the database.
+  /// 
+  /// Returns the URL to the video
   Future<String> uploadBlogFile(String postId) async {
-    String songFilePath = '';
+    String videoFilePath = '';
 
     await getIt<FirebaseManager>()
         .uploadBlogVideo(
@@ -179,11 +187,12 @@ class AddBlogController extends GetxController {
             bytes: videoFileBytes!,
             fileName: postFile.value.text)
         .then((filePath) {
-      songFilePath = filePath;
+      videoFilePath = filePath;
     });
-    return songFilePath;
+    return videoFilePath;
   }
 
+  /// Picks video file from user's computer.
   pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -202,6 +211,7 @@ class AddBlogController extends GetxController {
     }
   }
 
+  /// Picks thumbnail image from user's computer.
   pickThumbnailImage(Function onComplete) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,

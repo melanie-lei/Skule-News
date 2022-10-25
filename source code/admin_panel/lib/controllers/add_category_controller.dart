@@ -30,6 +30,7 @@ class AddCategoryController extends GetxController {
     update();
   }
 
+  /// Pick the category cover image from the user's computer.
   pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -44,10 +45,11 @@ class AddCategoryController extends GetxController {
 
       update();
     } else {
-      // User canceled the picker
+      // User canceled the picker.
     }
   }
 
+  /// Upload the category cover image to the database.
   Future<String> uploadImage(String categoryId) async {
     String coverPath = '';
     await getIt<FirebaseManager>()
@@ -62,8 +64,9 @@ class AddCategoryController extends GetxController {
     return coverPath;
   }
 
+  /// Insert the category into the database.
   addCategory() async {
-    // Check if the name and thumbnail are uploaded
+    // Check if the name and thumbnail are uploaded.
     if (fileBytes == null && category?.image == null) {
       AppUtil.showToast(
           message: LocalizationString.pleaseUploadImage, isSuccess: false);
