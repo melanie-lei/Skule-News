@@ -621,6 +621,33 @@ class FirebaseManager {
     return response!;
   }
 
+  Future<FirebaseResponse> popularPosts(
+      {required PostSearchParamModel searchModel}) async {
+    List<BlogPostModel> list = [];
+    Query query = blogPostsCollection;
+
+    query = query
+        .where("createdAt",
+            isGreaterThanOrEqualTo:
+                DateTime.now().subtract(const Duration(days: 14)))
+        .orderBy("createdAt", descending: true);
+
+    query = query.orderBy("popularityFactor", descending: true);
+
+    await query.get().then((QuerySnapshot snapshot) {
+      for (var doc in snapshot.docs) {
+        list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
+      }
+      // final lastVisibleDoc = snapshot.docs[snapshot.size - 1];
+
+      response = FirebaseResponse(true, null, result: list);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error.toString());
+    });
+
+    return response!;
+  }
+
   Future<FirebaseResponse> searchPosts(
       {required PostSearchParamModel searchModel}) async {
     List<BlogPostModel> list = [];
@@ -676,8 +703,6 @@ class FirebaseManager {
         query = query.where("keywords",
             arrayContainsAny: searchKeywords.toSet().toList());
       }
-    } else {
-      query = query.where("keywords", arrayContains: 'sldkfsd');
     }
 
     await query.get().then((QuerySnapshot snapshot) {
