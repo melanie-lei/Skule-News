@@ -34,6 +34,8 @@ class DashboardController extends GetxController {
       } else {
         postSearchParamModel.categoryIds = followingCategories;
       }
+    } else {
+      postSearchParamModel.categoryIds = [];
     }
   }
 

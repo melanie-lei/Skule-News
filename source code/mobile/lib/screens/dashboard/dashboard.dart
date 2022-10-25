@@ -36,21 +36,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   loadInitialData() {
+    refreshData();
+  }
+
+  void refreshData() async {
     dashboardController.prepareSearchQuery();
+    dashboardController.clearPosts();
+    dashboardController.loadPosts(callBack: () {
+      _refreshController.refreshCompleted();
+      _refreshController.loadComplete();
+    });
     categoryController.clear();
     categoryController.loadCategories(
         needDefaultCategory: true,
         callBack: () {
           categoryController.handleCategoryTap(index: 0, isVideo: false);
         });
-  }
-
-  void refreshData() async {
-    dashboardController.clearPosts();
-    dashboardController.loadPosts(callBack: () {
-      _refreshController.refreshCompleted();
-      _refreshController.loadComplete();
-    });
   }
 
   @override
