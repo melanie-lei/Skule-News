@@ -27,13 +27,12 @@ class CategoryController extends GetxController {
   handleCategoryTap({required int index, required bool isVideo}) {
     selectedCategoryIndex.value = index;
     if (categories[index].id.isEmpty) {
-      if(categories[index].name == LocalizationString.following){
+      if (categories[index].name == LocalizationString.following) {
         dashboardController.prepareSearchQueryWithFollowers();
-        dashboardController.loadFollowingUsersPosts(callBack: (){});
-      }
-      else{
+        dashboardController.loadFollowingUsersPosts(callBack: () {});
+      } else {
         dashboardController.prepareSearchQuery();
-        dashboardController.loadPosts(callBack: () {});
+        dashboardController.loadPopularPosts(callBack: () {});
       }
     } else {
       dashboardController
@@ -55,10 +54,16 @@ class CategoryController extends GetxController {
         .searchCategories(searchText: searchText)
         .then((result) {
       if (needDefaultCategory == true) {
-        CategoryModel defaultCategory1 =
-            CategoryModel(id: '', name: LocalizationString.forYou, status: 1,totalBlogPosts: 0);
-        CategoryModel defaultCategory2 =
-        CategoryModel(id: '', name: LocalizationString.following, status: 1,totalBlogPosts: 0);
+        CategoryModel defaultCategory1 = CategoryModel(
+            id: '',
+            name: LocalizationString.forYou,
+            status: 1,
+            totalBlogPosts: 0);
+        CategoryModel defaultCategory2 = CategoryModel(
+            id: '',
+            name: LocalizationString.following,
+            status: 1,
+            totalBlogPosts: 0);
         result.insert(0, defaultCategory1);
         result.insert(1, defaultCategory2);
       }

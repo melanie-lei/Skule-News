@@ -114,6 +114,23 @@ class DashboardController extends GetxController {
     });
   }
 
+  loadPopularPosts({required VoidCallback callBack}) {
+    isLoading.value = true;
+    update();
+    getIt<FirebaseManager>()
+        .popularPosts(searchModel: postSearchParamModel)
+        .then((result) {
+      try {
+        posts.addAll(result.result as List<BlogPostModel>);
+      } catch (e) {}
+      isLoading.value = false;
+      // postSearchParamModel.startsAt = result.lastDoc;
+
+      callBack();
+      update();
+    });
+  }
+
   loadPosts({required VoidCallback callBack}) {
     isLoading.value = true;
     update();
