@@ -18,6 +18,7 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
   NewsDetailController newsDetailController = Get.find();
   AuthorController sourceController = Get.find();
   SubscriptionPackageController subscriptionPackageController = Get.find();
+  PostCardController postCardController = Get.find();
 
   late TabController tabController;
   int selectedSegment = 0;
@@ -60,6 +61,8 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           contentInfo(),
+                          divider(height: 0.1, context: context).vP16,
+                          likesCommentsView(),
                           divider(height: 0.1, context: context).vP16,
                           hashtagsView(),
                           divider(height: 0.1, context: context).vP16,
@@ -271,39 +274,47 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                   ],
                 ),
                 const Spacer(),
-                Container(
-                  height: 35,
-                  color: Theme.of(context).iconTheme.color,
-                  child: Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(Icons.chat,
-                            color: Theme.of(context).backgroundColor),
-                        const SizedBox(width: 5),
-                        Text(LocalizationString.comments,
-                                style: Theme.of(context).textTheme.bodyLarge)
-                            .ripple(() {
-                          if (getIt<UserProfileManager>().isLogin() == false) {
-                            Get.to(() => const AskForLogin());
-                            return;
-                          } else {
-                            Get.to(() => CommentsScreen(
-                                  postId: widget.model.id,
-                                ));
-                          }
-                        }),
-                      ],
-                    ),
-                  ).hP16,
-                ).round(5).ripple(() {
-                  // NavigationService.instance.navigateToRoute(
-                  //     MaterialPageRoute(builder: (context) => CommentsScreen()));
-                }),
               ],
             ).hP16,
           );
         });
+  }
+
+  Widget likesCommentsView() {
+    return Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+      Container(
+              child: widget.model.isLiked()
+                  ? Icon(Icons.favorite, color: Color(0xffff4757))
+                  : Icon(Icons.favorite_border))
+          .ripple(() {
+        setState(() {
+          postCardController.likeUnlikePost(widget.model);
+        });
+      }),
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Container(
+          height: 35,
+          color: Theme.of(context).iconTheme.color,
+          child: Center(
+            child: Icon(Icons.chat, color: Theme.of(context).backgroundColor)
+                .ripple(() {
+              if (getIt<UserProfileManager>().isLogin() == false) {
+                Get.to(() => const AskForLogin());
+                return;
+              } else {
+                Get.to(() => CommentsScreen(
+                      postId: widget.model.id,
+                    ));
+              }
+            }),
+          ).hP16,
+        ).round(5).ripple(() {
+          // NavigationService.instance.navigateToRoute(
+          //     MaterialPageRoute(builder: (context) => CommentsScreen()));
+        }),
+      ),
+    ]);
   }
 
   Widget hashtagsView() {
