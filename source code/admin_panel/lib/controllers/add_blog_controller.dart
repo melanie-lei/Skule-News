@@ -202,7 +202,7 @@ class AddBlogController extends GetxController {
     }
   }
 
-  pickThumbnailImage() async {
+  pickThumbnailImage(Function onComplete) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpg', 'png', 'jpeg'],
@@ -215,8 +215,11 @@ class AddBlogController extends GetxController {
       thumbnailImage.value.text = pFile.name;
 
       update();
+
+      // Callback.
+      onComplete();
     } else {
-      // User canceled the picker
+      // User canceled the picker.
     }
-  }
+  } 
 }

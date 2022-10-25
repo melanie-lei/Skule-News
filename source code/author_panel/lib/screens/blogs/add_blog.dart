@@ -204,7 +204,9 @@ class _AddBlogState extends State<AddBlog> {
                   enabledTextStyle: Theme.of(context).textTheme.titleMedium,
                   text: LocalizationString.choose,
                   onPress: () {
-                    addBlogController.pickThumbnailImage();
+                    addBlogController.pickThumbnailImage(() {
+                      setState(() { build(context); });
+                    });
                   }),
             )
           ],

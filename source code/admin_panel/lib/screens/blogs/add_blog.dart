@@ -85,15 +85,6 @@ class _AddBlogState extends State<AddBlog> {
         const SizedBox(
           height: 20,
         ),
-        // Obx(() => paidOrFreeSelectionWidget(
-        //     isPaid: addBlogController.isPremium.value,
-        //     changeHandler: (value) {
-        //       addBlogController.setPremiumStatus(value);
-        //     },
-        //     context: context)),
-        // const SizedBox(
-        //   height: 20,
-        // ),
         Obx(() => HandleAvailabilityStatus(
             status: addBlogController.availabilityStatus.value,
             statusHandler: (status) {
@@ -218,7 +209,9 @@ class _AddBlogState extends State<AddBlog> {
                   text: LocalizationString.choose,
                   onPress: () {
                     setState(() {
-                      addBlogController.pickThumbnailImage();
+                      addBlogController.pickThumbnailImage(() {
+                        setState(() { build(context); });
+                      });
                     });
                   }),
             ),
