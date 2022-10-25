@@ -189,19 +189,20 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                         Container(
                             constraints: const BoxConstraints(maxWidth: 100),
                             color:
-                                Theme.of(context).primaryColor.withOpacity(.5),
+                                Theme.of(context).primaryColor.withOpacity(.75),
                             child: Center(
                               child: Text(widget.model.category.toUpperCase(),
                                       style: Theme.of(context)
                                           .textTheme
-                                          .bodyMedium)
+                                          .bodyMedium!
+                                          .copyWith(color: Colors.white))
                                   .p8,
                             )).round(5),
                         Container(
                           width: double.infinity,
                           padding: EdgeInsets.only(
                               bottom: 8.0, left: 10.0, right: 10.0),
-                          color: Colors.white.withOpacity(.5),
+                          color: Colors.white.withOpacity(.75),
                           child: Column(children: [
                             Text(
                               widget.model.title.toUpperCase(),
@@ -281,9 +282,7 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                             color: Theme.of(context).backgroundColor),
                         const SizedBox(width: 5),
                         Text(LocalizationString.comments,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge)
+                                style: Theme.of(context).textTheme.bodyLarge)
                             .ripple(() {
                           if (getIt<UserProfileManager>().isLogin() == false) {
                             Get.to(() => const AskForLogin());

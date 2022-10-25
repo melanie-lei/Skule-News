@@ -663,6 +663,9 @@ class FirebaseManager {
     //   query = query.startAt([searchModel.startsAt]);
     // }
 
+    // controls what shows in for you page
+    print('search keywords');
+    print(searchKeywords);
     if (searchKeywords.isNotEmpty) {
       if (searchKeywords.length < 10) {
         query = query.where("keywords",
@@ -673,6 +676,8 @@ class FirebaseManager {
         query = query.where("keywords",
             arrayContainsAny: searchKeywords.toSet().toList());
       }
+    } else {
+      query = query.where("keywords", arrayContains: 'sldkfsd');
     }
 
     await query.get().then((QuerySnapshot snapshot) {
@@ -685,6 +690,8 @@ class FirebaseManager {
     }).catchError((error) {
       response = FirebaseResponse(false, error.toString());
     });
+    print('from searchPosts');
+    print(list);
 
     return response!;
   }

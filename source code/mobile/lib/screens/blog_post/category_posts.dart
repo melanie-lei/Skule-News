@@ -83,22 +83,39 @@ class _CategoryPostsState extends State<CategoryPosts> {
                       Get.back();
                     })),
                 Positioned(
-                  left: 320,
-                  top: 180,
-                  child: Container(
-                    child: categoryController.selectedCategories
-                            .contains(widget.category)
-                        ? Icon(Icons.check)
-                        : Icon(Icons.check_box_outline_blank),
-                  ).ripple(() {
-                    setState(() {
-                      categoryController.selectCategory(
-                          category: widget.category);
-                      categoryController.updateInterest(() {
-                        getIt<UserProfileManager>().refreshProfile();
-                      });
-                    });
-                  }),
+                  left: 260,
+                  top: 170,
+                  child: SizedBox(
+                    height: 30,
+                    width: 90,
+                    child: BorderButtonType1(
+                      cornerRadius: 5,
+                      text: categoryController.selectedCategories
+                              .contains(widget.category)
+                          ? LocalizationString.following
+                          : LocalizationString.follow,
+                      textStyle: categoryController.selectedCategories
+                              .contains(widget.category)
+                          ? Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(color: Colors.white)
+                          : Theme.of(context).textTheme.bodyLarge,
+                      backgroundColor: categoryController.selectedCategories
+                              .contains(widget.category)
+                          ? Theme.of(context).primaryColor
+                          : Theme.of(context).backgroundColor,
+                      onPress: () {
+                        setState(() {
+                          categoryController.selectCategory(
+                              category: widget.category);
+                          categoryController.updateInterest(() {
+                            getIt<UserProfileManager>().refreshProfile();
+                          });
+                        });
+                      },
+                    ),
+                  ).vP8,
                 ),
               ],
             ),
