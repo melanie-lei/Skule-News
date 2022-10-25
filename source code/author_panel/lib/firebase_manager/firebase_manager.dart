@@ -409,7 +409,7 @@ class FirebaseManager {
       'totalLikes': 0,
       'totalSaved': 0,
       'videoUrl': postVideoPath,
-      'approvedStatus': 0
+      'approvedStatus': 0 // Pending blog status.
     };
 
     int postCounterIncrementFactor = 1;

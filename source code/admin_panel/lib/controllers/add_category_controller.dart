@@ -63,6 +63,7 @@ class AddCategoryController extends GetxController {
   }
 
   addCategory() async {
+    // Check if the name and thumbnail are uploaded
     if (fileBytes == null && category?.image == null) {
       AppUtil.showToast(
           message: LocalizationString.pleaseUploadImage, isSuccess: false);
