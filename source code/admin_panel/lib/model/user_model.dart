@@ -94,9 +94,6 @@ class UserModel {
         subscriptionDays: json["numberOfDays"] ?? 0,
         subscriptionTerm: json["subscriptionTerm"],
         subscriptionDate: json["subscriptionDate"]?.toDate(),
-        // subscriptionDate: json["subscriptionDate"] == null
-        //     ? null
-            // : json["subscriptionDate"]?.toDate(),
         todayDate: json["todayDate"] == null
             ? DateTime.now()
             : json["todayDate"].toDate(),

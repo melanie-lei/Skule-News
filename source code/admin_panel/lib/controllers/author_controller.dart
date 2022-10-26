@@ -81,7 +81,8 @@ class AuthorController extends GetxController {
     });
   }
 
-  /// Loads all authors based on a search term. Results are stored in [authors.value].
+  /// Loads all active or inactive authors based on a search term. Results are 
+  /// stored in [authors.value].
   getAllUsers() {
     getIt<FirebaseManager>()
         .searchAuthorProfiles(

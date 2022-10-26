@@ -70,8 +70,14 @@ class FirebaseManager {
     DocumentReference doc = userCollection.doc(id);
     DocumentReference counterDoc = counter.doc('counter');
 
-    batch.set(doc,
-        {'id': id, 'name': name, 'phone': phone, 'status': 1, 'email': email});
+    batch.set(doc, {
+      'id': id, 
+      'name': name, 
+      'phone': phone, 
+      'status': 1, 
+      'email': email,
+      'createdAt': DateTime.now()
+    });
     batch.update(counterDoc, {'readers': FieldValue.increment(1)});
 
     await batch.commit().then((value) {

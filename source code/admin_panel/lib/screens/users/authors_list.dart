@@ -22,6 +22,7 @@ class _AuthorsListState extends State<AuthorsList> {
     super.initState();
   }
 
+  /// Loads all the authors' information.
   loadData() {
     authorController.setStatusType(widget.statusType);
     authorController.getAllUsers();
@@ -54,6 +55,8 @@ class _AuthorsListState extends State<AuthorsList> {
     );
   }
 
+  /// Displays a list of all the active authors.
+  /// 
   Widget usersWidget() {
     return Column(
       children: [
