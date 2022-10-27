@@ -84,9 +84,19 @@ class FirebaseManager {
         password: password,
       );
 
+      var accType;
       user = userCredential.user;
+      authorsCollection
+          .where("id", isEqualTo: user?.getIdToken())
+          .get()
+          .then((value) {
+        accType = value.docs.first.get('accountType');
+        print(accType);
+      });
 
-      await insertUser(user!.uid, user.email!);
+      if (accType == 0) {
+        await insertUser(user!.uid, user.email!);
+      }
 
       response = FirebaseResponse(true, null);
     } catch (error) {
@@ -103,7 +113,7 @@ class FirebaseManager {
       DocumentReference doc = authorsCollection.doc(id);
       final snapshot = await transaction.get(doc);
 
-        // Adds the user to the database if not already in it.
+      // Adds the user to the database if not already in it.
       if (!snapshot.exists) {
         transaction
             .set(doc, {'id': id, 'name': 'Admin', 'status': 1, 'email': email});
@@ -139,7 +149,7 @@ class FirebaseManager {
   }
 
   /// Updates the current user's profile image.
-  /// 
+  ///
   /// Returns the URL to the image.
   Future<String> updateProfileImage(
       {required String uniqueId,
@@ -165,7 +175,7 @@ class FirebaseManager {
   }
 
   /// Deletes a user from the database.
-  /// 
+  ///
   /// Does not actually remove the user, only "deactivates" it.
   Future<FirebaseResponse> deleteUser(UserModel model) async {
     DocumentReference userDoc = userCollection.doc(model.id);
@@ -185,7 +195,7 @@ class FirebaseManager {
   }
 
   /// Updates the current user's information.
-  /// 
+  ///
   /// [image] refers to the profile image, not the cover image.
   Future<FirebaseResponse> updateUser(
       {String? name, String? bio, String? image}) async {
@@ -201,7 +211,7 @@ class FirebaseManager {
   }
 
   /// Deletes an author from the database.
-  /// 
+  ///
   /// Does not actually remove the author, only "deactivates" it.
   Future<FirebaseResponse> deleteAuthor(AuthorsModel model) async {
     DocumentReference userDoc = authorsCollection.doc(model.id);
@@ -233,7 +243,7 @@ class FirebaseManager {
   }
 
   /// Gets a list of the author's categories.
-  /// 
+  ///
   /// Author categories are deprecated, this will almost certainly not work.
   Future<List<CategoryModel>> getSourceCategories(String id) async {
     List<CategoryModel> list = [];
@@ -254,7 +264,7 @@ class FirebaseManager {
 
   /// Approves a pending blog post.
   Future<FirebaseResponse> approveBlogPost(BlogPostModel model) async {
-    DocumentReference pendingBlogPost = blogPostsCollection.doc(model.id); 
+    DocumentReference pendingBlogPost = blogPostsCollection.doc(model.id);
     DocumentReference authorDoc = authorsCollection.doc(model.authorId);
     DocumentReference categoryDoc = categoriesCollection.doc(model.categoryId);
     DocumentReference counterDoc = counter.doc('counter');
@@ -404,7 +414,7 @@ class FirebaseManager {
   }
 
   /// Uploads a blog cover image to the database.
-  /// 
+  ///
   /// Returns a URL to the image.
   Future<String> uploadBlogImage(
       {required String uniqueId,
@@ -430,7 +440,7 @@ class FirebaseManager {
   }
 
   /// Uploads a post video to the database.
-  /// 
+  ///
   /// Returns a URL to the video.
   Future<String> uploadBlogVideo(
       {required String uniqueId,
@@ -510,7 +520,8 @@ class FirebaseManager {
       'totalLikes': 0,
       'totalSaved': 0,
       'videoUrl': postVideoPath,
-      'approvedStatus': 1, // 1 means approved, 0 means pending, -1 means rejected
+      'approvedStatus':
+          1, // 1 means approved, 0 means pending, -1 means rejected
     };
 
     int postCounterIncrementFactor = 1;
@@ -682,7 +693,7 @@ class FirebaseManager {
   }
 
   /// Toggles post premium status.
-  /// 
+  ///
   /// Premium posts are a deprecated feature. This will have no impact on the user experience.
   addOrRemoveFromPremium(BlogPostModel model) async {
     final batch = FirebaseFirestore.instance.batch();
@@ -926,7 +937,7 @@ class FirebaseManager {
   }
 
   /// Gets a list of authors based on a search term.
-  /// 
+  ///
   /// Almost identical to searchAuthors() method.
   Future<List<AuthorsModel>> searchAuthorProfiles(
       {String? searchText, int? type}) async {
@@ -1071,7 +1082,7 @@ class FirebaseManager {
   }
 
   /// Uploads a category cover image into the database.
-  /// 
+  ///
   /// Returns the URL of the image.
   Future<String> uploadCategoryImage(
       {required String uniqueId,
@@ -1098,7 +1109,7 @@ class FirebaseManager {
   }
 
   /// Deletes a category from the database.
-  /// 
+  ///
   /// Does not actually remove it, but "deactivates" it.
   Future<FirebaseResponse> deleteCategory(CategoryModel category) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();

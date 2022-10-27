@@ -78,14 +78,20 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         Text(
                           contents[i].title,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleLarge,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(color: Colors.white),
                         ),
                         const SizedBox(
                           height: 15,
                         ),
                         Text(
                           contents[i].desc,
-                          style: Theme.of(context).textTheme.titleSmall,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleSmall!
+                              .copyWith(color: Colors.white),
                           textAlign: TextAlign.center,
                         )
                       ],
@@ -116,7 +122,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             },
                             child: Text(
                               LocalizationString.start.toUpperCase(),
-                              style: Theme.of(context).textTheme.titleLarge,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge!
+                                  .copyWith(color: Colors.white),
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context).primaryColor,
@@ -164,7 +173,10 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                                 },
                                 child: Text(
                                   LocalizationString.next.toUpperCase(),
-                                  style: Theme.of(context).textTheme.bodyLarge,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge!
+                                      .copyWith(color: Colors.white),
                                 ),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:

@@ -10,7 +10,7 @@ class LoginController extends GetxController {
 
   String emailText = '';
 
-  setEmail(String email){
+  setEmail(String email) {
     emailText = email;
   }
 
