@@ -11,8 +11,6 @@ class MiscMenus extends StatefulWidget {
 
 class MiscMenusState extends State<MiscMenus> {
   final MyAccountController myAccountController = Get.find();
-  final SubscriptionPackageController subscriptionPackageController =
-      Get.find();
 
   @override
   void initState() {
@@ -77,14 +75,12 @@ class MiscMenusState extends State<MiscMenus> {
                                 } else if (index == 2) {
                                   return bookmarksTile();
                                 } else if (index == 3) {
-                                  return subscriptionTile();
-                                } else if (index == 4) {
                                   return chooseYourInterestTile();
-                                } else if (index == 5) {
+                                } else if (index == 4) {
                                   return contactusTile();
-                                } else if (index == 6) {
+                                } else if (index == 5) {
                                   return privacyPolicyTile();
-                                } else if (index == 7) {
+                                } else if (index == 6) {
                                   return termsOfUseTile();
                                 }
                                 // else if (index == 8) {
@@ -113,7 +109,7 @@ class MiscMenusState extends State<MiscMenus> {
                               ).vP16;
                             },
                             itemCount:
-                                getIt<UserProfileManager>().isLogin() ? 9 : 4)
+                                getIt<UserProfileManager>().isLogin() ? 7 : 3)
                         .hP16,
                   ),
                 ],
@@ -153,35 +149,6 @@ class MiscMenusState extends State<MiscMenus> {
           style: Theme.of(context).textTheme.titleMedium,
         )).ripple(() {
       Get.to(() => const Saved());
-    });
-  }
-
-  Widget subscriptionTile() {
-    return GetBuilder<MyAccountController>(
-        init: myAccountController,
-        builder: (ctx) {
-          return SizedBox(
-            height: 45,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  LocalizationString.goPremium,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                Text(
-                  getIt<UserProfileManager>().user!.isPro
-                      ? LocalizationString.alreadyProUser
-                      : LocalizationString.becomePremium,
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).primaryColor),
-                ),
-              ],
-            ),
-          );
-        }).ripple(() {
-      Get.to(() => const Subscription());
     });
   }
 

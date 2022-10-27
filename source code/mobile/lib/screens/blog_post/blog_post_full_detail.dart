@@ -17,7 +17,6 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
   final controller = PageController(viewportFraction: 1, keepPage: true);
   NewsDetailController newsDetailController = Get.find();
   AuthorController sourceController = Get.find();
-  SubscriptionPackageController subscriptionPackageController = Get.find();
   PostCardController postCardController = Get.find();
 
   late TabController tabController;
@@ -72,56 +71,6 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                           )
                         ],
                       ),
-                      widget.model.isLocked
-                          ? Stack(
-                              children: [
-                                BackdropFilter(
-                                  filter:
-                                      ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                                  child: Container(
-                                    color: Colors.black.withOpacity(1),
-                                  ),
-                                ),
-                                Center(
-                                  child: Column(
-                                    children: [
-                                      ThemeIconWidget(
-                                        ThemeIcon.lock,
-                                        size: 150,
-                                        color: Theme.of(context).primaryColor,
-                                      ),
-                                      Text(
-                                        LocalizationString.thisIsPremiumBlog,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium!
-                                            .copyWith(
-                                                fontWeight: FontWeight.w600),
-                                      ).vP16,
-                                      SizedBox(
-                                        width: 280,
-                                        child: BorderButtonType1(
-                                            borderColor:
-                                                Theme.of(context).primaryColor,
-                                            textStyle: Theme.of(context)
-                                                .textTheme
-                                                .titleLarge!
-                                                .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.w900),
-                                            cornerRadius: 25,
-                                            text: LocalizationString.unlock,
-                                            onPress: () {
-                                              Get.to(
-                                                  () => const Subscription());
-                                            }),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            )
-                          : Container()
                     ],
                   )
                 ]))

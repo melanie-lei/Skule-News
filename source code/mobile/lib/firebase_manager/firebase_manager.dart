@@ -216,18 +216,13 @@ class FirebaseManager {
   Future<UserModel?> getCurrentUser(String id) async {
     UserModel? user;
 
-    await userCollection
-        .doc(id)
-        .update({'todayDate': FieldValue.serverTimestamp()}).then((doc) async {
-      await userCollection.doc(id).get().then((doc) {
-        print(doc.data());
-        user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
-      }).catchError((error) {
-        print(error);
-        response = FirebaseResponse(false, error.toString());
-      });
-    }).catchError((error) {});
-
+    await userCollection.doc(id).get().then((doc) {
+      user = UserModel.fromJson(doc.data() as Map<String, dynamic>);
+    }).catchError((error) {
+      print(error.toString());
+      response = FirebaseResponse(false, error.toString());
+    });
+    
     return user;
   }
 
@@ -240,23 +235,6 @@ class FirebaseManager {
     });
 
     return user;
-  }
-
-  Future<FirebaseResponse> updateUserSubscription(
-      {required String receipt, required int purchaseDate}) async {
-    DocumentReference userDoc =
-        userCollection.doc(FirebaseAuth.instance.currentUser!.uid);
-
-    await userDoc.update({
-      'subscriptionReceipt': receipt,
-      'isPro': true,
-      'subscriptionDate': purchaseDate
-    }).then((value) {
-      response = FirebaseResponse(true, null);
-    }).catchError((error) {
-      response = FirebaseResponse(false, error.toString());
-    });
-    return response!;
   }
 
   Future<FirebaseResponse> changeProfilePassword({required String pwd}) async {

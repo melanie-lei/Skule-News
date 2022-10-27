@@ -21,12 +21,6 @@ class UserModel {
   int totalPosts;
   int totalFollowers;
 
-  bool isPro = false;
-
-  DateTime? subscriptionDate;
-  DateTime todayDate;
-  int subscriptionDays;
-  String? subscriptionTerm;
   DateTime createdAt;
 
   UserModel({
@@ -45,10 +39,6 @@ class UserModel {
     required this.totalPosts,
     required this.totalFollowers,
     required this.status,
-    required this.subscriptionDate,
-    required this.todayDate,
-    required this.subscriptionDays,
-    this.subscriptionTerm,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -90,18 +80,8 @@ class UserModel {
                 .map((e) => e.toString())
                 .toList(),
         status: json["status"],
-        subscriptionDays: json["numberOfDays"] ?? 0,
-        subscriptionTerm: json["subscriptionTerm"],
-        subscriptionDate: json["subscriptionDate"] == null
-            ? null
-            : json["subscriptionDate"].toDate(),
-        todayDate: json["todayDate"] == null
-            ? DateTime.now()
-            : json["todayDate"].toDate(),
-    createdAt: json["createdAt"] == null
-        ? DateTime.now()
-        : json["createdAt"].toDate(),
-      );
+        createdAt: json["createdAt"]?.toDate() ?? DateTime.now()
+  );
 
   String get addedOn {
     return DateFormat('yyyy-MM-dd – kk:mm').format(createdAt);

@@ -7,6 +7,7 @@ class UserModel {
 
   String? bio;
 
+  // The URL to the profile image.
   String? image;
 
   List<String> followingProfiles;
@@ -21,15 +22,7 @@ class UserModel {
   int totalPosts;
   int totalFollowers;
 
-  bool isPro = false;
-
-  // int? subscriptionDate;
-  DateTime todayDate;
-
-  // int subscriptionDays;
-  String? subscriptionTerm;
-
-  String? subscriptionReceipt;
+  DateTime? createdAt;
 
   UserModel({
     required this.id,
@@ -46,12 +39,7 @@ class UserModel {
     required this.totalPosts,
     required this.totalFollowers,
     required this.status,
-    // required this.subscriptionDate,
-    required this.todayDate,
-    // required this.subscriptionDays,
-    this.subscriptionTerm,
-    this.subscriptionReceipt,
-    required this.isPro,
+    this.createdAt
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
@@ -93,14 +81,7 @@ class UserModel {
                 .map((e) => e.toString())
                 .toList(),
         status: json["status"],
-        // subscriptionDays: json["numberOfDays"] ?? 0,
-        subscriptionTerm: json["subscriptionTerm"] ?? '',
-        // subscriptionDate: json["subscriptionDate"],
-        todayDate: json["todayDate"] == null
-            ? DateTime.now()
-            : json["todayDate"].toDate(),
-        subscriptionReceipt: json["subscriptionReceipt"],
-        isPro: json["isPro"] ?? false,
+        createdAt: json["createdAt"]?.toDate() ?? DateTime.now()
       );
 
   isFollowing() {

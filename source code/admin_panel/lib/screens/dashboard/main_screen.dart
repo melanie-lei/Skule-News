@@ -123,7 +123,7 @@ class _MainScreenState extends State<MainScreen> {
         return const AddPackage();
       case MenuType.packages:
         // do something else
-        return const PackagesList();
+        return Container();
       case MenuType.authors:
         // do something else
         return const AuthorsList(statusType: AccountStatusType.active);
