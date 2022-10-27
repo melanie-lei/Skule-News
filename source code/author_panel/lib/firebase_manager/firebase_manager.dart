@@ -459,7 +459,7 @@ class FirebaseManager {
           {'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)});
 
        */
-      batch.update(author, {'totalBlogPosts': FieldValue.increment(1)});
+      // batch.update(author, {'totalBlogPosts': FieldValue.increment(1)});
 
       await batch.commit().then((value) {
         response = FirebaseResponse(true, null);
