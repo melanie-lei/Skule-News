@@ -431,8 +431,8 @@ class FirebaseManager {
       WriteBatch batch = FirebaseFirestore.instance.batch();
 
       batch.update(postDoc, postJson);
-      batch.update(author,
-          {'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)});
+      // batch.update(author,
+      //     {'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)});
 /*
       if (postCounterIncrementFactor != 0) {
         batch.update(counterDoc, {
@@ -548,9 +548,9 @@ class FirebaseManager {
       query =
           query.where("approvedStatus", isEqualTo: searchModel.approvedStatus);
     }
-    
+
     query = query.orderBy("createdAt", descending: true);
-    
+
     if (searchModel.isRecent != null) {
       query = query.limit(10);
     }

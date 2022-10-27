@@ -314,7 +314,7 @@ class FirebaseManager {
 
       // Update the blog counters.
       transaction.update(authorDoc, {
-        'totalBlogPosts': FieldValue.increment(1),
+        'totalBlogPosts': FieldValue.increment(1), // here?
         'usedCategories': FieldValue.arrayUnion([model.categoryId])
       });
       transaction
@@ -585,7 +585,8 @@ class FirebaseManager {
         // Updates blog counters.
         transaction.update(postDoc, postJson);
         transaction.update(author, {
-          'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
+          'totalBlogPosts':
+              FieldValue.increment(postCounterIncrementFactor) // here?
         });
 
         transaction.update(categoryDoc, {
@@ -654,7 +655,8 @@ class FirebaseManager {
         // Updates counters.
         transaction
             .update(counterDoc, {'totalBlogPosts': FieldValue.increment(1)});
-        transaction.update(author, {'totalBlogPosts': FieldValue.increment(1)});
+        transaction.update(
+            author, {'totalBlogPosts': FieldValue.increment(1)}); // here?
         transaction
             .update(categoryDoc, {'totalBlogPosts': FieldValue.increment(1)});
       }).then(
