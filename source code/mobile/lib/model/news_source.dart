@@ -5,7 +5,7 @@ class AuthorModel {
   String name;
   String? bio;
 
-  String image;
+  String image; // banner image
   String coverImage;
   int status;
   int totalPosts;
@@ -36,11 +36,8 @@ class AuthorModel {
         totalFollowers: json["totalFollowers"] ?? 0,
         usedCategories: (json["usedCategories"] as List<dynamic>?)
                 ?.map((e) => e.toString())
-                .toList() ??
-            [],
-        createdAt: json["createdAt"] == null
-            ? DateTime.now()
-            : json["createdAt"].toDate(),
+                .toList() ?? [],
+        createdAt: json["createdAt"]?.toDate() ?? DateTime.now()
       );
 
   String get addedOn {

@@ -38,9 +38,7 @@ class AuthorsModel {
         status: json["status"],
         totalPosts: json["totalBlogPosts"] ?? 0,
         totalFollowers: json["totalFollowers"] ?? 0,
-        createdAt: json["createdAt"] == null
-            ? DateTime.now()
-            : json["createdAt"].toDate(),
+        createdAt: json["createdAt"]?.toDate() ?? DateTime.now()
       );
 
   String get addedOn {
