@@ -102,32 +102,6 @@ class BlogPostModel {
   }
 
   bool get isLocked {
-    if (getIt<UserProfileManager>().user == null) {
-      return isPremium ?? false;
-    }
-    if (isPremium == true) {
-      return !getIt<UserProfileManager>().user!.isPro;
-      // int? subscriptionDateEpoch =
-      //     getIt<UserProfileManager>().user!.subscriptionDate;
-      //
-      // if (subscriptionDateEpoch != null) {
-      //   DateTime? subscriptionDate =
-      //   DateTime.fromMillisecondsSinceEpoch(subscriptionDateEpoch);
-      //   // DateTime todayDate = getIt<UserProfileManager>().user!.todayDate;
-      //   // int daysConsumed = todayDate.difference(subscriptionDate).inDays;
-      //   // int noOfDaysInSubscription =
-      //   //     getIt<UserProfileManager>().user!.subscriptionDays;
-      //   // if (noOfDaysInSubscription > daysConsumed) {
-      //   //   return false;
-      //   // } else {
-      //   //   return true;
-      //   // }
-      //   return true;
-      // } else {
-      //   return true;
-      // }
-    } else {
-      return false;
-    }
+    return false;
   }
 }

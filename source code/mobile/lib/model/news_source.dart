@@ -5,8 +5,8 @@ class AuthorModel {
   String name;
   String? bio;
 
-  String image; // banner image
-  String coverImage;
+  String image; // profile image?
+  String coverImage; // banner image?
   int status;
   int totalPosts;
   int totalFollowers;

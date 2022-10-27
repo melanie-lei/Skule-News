@@ -33,7 +33,6 @@ void main() async {
   // Get.put(LocationController());
   Get.put(FollowingController());
   Get.put(MyAccountController());
-  Get.put(SubscriptionPackageController());
   Get.put(SavedPostsController());
 
   bool onBoardingShown = await SharedPrefs().isOnBoardingShown();

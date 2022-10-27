@@ -39,9 +39,7 @@ class _BannerAdsState extends State<BannerAds> {
   @override
   void initState() {
     super.initState();
-    if (getIt<UserProfileManager>().user?.isPro == false) {
-      loadAds();
-    }
+    loadAds();
   }
 
   @override
@@ -50,14 +48,8 @@ class _BannerAdsState extends State<BannerAds> {
       alignment: Alignment.topCenter,
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
-        height: getIt<UserProfileManager>().user?.isPro == false
-            ? bannerAd.size.height.toDouble()
-            : 0,
-        child: getIt<UserProfileManager>().user?.isPro == false
-            ? AdWidget(ad: bannerAd)
-            : const SizedBox(
-                height: 1,
-              ),
+        height: bannerAd.size.height.toDouble(),
+        child: AdWidget(ad: bannerAd)
       ),
     );
   }
@@ -100,10 +92,6 @@ class InterstitialAds extends StatelessWidget {
   }
 
   void loadInterstitialAd() {
-    if (getIt<UserProfileManager>().user?.isPro == true) {
-      onCompletion!();
-      return;
-    }
     InterstitialAd.load(
       adUnitId: AdHelper.interstitialAdUnitId,
       request: const AdRequest(),
