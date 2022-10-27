@@ -180,6 +180,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
   }
 
   signup() {
+    // Validates sign up information is filled out.
     if (signUpEmail.text.isEmpty) {
       showMessage(LocalizationString.pleaseEnterValidEmail, true);
       return;

@@ -244,7 +244,8 @@ class FirebaseManager {
 
   /// Gets a list of the author's categories.
   ///
-  /// Author categories are deprecated, this will almost certainly not work.
+  /// Author categories are deprecated. This will almost certainly not work.
+
   Future<List<CategoryModel>> getSourceCategories(String id) async {
     List<CategoryModel> list = [];
     await authorsCollection

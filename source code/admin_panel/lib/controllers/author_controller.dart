@@ -22,6 +22,7 @@ class AuthorController extends GetxController {
     accountStatusType = type;
   }
 
+  /// Selects all post in a category created by the author.
   selectCategory(int index) {
     if (selectedCategoryIndex.value != index) {
       posts.value = [];
@@ -37,6 +38,7 @@ class AuthorController extends GetxController {
     update();
   }
 
+  /// Loads the information of an author. Results are stored in [author.value].
   getSourceDetail({required String id}) {
     isLoading = true;
     getIt<FirebaseManager>().getSourceDetail(id).then((result) {
@@ -47,6 +49,9 @@ class AuthorController extends GetxController {
     });
   }
 
+  /// Loads an author's categories. Results are stored in [categories.value].
+  /// 
+  /// Author categories are deprecated. This will almost certainly not work.
   getSourceCategories({required String id}) {
     isLoading = true;
     getIt<FirebaseManager>().getSourceCategories(id).then((result) {
@@ -59,6 +64,7 @@ class AuthorController extends GetxController {
     });
   }
 
+  /// Loads the posts by an author. Results are stored in [posts.value].
   loadSourcePosts({
     String? categoryId,
     String? reporterId,
@@ -75,6 +81,8 @@ class AuthorController extends GetxController {
     });
   }
 
+  /// Loads all active or inactive authors based on a search term. Results are 
+  /// stored in [authors.value].
   getAllUsers() {
     getIt<FirebaseManager>()
         .searchAuthorProfiles(
@@ -86,12 +94,16 @@ class AuthorController extends GetxController {
     });
   }
 
+  /// Deletes an author from the database.
+  /// 
+  /// Does not actually remove the author from the databse, but "deactivates" it.
   deleteUser(AuthorsModel model) {
     getIt<FirebaseManager>().deleteAuthor(model);
     authors.remove(model);
     update();
   }
 
+  /// Loads all reported authors. Results are stored in [authors.value].
   getReportedAuthors() {
     EasyLoading.show(status: LocalizationString.loading);
     getIt<FirebaseManager>().getAllReportedAuthors().then((result) {
@@ -101,21 +113,23 @@ class AuthorController extends GetxController {
     });
   }
 
-  deleteRequestForAuthor(AuthorsModel modal) {
-    authors.removeWhere((element) => element.id == modal.id);
+  /// Deletes all reports for an author.
+  deleteRequestForAuthor(AuthorsModel model) {
+    authors.removeWhere((element) => element.id == model.id);
     update();
 
-    getIt<FirebaseManager>().deleteAuthorReport(modal).then((value) {});
+    getIt<FirebaseManager>().deleteAuthorReport(model).then((value) {});
     update();
   }
 
-  deactivateAuthor(AuthorsModel modal) {
-    authors.removeWhere((element) => element.id == modal.id);
+  /// Deactivates the author.
+  deactivateAuthor(AuthorsModel model) {
+    authors.removeWhere((element) => element.id == model.id);
 
     update();
 
-    getIt<FirebaseManager>().deleteAuthor(modal).then((value) {
-      deleteRequestForAuthor(modal);
+    getIt<FirebaseManager>().deleteAuthor(model).then((value) {
+      deleteRequestForAuthor(model);
     });
     update();
   }

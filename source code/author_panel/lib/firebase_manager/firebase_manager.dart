@@ -84,7 +84,8 @@ class FirebaseManager {
           'name': name,
           'status': 1,
           'email': email,
-          'keywords': name!.allPossibleSubstrings()
+          'keywords': name!.allPossibleSubstrings(),
+          'createdAt': DateTime.now()
         })
         .then((value) {})
         .catchError((error) {
