@@ -354,6 +354,7 @@ class FirebaseManager {
     DocumentReference categoryDoc = categoriesCollection.doc(model.categoryId);
 
     batch.update(postDoc, {'status': 0});
+    print('decrement');
     batch.update(userDoc, {'totalBlogPosts': FieldValue.increment(-1)});
     batch.update(counterDoc, {'totalBlogPosts': FieldValue.increment(-1)});
     batch.update(categoryDoc, {'totalBlogPosts': FieldValue.increment(-1)});
