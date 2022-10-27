@@ -20,7 +20,7 @@ export 'package:pinput/pinput.dart';
 export 'package:dotted_line/dotted_line.dart';
 export 'package:flutter_advanced_switch/flutter_advanced_switch.dart';
 export 'package:provider/provider.dart';
-// export 'package:pull_to_refresh/pull_to_refresh.dart';
+export 'package:pull_to_refresh/pull_to_refresh.dart' hide FooterBuilder;
 export 'package:gesture_x_detector/gesture_x_detector.dart';
 export 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 export 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
