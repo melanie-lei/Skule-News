@@ -431,16 +431,14 @@ class FirebaseManager {
       WriteBatch batch = FirebaseFirestore.instance.batch();
 
       batch.update(postDoc, postJson);
-      // batch.update(author,
-      //     {'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)});
-/*
+      batch.update(author,
+          {'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)});
+
       if (postCounterIncrementFactor != 0) {
         batch.update(counterDoc, {
           'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
         });
       }
-
- */
 
       await batch.commit().then((value) {
         response = FirebaseResponse(true, null);
