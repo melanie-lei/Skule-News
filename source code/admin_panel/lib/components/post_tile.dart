@@ -380,63 +380,6 @@ class PostTile extends StatelessWidget {
                                 featureBlog(context);
                               }),
                         const SizedBox(width: 15),
-                        // model.isPremium == true
-                        //     ? Container(
-                        //         height: 30,
-                        //         color: Colors.yellow.darken(0.2),
-                        //         child: Row(
-                        //           mainAxisAlignment: MainAxisAlignment.center,
-                        //           children: [
-                        //             const ThemeIconWidget(
-                        //               ThemeIcon.delete,
-                        //               color: Colors.white,
-                        //               size: 20,
-                        //             ),
-                        //             const SizedBox(
-                        //               width: 10,
-                        //             ),
-                        //             Text(
-                        //               LocalizationString.removeFromPremium,
-                        //               style: Theme.of(context)
-                        //                   .textTheme
-                        //                   .bodyLarge!
-                        //                   .copyWith(color: Colors.white),
-                        //               textAlign: TextAlign.center,
-                        //             )
-                        //           ],
-                        //         ).hP16,
-                        //       ).round(8).ripple(() {
-                        //         // premiumCallback(false);
-                        //         premiumBlog(context);
-                        //       })
-                        //     : Container(
-                        //         height: 30,
-                        //         color: Theme.of(context).primaryColor,
-                        //         child: Row(
-                        //           mainAxisAlignment: MainAxisAlignment.center,
-                        //           children: [
-                        //             const ThemeIconWidget(
-                        //               ThemeIcon.add,
-                        //               color: Colors.white,
-                        //               size: 20,
-                        //             ),
-                        //             const SizedBox(
-                        //               width: 10,
-                        //             ),
-                        //             Text(
-                        //               LocalizationString.markAsPremium,
-                        //               style: Theme.of(context)
-                        //                   .textTheme
-                        //                   .bodyLarge!
-                        //                   .copyWith(color: Colors.white),
-                        //               textAlign: TextAlign.center,
-                        //             )
-                        //           ],
-                        //         ).hP16,
-                        //       ).round(8).ripple(() {
-                        //         // premiumCallback(true);
-                        //         premiumBlog(context);
-                        //       }),
                       ],
                     )
                   ],
@@ -459,18 +402,6 @@ class PostTile extends StatelessWidget {
             : LocalizationString.wantToAddToFeatured,
         yesHandler: () {
           blogsController.addOrRemoveFeaturedBlog(model);
-        });
-  }
-
-  premiumBlog(BuildContext context) {
-    AppUtil.popupAction(
-        cxt: context,
-        title: LocalizationString.areYourSure,
-        subTitle: model.isPremium
-            ? LocalizationString.wantToRemoveFromPremium
-            : LocalizationString.wantToAddToPremium,
-        yesHandler: () {
-          blogsController.addOrRemovePremiumBlog(model);
         });
   }
 }

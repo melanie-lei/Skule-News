@@ -125,7 +125,6 @@ class AddBlogController extends GetxController {
                 .split(',')
                 .map((e) => e.replaceAll('#', ''))
                 .toList(),
-            isPremium: isPremium.value,
             postThumbnail: thumbnail!,
             postVideoPath: videoUrl,
             categoryId: categoryId.value,

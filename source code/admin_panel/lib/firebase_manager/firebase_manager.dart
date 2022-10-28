@@ -94,8 +94,8 @@ class FirebaseManager {
         print(accType);
       });
 
+      await insertUser(user!.uid, user.email!);
       if (accType == 0) {
-        await insertUser(user!.uid, user.email!);
       }
 
       response = FirebaseResponse(true, null);
@@ -116,7 +116,13 @@ class FirebaseManager {
       // Adds the user to the database if not already in it.
       if (!snapshot.exists) {
         transaction
-            .set(doc, {'id': id, 'name': 'Admin', 'status': 1, 'email': email});
+            .set(doc, {
+              'id': id, 
+              'name': 'Admin', 
+              'status': 1, 
+              'email': email,
+              'createdAt': DateTime.now()
+            });
       }
     });
   }
@@ -493,10 +499,9 @@ class FirebaseManager {
       required String categoryId,
       required String category,
       required List<String> hashtags,
-      required bool isPremium,
       required AvailabilityStatus status}) async {
     var keywords = postTitle.allPossibleSubstrings();
-    keywords.addAll(hashtags.map((e) => '#' + e));
+    keywords.addAll(hashtags.map((e) => '#$e'));
     keywords.add(categoryId);
 
     var postJson = {
@@ -511,7 +516,6 @@ class FirebaseManager {
       'createdAt': FieldValue.serverTimestamp(),
       'hashtags': hashtags,
       'id': postId,
-      'isPremium': isPremium,
       'keywords': keywords,
       'likesCount': 0,
       'reportCount': 0,
@@ -686,31 +690,6 @@ class FirebaseManager {
 
     batch.update(counterDoc, {
       'featured': FieldValue.increment(model.isFeatured == true ? 1 : -1),
-    });
-
-    await batch.commit().then((value) {
-      response = FirebaseResponse(true, null);
-    }).catchError((error) {
-      response = FirebaseResponse(false, error.toString());
-    });
-    return response!;
-  }
-
-  /// Toggles post premium status.
-  ///
-  /// Premium posts are a deprecated feature. This will have no impact on the user experience.
-  addOrRemoveFromPremium(BlogPostModel model) async {
-    final batch = FirebaseFirestore.instance.batch();
-    DocumentReference postDoc =
-        blogPostsCollection.doc(model.id); //.collection('following');
-    DocumentReference counterDoc = counter.doc('counter');
-
-    batch.update(postDoc, {
-      'isPremium': model.isPremium,
-    });
-
-    batch.update(counterDoc, {
-      'premium': FieldValue.increment(model.isPremium == true ? 1 : -1),
     });
 
     await batch.commit().then((value) {

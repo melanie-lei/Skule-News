@@ -125,15 +125,4 @@ class BlogsController extends GetxController {
     getIt<FirebaseManager>().addOrRemoveFromFeature(blogPost);
     update();
   }
-
-  addOrRemovePremiumBlog(BlogPostModel blogPost) {
-    BlogPostModel model = activeBlogs.where((e) => e.id == blogPost.id).first;
-
-    model.isPremium = !model.isPremium;
-
-    getIt<FirebaseManager>().addOrRemoveFromPremium(blogPost);
-    update();
-  }
-
-
 }
