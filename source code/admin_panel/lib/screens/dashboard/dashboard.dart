@@ -27,8 +27,9 @@ class _DashboardState extends State<Dashboard> {
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: [
-          cardsGrid(),
           const SizedBox(height: 25),
+          cardsGrid(),
+          const SizedBox(height: 10),
           Expanded(
               child: Responsive.isDesktop(context)
                   ? dashboardInfoGrid()
@@ -116,12 +117,14 @@ class _DashboardState extends State<Dashboard> {
                 style: Theme.of(context).textTheme.displayLarge,
               ),
               // const SizedBox(height: 5),
-              Text(
-                subTitle,
-                style: Theme.of(context)
-                    .textTheme
-                    .displaySmall!
-                    .copyWith(fontWeight: FontWeight.w900),
+              FittedBox(
+                child: Text(
+                  subTitle,
+                  style: Theme.of(context)
+                      .textTheme
+                      .displaySmall!
+                      .copyWith(fontWeight: FontWeight.w900),
+                ),
               )
             ],
           ),

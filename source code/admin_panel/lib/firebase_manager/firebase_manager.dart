@@ -499,10 +499,30 @@ class FirebaseManager {
     keywords.addAll(hashtags.map((e) => '#' + e));
     keywords.add(categoryId);
 
+    int postCounterIncrementFactor = 1;
+    DocumentReference postDoc = blogPostsCollection.doc(postId);
+    DocumentReference counterDoc = counter.doc('counter');
+    DocumentReference categoryDoc = categoriesCollection.doc(categoryId);
+    DocumentReference? author;
+
+    String id = "", authorname = "", authorpicture = "";
+
+    postDoc.get().then((snap) async {
+      id = await snap.get("authorId");
+      authorname = await snap.get("authorName");
+      authorpicture = await snap.get("authorPicture");
+
+      author = !isUpdate
+          ? authorsCollection.doc(getIt<UserProfileManager>().user!.id)
+          : authorsCollection.doc(id);
+    });
+
     var postJson = {
-      'authorId': getIt<UserProfileManager>().user!.id,
-      'authorName': getIt<UserProfileManager>().user!.name,
-      'authorPicture': getIt<UserProfileManager>().user!.image,
+      'authorId': !isUpdate ? getIt<UserProfileManager>().user!.id : id,
+      'authorName':
+          !isUpdate ? getIt<UserProfileManager>().user!.name : authorname,
+      'authorPicture':
+          !isUpdate ? getIt<UserProfileManager>().user!.image : authorpicture,
       'category': category,
       'categoryId': categoryId,
       'content': content,
@@ -525,14 +545,6 @@ class FirebaseManager {
       'approvedStatus':
           1, // 1 means approved, 0 means pending, -1 means rejected
     };
-
-    int postCounterIncrementFactor = 1;
-    DocumentReference postDoc = blogPostsCollection.doc(postId);
-    DocumentReference counterDoc = counter.doc('counter');
-    DocumentReference categoryDoc = categoriesCollection.doc(categoryId);
-
-    DocumentReference author =
-        authorsCollection.doc(getIt<UserProfileManager>().user!.id);
 
     if (isUpdate == true) {
       if (post!.status == 1 && status == AvailabilityStatus.deactivated) {
@@ -561,6 +573,10 @@ class FirebaseManager {
           }
         }
 
+        print('sdlfsd');
+        print(existingHashtagsData);
+        print(newHashtags);
+
         // Creates new hashtags.
         for (String hashtag in newHashtags) {
           DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
@@ -585,7 +601,7 @@ class FirebaseManager {
 
         // Updates blog counters.
         transaction.update(postDoc, postJson);
-        transaction.update(author, {
+        transaction.update(author!, {
           'totalBlogPosts':
               FieldValue.increment(postCounterIncrementFactor) // here?
         });
@@ -657,7 +673,7 @@ class FirebaseManager {
         transaction
             .update(counterDoc, {'totalBlogPosts': FieldValue.increment(1)});
         transaction.update(
-            author, {'totalBlogPosts': FieldValue.increment(1)}); // here?
+            author!, {'totalBlogPosts': FieldValue.increment(1)}); // here?
         transaction
             .update(categoryDoc, {'totalBlogPosts': FieldValue.increment(1)});
       }).then(

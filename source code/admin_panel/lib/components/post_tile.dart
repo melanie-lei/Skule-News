@@ -252,7 +252,7 @@ class PostTile extends StatelessWidget {
                           ],
                         ),
                         Container(
-                            width: model.categoryName.length * 10,
+                            width: model.categoryName.length * 12,
                             color: Theme.of(context).primaryColor,
                             child: Center(
                               child: Text(model.categoryName.toUpperCase(),
