@@ -45,12 +45,14 @@ class FirebaseManager {
   CollectionReference counter =
       FirebaseFirestore.instance.collection('counter');
 
-  /////////////////////////*********** User ***********//////////////////////////////////
+  /* Users */
 
+  /// Logs the user out.
   Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
   }
 
+  /// Logs the user in with an account, persisting after the browser window closes.
   Future<FirebaseResponse> login(String email, String password) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     await Firebase.initializeApp();
@@ -75,6 +77,7 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Inserts the author user into the database.
   insertUser({required String id, String? name, String? email}) async {
     DocumentReference doc = authorsCollection.doc(id);
 
@@ -205,23 +208,6 @@ class FirebaseManager {
     });
     return response!;
   }
-
-  // Future<FirebaseResponse> deleteAuthor(AuthorsModel model) async {
-  //   DocumentReference userDoc = authorsCollection.doc(model.id);
-  //   DocumentReference counterDoc = counter.doc('counter');
-  //
-  //   WriteBatch batch = FirebaseFirestore.instance.batch();
-  //
-  //   batch.update(userDoc, {'status': 0});
-  //   batch.update(counterDoc, {'authors': FieldValue.increment(-1)});
-  //
-  //   await batch.commit().then((value) {
-  //     response = FirebaseResponse(true, null);
-  //   }).catchError((error) {
-  //     response = FirebaseResponse(false, error.toString());
-  //   });
-  //   return response!;
-  // }
 
   Future<String> updateProfileImage(
       {required Uint8List bytes, required String fileName}) async {
@@ -399,7 +385,6 @@ class FirebaseManager {
       'createdAt': FieldValue.serverTimestamp(),
       'hashtags': hashtags,
       'id': postId,
-      'isPremium': isPremium,
       'keywords': keywords,
       'likesCount': 0,
       'reportCount': 0,
@@ -481,28 +466,6 @@ class FirebaseManager {
 
     batch.update(counterDoc, {
       'featured': FieldValue.increment(model.isFeatured == true ? 1 : -1),
-    });
-
-    await batch.commit().then((value) {
-      response = FirebaseResponse(true, null);
-    }).catchError((error) {
-      response = FirebaseResponse(false, error.toString());
-    });
-    return response!;
-  }
-
-  addOrRemoveFromPremium(BlogPostModel model) async {
-    final batch = FirebaseFirestore.instance.batch();
-    DocumentReference postDoc =
-        blogPostsCollection.doc(model.id); //.collection('following');
-    DocumentReference counterDoc = counter.doc('counter');
-
-    batch.update(postDoc, {
-      'isPremium': model.isPremium,
-    });
-
-    batch.update(counterDoc, {
-      'premium': FieldValue.increment(model.isPremium == true ? 1 : -1),
     });
 
     await batch.commit().then((value) {

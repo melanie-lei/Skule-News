@@ -43,9 +43,4 @@ class ReportedBlogsController extends GetxController {
     getIt<FirebaseManager>().addOrRemoveFromFeature(blogPost);
     update();
   }
-
-  addOrRemovePremiumBlog(BlogPostModel blogPost) {
-    getIt<FirebaseManager>().addOrRemoveFromPremium(blogPost);
-    update();
-  }
 }
