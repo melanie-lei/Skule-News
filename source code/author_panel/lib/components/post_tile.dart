@@ -23,41 +23,41 @@ class PendingBlogPostTile extends StatelessWidget {
               imageUrl: model.thumbnailImage,
               fit: BoxFit.cover,
               placeholder: (context, url) =>
-              const CircularProgressIndicator().p25,
+                  const CircularProgressIndicator().p25,
               errorWidget: (context, url, error) => const Icon(Icons.error),
               height: 120,
               width: 120,
             ),
             model.isVideoBlog() == true
                 ? Positioned(
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-              child: Stack(
-                children: [
-                  Positioned(
                     left: 0,
                     right: 0,
                     top: 0,
                     bottom: 0,
-                    child: Container(
-                      color: Colors.black12,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          top: 0,
+                          bottom: 0,
+                          child: Container(
+                            color: Colors.black12,
+                          ),
+                        ),
+                        const Positioned(
+                            left: 0,
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            child: ThemeIconWidget(
+                              ThemeIcon.play,
+                              size: 70,
+                              color: Colors.white,
+                            )),
+                      ],
                     ),
-                  ),
-                  const Positioned(
-                      left: 0,
-                      right: 0,
-                      top: 0,
-                      bottom: 0,
-                      child: ThemeIconWidget(
-                        ThemeIcon.play,
-                        size: 70,
-                        color: Colors.white,
-                      )),
-                ],
-              ),
-            )
+                  )
                 : Container()
           ],
         ),
@@ -70,8 +70,7 @@ class PendingBlogPostTile extends StatelessWidget {
               height: 10,
             ),
             Text(model.title.toUpperCase(),
-                maxLines: 1,
-                style: Theme.of(context).textTheme.titleLarge),
+                maxLines: 1, style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(
               height: 10,
             ),
@@ -80,12 +79,12 @@ class PendingBlogPostTile extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
                 child: Center(
                   child: Text(model.categoryName.toUpperCase(),
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium!
-                          .copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600))
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium!
+                              .copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600))
                       .p4,
                 )).round(5),
             const SizedBox(
@@ -187,7 +186,7 @@ class PostTile extends StatelessWidget {
                           ],
                         ),
                         Container(
-                            width: model.categoryName.length * 10,
+                            width: model.categoryName.length * 12,
                             color: Theme.of(context).primaryColor,
                             child: Center(
                               child: Text(model.categoryName.toUpperCase(),
@@ -267,5 +266,4 @@ class PostTile extends StatelessWidget {
       ),
     ).round(10);
   }
-
 }

@@ -95,8 +95,7 @@ class FirebaseManager {
       });
 
       await insertUser(user!.uid, user.email!);
-      if (accType == 0) {
-      }
+      if (accType == 0) {}
 
       response = FirebaseResponse(true, null);
     } catch (error) {
@@ -115,14 +114,13 @@ class FirebaseManager {
 
       // Adds the user to the database if not already in it.
       if (!snapshot.exists) {
-        transaction
-            .set(doc, {
-              'id': id, 
-              'name': 'Admin', 
-              'status': 1, 
-              'email': email,
-              'createdAt': DateTime.now()
-            });
+        transaction.set(doc, {
+          'id': id,
+          'name': 'Admin',
+          'status': 1,
+          'email': email,
+          'createdAt': DateTime.now()
+        });
       }
     });
   }
@@ -511,6 +509,7 @@ class FirebaseManager {
     DocumentReference? author;
 
     String id = "", authorname = "", authorpicture = "";
+    var postJson;
 
     postDoc.get().then((snap) async {
       id = await snap.get("authorId");
@@ -520,35 +519,35 @@ class FirebaseManager {
       author = !isUpdate
           ? authorsCollection.doc(getIt<UserProfileManager>().user!.id)
           : authorsCollection.doc(id);
-    });
 
-    var postJson = {
-      'authorId': !isUpdate ? getIt<UserProfileManager>().user!.id : id,
-      'authorName':
-          !isUpdate ? getIt<UserProfileManager>().user!.name : authorname,
-      'authorPicture':
-          !isUpdate ? getIt<UserProfileManager>().user!.image : authorpicture,
-      'category': category,
-      'categoryId': categoryId,
-      'content': content,
-      'contentType': postVideoPath == null ? 1 : 2,
-      'thumbnailImage': postThumbnail,
-      'createdAt': FieldValue.serverTimestamp(),
-      'hashtags': hashtags,
-      'id': postId,
-      'keywords': keywords,
-      'likesCount': 0,
-      'reportCount': 0,
-      'savedCount': 0,
-      'status': status == AvailabilityStatus.active ? 1 : 0,
-      'title': postTitle,
-      'totalComments': 0,
-      'totalLikes': 0,
-      'totalSaved': 0,
-      'videoUrl': postVideoPath,
-      'approvedStatus':
-          1, // 1 means approved, 0 means pending, -1 means rejected
-    };
+      postJson = {
+        'authorId': !isUpdate ? getIt<UserProfileManager>().user!.id : id,
+        'authorName':
+            !isUpdate ? getIt<UserProfileManager>().user!.name : authorname,
+        'authorPicture':
+            !isUpdate ? getIt<UserProfileManager>().user!.image : authorpicture,
+        'category': category,
+        'categoryId': categoryId,
+        'content': content,
+        'contentType': postVideoPath == null ? 1 : 2,
+        'thumbnailImage': postThumbnail,
+        'createdAt': FieldValue.serverTimestamp(),
+        'hashtags': hashtags,
+        'id': postId,
+        'keywords': keywords,
+        'likesCount': 0,
+        'reportCount': 0,
+        'savedCount': 0,
+        'status': status == AvailabilityStatus.active ? 1 : 0,
+        'title': postTitle,
+        'totalComments': 0,
+        'totalLikes': 0,
+        'totalSaved': 0,
+        'videoUrl': postVideoPath,
+        'approvedStatus':
+            1, // 1 means approved, 0 means pending, -1 means rejected
+      };
+    });
 
     if (isUpdate == true) {
       if (post!.status == 1 && status == AvailabilityStatus.deactivated) {
