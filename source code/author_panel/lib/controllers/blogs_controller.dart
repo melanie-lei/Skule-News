@@ -58,7 +58,7 @@ class BlogsController extends GetxController {
     searchParamModel.categoryId = selectedCategory.value?.id;
     searchParamModel.searchText =
         (searchText ?? '').isNotEmpty ? searchText : null;
-    // searchParamModel.approved = true;
+    searchParamModel.approvedStatus = 1;
     searchParamModel.status = 0;
 
     getIt<FirebaseManager>()
