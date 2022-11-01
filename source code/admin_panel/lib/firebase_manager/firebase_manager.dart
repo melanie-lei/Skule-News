@@ -508,24 +508,115 @@ class FirebaseManager {
     DocumentReference categoryDoc = categoriesCollection.doc(categoryId);
     DocumentReference? author;
 
-    String id = "", authorname = "", authorpicture = "";
+    String id;
     var postJson;
 
-    postDoc.get().then((snap) async {
-      id = await snap.get("authorId");
-      authorname = await snap.get("authorName");
-      authorpicture = await snap.get("authorPicture");
+    if (isUpdate == true) {
+      postDoc.get().then((snap) async {
+        id = await snap.get("authorId");
+        author = authorsCollection.doc(id);
+        postJson = {
+          'authorId': id,
+          'authorName': await snap.get("authorName"),
+          'authorPicture': await snap.get("authorPicture"),
+          'category': category,
+          'categoryId': categoryId,
+          'content': content,
+          'contentType': postVideoPath == null ? 1 : 2,
+          'thumbnailImage': postThumbnail,
+          'createdAt': FieldValue.serverTimestamp(),
+          'hashtags': hashtags,
+          'id': postId,
+          'keywords': keywords,
+          'likesCount': await snap.get("likesCount"),
+          'reportCount': 0,
+          'savedCount': 0,
+          'status': status == AvailabilityStatus.active ? 1 : 0,
+          'title': postTitle,
+          'totalComments': 0,
+          'totalLikes': 0,
+          'totalSaved': 0,
+          'videoUrl': postVideoPath,
+          'approvedStatus':
+              1, // 1 means approved, 0 means pending, -1 means rejected
+        };
+      });
 
-      author = !isUpdate
-          ? authorsCollection.doc(getIt<UserProfileManager>().user!.id)
-          : authorsCollection.doc(id);
+      if (post!.status == 1 && status == AvailabilityStatus.deactivated) {
+        // Post is approved but deactivated?
+        postCounterIncrementFactor = -1;
+      } else if (post.status == 0 && status == AvailabilityStatus.active) {
+        // Post is pending but active?
+        postCounterIncrementFactor = 1;
+      } else {
+        postCounterIncrementFactor = 0;
+      }
+      List<String> newHashtags = [];
+      List<Map<String, dynamic>> existingHashtagsData = [];
 
+      await firestore.runTransaction((transaction) async {
+        // Separates the hashtags by new and existing.
+        for (String hashtag in hashtags) {
+          DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+          final snapshot = await transaction.get(hashtagDoc);
+
+          if (snapshot.exists) {
+            existingHashtagsData.add(snapshot.data() as Map<String, dynamic>);
+          } else {
+            newHashtags.add(hashtag);
+          }
+        }
+
+        // Creates new hashtags.
+        for (String hashtag in newHashtags) {
+          DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
+
+          transaction.set(hashtagDoc, {
+            'name': hashtag,
+            'keywords': hashtag.allPossibleSubstrings(),
+            'totalBlogPosts': FieldValue.increment(1),
+          });
+        }
+        // Updates old hashtags.
+        for (Map<String, dynamic> hashtagData in existingHashtagsData) {
+          DocumentReference hashtagDoc =
+              hashtagsCollection.doc(hashtagData['name']);
+
+          transaction.update(hashtagDoc, {
+            'totalBlogPosts': FieldValue.increment(1),
+            'popularityFactor': FieldValue.increment(1),
+          });
+        }
+        // Updates blog counters.
+        transaction.update(postDoc, postJson);
+
+        transaction.update(author!, {
+          'totalBlogPosts':
+              FieldValue.increment(postCounterIncrementFactor) // here?
+        });
+        transaction.update(categoryDoc, {
+          'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
+        });
+        // if (postCounterIncrementFactor != 0) {
+        transaction.update(counterDoc, {
+          'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
+        });
+
+        // }
+      }).then(
+        (value) {
+          response = FirebaseResponse(true, null);
+        },
+        onError: (error) {
+          response = FirebaseResponse(false, error.toString());
+        },
+      );
+    } else {
+      // New post?
       postJson = {
-        'authorId': !isUpdate ? getIt<UserProfileManager>().user!.id : id,
-        'authorName':
-            !isUpdate ? getIt<UserProfileManager>().user!.name : authorname,
-        'authorPicture':
-            !isUpdate ? getIt<UserProfileManager>().user!.image : authorpicture,
+        'authorId': getIt<UserProfileManager>().user!.id,
+        'authorName': getIt<UserProfileManager>().user!.name,
+        'authorPicture': getIt<UserProfileManager>().user!.image,
         'category': category,
         'categoryId': categoryId,
         'content': content,
@@ -547,91 +638,6 @@ class FirebaseManager {
         'approvedStatus':
             1, // 1 means approved, 0 means pending, -1 means rejected
       };
-    });
-
-    if (isUpdate == true) {
-      if (post!.status == 1 && status == AvailabilityStatus.deactivated) {
-        // Post is approved but deactivated?
-        postCounterIncrementFactor = -1;
-      } else if (post.status == 0 && status == AvailabilityStatus.active) {
-        // Post is pending but active?
-        postCounterIncrementFactor = 1;
-      } else {
-        postCounterIncrementFactor = 0;
-      }
-
-      List<String> newHashtags = [];
-      List<Map<String, dynamic>> existingHashtagsData = [];
-
-      await firestore.runTransaction((transaction) async {
-        // Separates the hashtags by new and existing.
-        for (String hashtag in hashtags) {
-          DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
-          final snapshot = await transaction.get(hashtagDoc);
-
-          if (snapshot.exists) {
-            existingHashtagsData.add(snapshot.data() as Map<String, dynamic>);
-          } else {
-            newHashtags.add(hashtag);
-          }
-        }
-
-        print('sdlfsd');
-        print(existingHashtagsData);
-        print(newHashtags);
-
-        // Creates new hashtags.
-        for (String hashtag in newHashtags) {
-          DocumentReference hashtagDoc = hashtagsCollection.doc(hashtag);
-
-          transaction.set(hashtagDoc, {
-            'name': hashtag,
-            'keywords': hashtag.allPossibleSubstrings(),
-            'totalBlogPosts': FieldValue.increment(1),
-          });
-        }
-
-        // Updates old hashtags.
-        for (Map<String, dynamic> hashtagData in existingHashtagsData) {
-          DocumentReference hashtagDoc =
-              hashtagsCollection.doc(hashtagData['name']);
-
-          transaction.update(hashtagDoc, {
-            'totalBlogPosts': FieldValue.increment(1),
-            'popularityFactor': FieldValue.increment(1),
-          });
-        }
-
-        // Updates blog counters.
-        transaction.update(postDoc, postJson);
-        transaction.update(author!, {
-          'totalBlogPosts':
-              FieldValue.increment(postCounterIncrementFactor) // here?
-        });
-
-        transaction.update(categoryDoc, {
-          'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
-        });
-
-        // if (postCounterIncrementFactor != 0) {
-        transaction.update(counterDoc, {
-          'totalBlogPosts': FieldValue.increment(postCounterIncrementFactor)
-        });
-        // }
-      }).then(
-        (value) {
-          response = FirebaseResponse(true, null);
-        },
-        onError: (error) {
-          response = FirebaseResponse(false, error.toString());
-        },
-      );
-    } else {
-      // New post?
-      postJson['createdAt'] = FieldValue.serverTimestamp();
-
-      postJson['searchedCount'] = 0;
-      postJson['totalDownloads'] = 0;
 
       List<String> newHashtags = [];
       List<String> existingHashtags = [];

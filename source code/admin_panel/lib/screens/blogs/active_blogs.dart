@@ -104,7 +104,13 @@ class _BlogsListState extends State<BlogsList> {
           hintText: LocalizationString.searchBlog,
           onChanged: (text) {
             blogsController.searchTextChanged(text);
-            blogsController.getActiveBlogs();
+            widget.statusType == BlogStatusType.deactivated
+                ? blogsController.getDeActivatedBlogs()
+                : widget.statusType == BlogStatusType.featured
+                    ? blogsController.getFeaturedBlogs()
+                    : widget.statusType == BlogStatusType.active
+                        ? blogsController.getActiveBlogs()
+                        : blogsController.getPendingBlogs();
           },
           cornerRadius: 10,
         ).shadow(context: context).setPadding(top: 25),
@@ -112,24 +118,27 @@ class _BlogsListState extends State<BlogsList> {
           child: GetBuilder<BlogsController>(
               init: blogsController,
               builder: (ctx) {
-                return blogsController.activeBlogs.isNotEmpty ? ListView.separated(
-                  itemCount: blogsController.activeBlogs.length,
-                  itemBuilder: (BuildContext ctx, int index) {
-                    return Container(
-                      color: Theme.of(context).backgroundColor.darken(0.1),
-                      child: PostTile(
-                        model: blogsController.activeBlogs[index],
-                      ),
-                    ).round(10);
-                  },
-                  separatorBuilder: (BuildContext ctx, int index) {
-                    return Container(
-                      height: 0.2,
-                      color: Theme.of(context).dividerColor,
-                      width: double.infinity,
-                    ).vP8;
-                  },
-                ).vP25 : noDataFound(context);
+                return blogsController.activeBlogs.isNotEmpty
+                    ? ListView.separated(
+                        itemCount: blogsController.activeBlogs.length,
+                        itemBuilder: (BuildContext ctx, int index) {
+                          return Container(
+                            color:
+                                Theme.of(context).backgroundColor.darken(0.1),
+                            child: PostTile(
+                              model: blogsController.activeBlogs[index],
+                            ),
+                          ).round(10);
+                        },
+                        separatorBuilder: (BuildContext ctx, int index) {
+                          return Container(
+                            height: 0.2,
+                            color: Theme.of(context).dividerColor,
+                            width: double.infinity,
+                          ).vP8;
+                        },
+                      ).vP25
+                    : noDataFound(context);
               }),
         ),
       ],
