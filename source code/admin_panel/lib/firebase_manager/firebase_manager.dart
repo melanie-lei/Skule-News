@@ -733,6 +733,7 @@ class FirebaseManager {
           query.where("keywords", arrayContainsAny: [searchModel.searchText]);
     }
     if (searchModel.categoryId != null) {
+      print('categoryo seraching' + searchModel.categoryId!);
       query = query.where('categoryId', isEqualTo: searchModel.categoryId);
     }
     if (searchModel.categoryIds != null) {
@@ -763,15 +764,14 @@ class FirebaseManager {
     if (searchModel.isRecent != null) {
       query = query.limit(10);
     }
-
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
+        print(doc.id);
         list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
       response = FirebaseResponse(false, error.toString());
     });
-
     return list;
   }
 

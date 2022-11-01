@@ -86,7 +86,13 @@ class _BlogsListState extends State<BlogsList> {
                     builder: (BuildContext context) =>
                         SelectCategory(callback: (category) {
                       blogsController.selectCategory(category);
-                      blogsController.getActiveBlogs();
+                      widget.statusType == BlogStatusType.deactivated
+                          ? blogsController.getDeActivatedBlogs()
+                          : widget.statusType == BlogStatusType.featured
+                              ? blogsController.getFeaturedBlogs()
+                              : widget.statusType == BlogStatusType.active
+                                  ? blogsController.getActiveBlogs()
+                                  : blogsController.getPendingBlogs();
                     }),
                   );
                 })),
