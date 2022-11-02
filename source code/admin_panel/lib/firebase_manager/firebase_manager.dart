@@ -733,7 +733,6 @@ class FirebaseManager {
           query.where("keywords", arrayContainsAny: [searchModel.searchText]);
     }
     if (searchModel.categoryId != null) {
-      print('categoryo seraching' + searchModel.categoryId!);
       query = query.where('categoryId', isEqualTo: searchModel.categoryId);
     }
     if (searchModel.categoryIds != null) {

@@ -71,10 +71,10 @@ class FirebaseManager {
     DocumentReference counterDoc = counter.doc('counter');
 
     batch.set(doc, {
-      'id': id, 
-      'name': name, 
-      'phone': phone, 
-      'status': 1, 
+      'id': id,
+      'name': name,
+      'phone': phone,
+      'status': 1,
       'email': email,
       'createdAt': DateTime.now()
     });
@@ -222,7 +222,7 @@ class FirebaseManager {
       print(error.toString());
       response = FirebaseResponse(false, error.toString());
     });
-    
+
     return user;
   }
 
@@ -712,24 +712,52 @@ class FirebaseManager {
     List<BlogPostModel> list = [];
 
     Query query = blogPostsCollection;
+    Query query2 = blogPostsCollection;
     if (searchModel.userIds != null) {
       query = query.where("authorId", whereIn: searchModel.userIds);
+    }
+    if (searchModel.categoryIds != null) {
+      query2 = query2.where("categoryId", whereIn: searchModel.categoryIds);
     }
     query = query.where("approvedStatus", isEqualTo: 1);
     query = query.where("status", isEqualTo: 1);
     query = query.orderBy("createdAt", descending: true);
+
+    query2 = query2.where("approvedStatus", isEqualTo: 1);
+    query2 = query2.where("status", isEqualTo: 1);
+    query2 = query2.orderBy("createdAt", descending: true);
     // query = query.limit(10);
     // if (searchModel.startsAt != null) {
     //   query = query.startAt([searchModel.startsAt]);
     // }
-
-    await query.get().then((QuerySnapshot snapshot) {
-      for (var doc in snapshot.docs) {
-        list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
-      }
-      // final lastVisibleDoc = snapshot.docs[snapshot.size - 1];
-
-      response = FirebaseResponse(true, null, result: list);
+    await query.get().then((QuerySnapshot snapshot) async {
+      await query2.get().then((QuerySnapshot snapshot2) {
+        if (searchModel.userIds != null && searchModel.categoryIds != null) {
+          for (var doc in snapshot.docs) {
+            list.add(
+                BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
+            for (var doc2 in snapshot2.docs) {
+              if (doc.id != (doc2.id)) {
+                list.add(BlogPostModel.fromJson(
+                    doc2.data() as Map<String, dynamic>));
+              }
+            }
+          }
+        } else if (searchModel.userIds != null) {
+          for (var doc in snapshot.docs) {
+            list.add(
+                BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
+          }
+        } else if (searchModel.categoryIds != null) {
+          for (var doc in snapshot2.docs) {
+            list.add(
+                BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
+          }
+        }
+        response = FirebaseResponse(true, null, result: list);
+      }).catchError((error) {
+        response = FirebaseResponse(false, error.toString());
+      });
     }).catchError((error) {
       response = FirebaseResponse(false, error.toString());
     });

@@ -16,11 +16,20 @@ class DashboardController extends GetxController {
     postSearchParamModel = PostSearchParamModel();
     List<String> followingProfiles =
         getIt<UserProfileManager>().user?.followingProfiles ?? [];
+    List<String> followingCategories =
+        getIt<UserProfileManager>().user?.followingCategories ?? [];
     if (followingProfiles.isNotEmpty) {
       if (followingProfiles.length > 9) {
         postSearchParamModel.userIds = followingProfiles.sublist(0, 9);
       } else {
         postSearchParamModel.userIds = followingProfiles;
+      }
+    }
+    if (followingCategories.isNotEmpty) {
+      if (followingCategories.length > 9) {
+        postSearchParamModel.categoryIds = followingCategories.sublist(0, 9);
+      } else {
+        postSearchParamModel.categoryIds = followingCategories;
       }
     }
   }
@@ -95,7 +104,8 @@ class DashboardController extends GetxController {
   }
 
   loadFollowingUsersPosts({required VoidCallback callBack}) {
-    if ((postSearchParamModel.userIds ?? []).isEmpty) {
+    if ((postSearchParamModel.userIds ?? []).isEmpty &&
+        (postSearchParamModel.categoryIds ?? []).isEmpty) {
       posts.value = [];
       update();
       return;

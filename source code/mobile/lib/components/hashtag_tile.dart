@@ -52,9 +52,12 @@ class HashtagTile extends StatelessWidget {
               text: model.isFollowing()
                   ? LocalizationString.following
                   : LocalizationString.follow,
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .bodyLarge,
+              textStyle: model.isFollowing()
+                  ? Theme.of(context)
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: Colors.white)
+                  : Theme.of(context).textTheme.bodyLarge,
               backgroundColor: model.isFollowing()
                   ? Theme.of(context).primaryColor
                   : Theme.of(context).backgroundColor,

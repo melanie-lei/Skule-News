@@ -5,10 +5,12 @@ class FollowingController extends GetxController {
   RxList<AuthorModel> sources = <AuthorModel>[].obs;
   RxList<Hashtag> hashtags = <Hashtag>[].obs;
   RxList<NewsLocation> locations = <NewsLocation>[].obs;
+  RxList<CategoryModel> categories = <CategoryModel>[].obs;
 
   RxBool isLoadingSource = false.obs;
   RxBool isLoadingHashtags = false.obs;
   RxBool isLoadingLocations = false.obs;
+  RxBool isLoadingCategories = false.obs;
 
   RxInt selectedSegment = 0.obs;
 
@@ -16,10 +18,12 @@ class FollowingController extends GetxController {
     sources.clear();
     hashtags.clear();
     locations.clear();
+    categories.clear();
     selectedSegment.value = 0;
     isLoadingSource.value = false;
     isLoadingHashtags.value = false;
     isLoadingLocations.value = false;
+    isLoadingCategories.value = false;
   }
 
   segmentChanged(int index) {
@@ -31,6 +35,7 @@ class FollowingController extends GetxController {
   searchData() {
     if (selectedSegment.value == 0) {
       loadSources();
+      loadCategory();
     } else if (selectedSegment.value == 1) {
       loadHashtags();
     } else if (selectedSegment.value == 2) {
@@ -81,6 +86,24 @@ class FollowingController extends GetxController {
     }
   }
 
+  loadCategory() {
+    if (getIt<UserProfileManager>().user!.followingCategories.isNotEmpty) {
+      var categoryList = getIt<UserProfileManager>().user!.followingCategories;
+      List<CategoryModel> list = <CategoryModel>[];
+      isLoadingCategories.value = true;
+      for (var category in categoryList) {
+        getIt<FirebaseManager>()
+            .searchCategories(searchText: category)
+            .then((result) {
+          list.addAll(result);
+        });
+      }
+      categories = RxList(list);
+      isLoadingCategories.value = false;
+      update();
+    }
+  }
+
   void followUnfollowSourceAndUser(
       {AuthorModel? newsSource, UserModel? user, required bool isSource}) {
     if (getIt<UserProfileManager>().isLogin() == false) {
@@ -92,7 +115,10 @@ class FollowingController extends GetxController {
     String objectId = '';
     if (newsSource != null) {
       if (newsSource.isFollowing() == true) {
-        getIt<UserProfileManager>().user!.followingProfiles.remove(newsSource.id);
+        getIt<UserProfileManager>()
+            .user!
+            .followingProfiles
+            .remove(newsSource.id);
         newsSource.totalFollowers -= 1;
         isFollowing = false;
       } else {

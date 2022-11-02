@@ -68,7 +68,8 @@ class AuthorTile extends StatelessWidget {
               textStyle: model.isFollowing()
                   ? Theme.of(context)
                       .textTheme
-                      .bodyLarge
+                      .bodyLarge!
+                      .copyWith(color: Colors.white)
                   : Theme.of(context).textTheme.bodyLarge,
               backgroundColor: model.isFollowing()
                   ? Theme.of(context).primaryColor
