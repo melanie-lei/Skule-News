@@ -106,7 +106,9 @@ class _PostTileState extends State<PostTile> {
         const Spacer(),
         InkWell(
           onTap: () {
-            postcardController.saveOrDeletePost(widget.model);
+            setState(() {
+              postcardController.saveOrDeletePost(widget.model);
+            });
           },
           child: ThemeIconWidget(
             widget.model.isSaved()

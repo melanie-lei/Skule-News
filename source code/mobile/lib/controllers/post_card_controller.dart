@@ -80,11 +80,10 @@ class PostCardController extends GetxController {
 
     update();
 
-    AppUtil.checkInternet().then((value) async {
+    AppUtil.checkInternet().then((value) {
       if (value) {
         if (isSaved) {
           getIt<FirebaseManager>().savePost(model.id);
-          print(getIt<UserProfileManager>().user!.savedPost);
         } else {
           getIt<FirebaseManager>().removeSavedPost(model.id);
         }

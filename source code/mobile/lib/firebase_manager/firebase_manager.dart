@@ -708,6 +708,7 @@ class FirebaseManager {
       {required PostSearchParamModel searchModel}) async {
     List<BlogPostModel> list = [];
 
+    // queries posts that user follows author, category, or hashtag of
     Query authorQuery = blogPostsCollection;
     Query categoryQuery = blogPostsCollection;
     Query hashtagQuery = blogPostsCollection;
@@ -736,7 +737,9 @@ class FirebaseManager {
     hashtagQuery = hashtagQuery.orderBy("createdAt", descending: true);
 
     List<QueryDocumentSnapshot> docs = [];
+    List<String> docIds = [];
 
+    // adds to list without duplicates
     await authorQuery.get().then((QuerySnapshot authorSnapshot) async {
       await categoryQuery.get().then((QuerySnapshot categorySnapshot) async {
         await hashtagQuery.get().then((QuerySnapshot hashtagSnapshot) {
@@ -759,8 +762,9 @@ class FirebaseManager {
           for (QueryDocumentSnapshot doc in docs) {
             var item =
                 BlogPostModel.fromJson(doc.data() as Map<String, dynamic>);
-            if (!list.contains(item)) {
+            if (!docIds.contains(doc.id)) {
               list.add(item);
+              docIds.add(doc.id);
             }
           }
 
