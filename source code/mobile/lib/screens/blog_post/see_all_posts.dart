@@ -22,7 +22,6 @@ class _SeeAllPostsState extends State<SeeAllPosts> {
     // TODO: implement initState
     seeAllPostController.clear();
     if (getIt<UserProfileManager>().user!.savedPost.isNotEmpty) {
-      print('loaded');
       // seeAllPostController.loadPosts(widget.postSearchQuery);
     }
     seeAllPostController.loadPosts(widget.postSearchQuery);

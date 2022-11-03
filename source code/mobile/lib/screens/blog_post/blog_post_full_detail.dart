@@ -206,7 +206,6 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                   url: widget.model.authorPicture,
                   size: 35,
                 ).ripple(() {
-                  print('going');
                   Get.to(() => AuthorDetail(
                       userId: sourceController.author.value?.id ?? ''));
                 }),

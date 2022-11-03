@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -675,8 +676,6 @@ class FirebaseManager {
     // }
 
     // controls what shows in for you page
-    print('search keywords');
-    print(searchKeywords);
     if (searchKeywords.isNotEmpty) {
       if (searchKeywords.length < 10) {
         query = query.where("keywords",
@@ -699,8 +698,6 @@ class FirebaseManager {
     }).catchError((error) {
       response = FirebaseResponse(false, error.toString());
     });
-    print('from searchPosts');
-    print(list);
 
     return response!;
   }
@@ -711,50 +708,66 @@ class FirebaseManager {
       {required PostSearchParamModel searchModel}) async {
     List<BlogPostModel> list = [];
 
-    Query query = blogPostsCollection;
-    Query query2 = blogPostsCollection;
+    Query authorQuery = blogPostsCollection;
+    Query categoryQuery = blogPostsCollection;
+    Query hashtagQuery = blogPostsCollection;
     if (searchModel.userIds != null) {
-      query = query.where("authorId", whereIn: searchModel.userIds);
+      authorQuery = authorQuery.where("authorId", whereIn: searchModel.userIds);
     }
     if (searchModel.categoryIds != null) {
-      query2 = query2.where("categoryId", whereIn: searchModel.categoryIds);
+      categoryQuery =
+          categoryQuery.where("categoryId", whereIn: searchModel.categoryIds);
     }
-    query = query.where("approvedStatus", isEqualTo: 1);
-    query = query.where("status", isEqualTo: 1);
-    query = query.orderBy("createdAt", descending: true);
+    if (searchModel.hashtags != null) {
+      hashtagQuery = hashtagQuery.where("hashtags",
+          arrayContainsAny: searchModel.hashtags);
+    }
 
-    query2 = query2.where("approvedStatus", isEqualTo: 1);
-    query2 = query2.where("status", isEqualTo: 1);
-    query2 = query2.orderBy("createdAt", descending: true);
-    // query = query.limit(10);
-    // if (searchModel.startsAt != null) {
-    //   query = query.startAt([searchModel.startsAt]);
-    // }
-    await query.get().then((QuerySnapshot snapshot) async {
-      await query2.get().then((QuerySnapshot snapshot2) {
-        if (searchModel.userIds != null && searchModel.categoryIds != null) {
-          for (var doc in snapshot.docs) {
-            list.add(
-                BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
-            for (var doc2 in snapshot2.docs) {
-              if (doc.id != (doc2.id)) {
-                list.add(BlogPostModel.fromJson(
-                    doc2.data() as Map<String, dynamic>));
-              }
+    authorQuery = authorQuery.where("approvedStatus", isEqualTo: 1);
+    authorQuery = authorQuery.where("status", isEqualTo: 1);
+    authorQuery = authorQuery.orderBy("createdAt", descending: true);
+
+    categoryQuery = categoryQuery.where("approvedStatus", isEqualTo: 1);
+    categoryQuery = categoryQuery.where("status", isEqualTo: 1);
+    categoryQuery = categoryQuery.orderBy("createdAt", descending: true);
+
+    hashtagQuery = hashtagQuery.where("approvedStatus", isEqualTo: 1);
+    hashtagQuery = hashtagQuery.where("status", isEqualTo: 1);
+    hashtagQuery = hashtagQuery.orderBy("createdAt", descending: true);
+
+    List<QueryDocumentSnapshot> docs = [];
+
+    await authorQuery.get().then((QuerySnapshot authorSnapshot) async {
+      await categoryQuery.get().then((QuerySnapshot categorySnapshot) async {
+        await hashtagQuery.get().then((QuerySnapshot hashtagSnapshot) {
+          if (searchModel.userIds != null) {
+            for (var doc in authorSnapshot.docs) {
+              docs.add(doc);
             }
           }
-        } else if (searchModel.userIds != null) {
-          for (var doc in snapshot.docs) {
-            list.add(
-                BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
+          if (searchModel.categoryIds != null) {
+            for (var doc in categorySnapshot.docs) {
+              docs.add(doc);
+            }
           }
-        } else if (searchModel.categoryIds != null) {
-          for (var doc in snapshot2.docs) {
-            list.add(
-                BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
+          if (searchModel.hashtags != null) {
+            for (var doc in hashtagSnapshot.docs) {
+              docs.add(doc);
+            }
           }
-        }
-        response = FirebaseResponse(true, null, result: list);
+
+          for (QueryDocumentSnapshot doc in docs) {
+            var item =
+                BlogPostModel.fromJson(doc.data() as Map<String, dynamic>);
+            if (!list.contains(item)) {
+              list.add(item);
+            }
+          }
+
+          response = FirebaseResponse(true, null, result: list);
+        }).catchError((error) {
+          response = FirebaseResponse(false, error.toString());
+        });
       }).catchError((error) {
         response = FirebaseResponse(false, error.toString());
       });
