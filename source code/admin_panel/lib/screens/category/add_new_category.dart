@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:skule_news_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
+import 'dart:convert';
 
 class AddNewCategory extends StatefulWidget {
   final CategoryModel? category;
@@ -60,13 +61,25 @@ class _AddNewCategoryState extends State<AddNewCategory> {
                   const SizedBox(width: 10),
                   SizedBox(
                     height: 60,
+                    width: 60,
+                    child: Image.memory(
+                        addCategoryController.fileBytes ??
+                            const Base64Codec().decode(
+                                "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"),
+                        fit: BoxFit.cover),
+                  ).round(5),
+                  const SizedBox(width: 10),
+                  SizedBox(
+                    height: 60,
                     width: 120,
                     child: FilledButtonType1(
                         text: LocalizationString.choose,
                         enabledTextStyle:
                             Theme.of(context).textTheme.titleMedium,
                         onPress: () {
-                          addCategoryController.pickFile();
+                          addCategoryController.pickFile(() {
+                            setState(() { build(context); });
+                          });
                         }),
                   )
                 ],

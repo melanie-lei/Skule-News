@@ -31,7 +31,7 @@ class AddCategoryController extends GetxController {
   }
 
   /// Pick the category cover image from the user's computer.
-  pickFile() async {
+  pickFile(Function onComplete) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['jpg', 'png', 'jpeg'],
@@ -44,6 +44,9 @@ class AddCategoryController extends GetxController {
       categoryCover.value.text = pFile.name;
 
       update();
+
+      // Callback.
+      onComplete();
     } else {
       // User canceled the picker.
     }
