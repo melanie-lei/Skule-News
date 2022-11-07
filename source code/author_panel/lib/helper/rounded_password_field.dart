@@ -139,7 +139,6 @@ class _PasswordFieldState extends State<PasswordField> {
                     : Container(),
                 iconView(),
                 Expanded(
-                    child: Focus(
                   child: Padding(
                     padding: padding != null
                         ? EdgeInsets.symmetric(horizontal: padding!)
@@ -165,11 +164,7 @@ class _PasswordFieldState extends State<PasswordField> {
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                         )),
                   ),
-                  onFocusChange: (hasFocus) {
-                    startedEditing = hasFocus;
-                    setState(() {});
-                  },
-                )),
+                ),
                 revealPasswordIcon()
               ],
             ),

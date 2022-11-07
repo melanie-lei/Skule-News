@@ -156,29 +156,23 @@ class _InputFieldState extends State<InputField> {
                   : Container(),
               iconOnRightSide == false ? iconView() : Container(),
               Expanded(
-                child: Focus(
-                  child: TextField(
-                    controller: controller,
-                    keyboardType: keyboardType ?? TextInputType.emailAddress,
-                    textAlign: TextAlign.left,
-                    style: Theme.of(context).textTheme.titleSmall,
-                    onChanged: widget.onChanged,
-                    maxLines: maxLines,
-                    decoration: InputDecoration(
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(
-                            left: icon != null ? 0 : 10, right: 10),
-                        counterText: "",
-                        // labelText: hintText,
-                        labelStyle: Theme.of(context).textTheme.bodyMedium,
-                        hintStyle: Theme.of(context).textTheme.titleSmall,
-                        hintText: hintText),
-                  ),
-                  onFocusChange: (hasFocus) {
-                    startedEditing = hasFocus;
-                    setState(() {});
-                  },
+                child: TextField(
+                  controller: controller,
+                  keyboardType: keyboardType ?? TextInputType.emailAddress,
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.titleSmall,
+                  onChanged: widget.onChanged,
+                  maxLines: maxLines,
+                  decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.only(
+                          left: icon != null ? 0 : 10, right: 10),
+                      counterText: "",
+                      // labelText: hintText,
+                      labelStyle: Theme.of(context).textTheme.bodyMedium,
+                      hintStyle: Theme.of(context).textTheme.titleSmall,
+                      hintText: hintText),
                 ),
               ),
               iconOnRightSide == true ? iconView() : Container(),
