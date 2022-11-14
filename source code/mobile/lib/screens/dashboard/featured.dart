@@ -27,7 +27,7 @@ class _FeaturedPostsState extends State<FeaturedPosts> {
 
     super.initState();
 
-    InterstitialAds().loadInterstitialAd();
+    // InterstitialAds().loadInterstitialAd();
   }
 
   loadData() {
