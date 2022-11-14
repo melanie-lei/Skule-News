@@ -13,13 +13,15 @@ class _FeaturedPostsState extends State<FeaturedPosts> {
   final controller = PageController(viewportFraction: 0.90, keepPage: true);
   final DashboardController dashboardController = Get.find();
   final PostCardController postCardController = Get.find();
-  final RefreshController _refreshController = RefreshController(initialRefresh: false);
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     // TODO: implement initState
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      print('loads data');
       loadData();
     });
 
@@ -106,7 +108,7 @@ class _FeaturedPostsState extends State<FeaturedPosts> {
                           .addPullToRefresh(
                               refreshController: _refreshController,
                               onRefresh: loadData,
-                              onLoading: (){})
+                              onLoading: () {})
                           .hP16;
                 }),
           )

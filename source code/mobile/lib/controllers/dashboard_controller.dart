@@ -96,6 +96,7 @@ class DashboardController extends GetxController {
 
   clearPosts() {
     posts.value = [];
+    featuredPosts.value = [];
   }
 
   loadFeaturedPosts({required VoidCallback callBack}) {
