@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:skule_news_mobile/helper/common_import.dart';
 import 'package:get/get.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
+
 // comment
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +46,21 @@ void main() async {
 
   EasyLoading.instance.userInteractions = false;
 
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   runApp(
     EasyLocalization(
         useOnlyLangCode: true,
@@ -58,6 +80,16 @@ void main() async {
   );
 }
 
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title
+  description:
+      'This channel is used for important notifications.', // description
+  importance: Importance.high,
+);
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
 class MainApp extends StatefulWidget {
   final bool onBoardingShown;
 
@@ -72,6 +104,63 @@ class MainAppState extends State<MainApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    var initializationSettingsAndroid =
+        new AndroidInitializationSettings('ic_launcher');
+    var initialzationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettings =
+        InitializationSettings(android: initialzationSettingsAndroid);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channelDescription: channel.description,
+                color: Colors.blue,
+                // TODO add a proper drawable resource to android, for now using
+                //      one that already exists in example app.
+                icon: "@mipmap/ic_launcher",
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+          context: context,
+          builder: (_) {
+            return AlertDialog(
+              title: Text(notification.title!),
+              content: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [Text(notification.body!)],
+                ),
+              ),
+            );
+          },
+        );
+      }
+    });
+
+    getToken();
+  }
+
+  late String token;
+  getToken() async {
+    token = (await FirebaseMessaging.instance.getToken())!;
   }
 
   @override

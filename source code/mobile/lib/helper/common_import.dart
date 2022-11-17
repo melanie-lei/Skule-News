@@ -110,3 +110,5 @@ export 'package:skule_news_mobile/controllers/saved_posts_controller.dart';
 export 'package:skule_news_mobile/screens/blog_post/category_posts.dart';
 export 'package:skule_news_mobile/screens/user/update_profile.dart';
 export 'package:skule_news_mobile/screens/my_account/my_account.dart';
+export 'package:flutter_local_notifications/flutter_local_notifications.dart';
+export 'package:firebase_messaging/firebase_messaging.dart';
