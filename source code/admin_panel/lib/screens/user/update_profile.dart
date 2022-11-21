@@ -38,7 +38,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   init: userController,
                   builder: (context) {
                     return AvatarView(
-                        size: 100, url: userController.imagePath.value)
+                            size: 100, url: userController.imagePath.value)
                         .ripple(() {
                       userController.uploadProfileImage();
                     });
@@ -47,21 +47,21 @@ class _UpdateProfileState extends State<UpdateProfile> {
             height: 20,
           ),
           Obx(() => InputField(
-            controller: userController.nameTf.value,
-            // showDivider: true,
-            hintText: LocalizationString.name,
-          )),
+                controller: userController.nameTf.value,
+                // showDivider: true,
+                hintText: LocalizationString.name,
+              )),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           Obx(() => InputField(
-            controller: userController.bioTf.value,
-            // showDivider: true,
-            hintText: LocalizationString.bio,
-            maxLines: 5,
-          )),
+                controller: userController.bioTf.value,
+                // showDivider: true,
+                hintText: LocalizationString.bio,
+                maxLines: 3,
+              )),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           SizedBox(
             height: 50,

@@ -109,13 +109,15 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 // showDivider: true,
                 hintText: LocalizationString.name,
               )),
+          const SizedBox(height: 20),
           Obx(() => InputField(
                 controller: userController.bioTf.value,
                 // showDivider: true,
                 hintText: LocalizationString.bio,
-                maxLines: 5,
+                maxLines: 3,
                 keyboardType: TextInputType.multiline,
               )),
+          const SizedBox(height: 20),
           SizedBox(
             height: 50,
             width: 200,
