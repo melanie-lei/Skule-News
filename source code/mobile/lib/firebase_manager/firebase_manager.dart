@@ -877,6 +877,18 @@ class FirebaseManager {
       'followingCategories': ids,
     });
 
+    String? token = await FirebaseMessaging.instance.getToken();
+
+    categoriesCollection.get().then((snapshot) {
+      for (var doc in snapshot.docs) {
+        if (ids.contains(doc.get('id'))) {
+          doc.reference.update({
+            'tokens': FieldValue.arrayUnion([token])
+          });
+        }
+      }
+    });
+
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {

@@ -1065,6 +1065,7 @@ class FirebaseManager {
       'status': status == AvailabilityStatus.active ? 1 : 0,
       'keywords': name.allPossibleSubstrings(),
       'totalBlogPosts': 0,
+      'tokens': [],
     };
 
     if (category != null) {
