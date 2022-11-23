@@ -236,37 +236,18 @@ class _SideMenuState extends State<SideMenu> {
                       selectionHandler(MenuType.deactivatedAuthors);
                       sideMenuContainer.selectMenu(MenuType.deactivatedAuthors);
                     }),
+                    DrawerListItem(
+                      icon: ThemeIconWidget(ThemeIcon.add,
+                          color: Theme.of(context).iconTheme.color, size: 20),
+                      title: LocalizationString.addUsers,
+                      isSelected: sideMenuContainer.selectedMenu.value ==
+                          MenuType.addUsers,
+                    ).ripple(() {
+                      scaffoldKey.currentState!.openEndDrawer();
+                      selectionHandler(MenuType.addUsers);
+                      sideMenuContainer.selectMenu(MenuType.addUsers);
+                    }),
                   ], title: LocalizationString.users),
-                  // DrawerListItemGroup(items: [
-                  //   DrawerListItem(
-                  //     icon: ThemeIconWidget(
-                  //       ThemeIcon.packages,
-                  //       color: Theme.of(context).iconTheme.color,
-                  //       size: 20,
-                  //     ),
-                  //     title: LocalizationString.packages,
-                  //     isSelected: sideMenuContainer.selectedMenu.value ==
-                  //         MenuType.packages,
-                  //   ).ripple(() {
-                  //     scaffoldKey.currentState!.openEndDrawer();
-                  //     selectionHandler(MenuType.packages);
-                  //     sideMenuContainer.selectMenu(MenuType.packages);
-                  //   }),
-                  //   DrawerListItem(
-                  //     icon: ThemeIconWidget(
-                  //       ThemeIcon.add,
-                  //       color: Theme.of(context).iconTheme.color,
-                  //       size: 20,
-                  //     ),
-                  //     title: LocalizationString.addPackage,
-                  //     isSelected: sideMenuContainer.selectedMenu.value ==
-                  //         MenuType.addPackage,
-                  //   ).ripple(() {
-                  //     scaffoldKey.currentState!.openEndDrawer();
-                  //     selectionHandler(MenuType.addPackage);
-                  //     sideMenuContainer.selectMenu(MenuType.addPackage);
-                  //   }),
-                  // ], title: LocalizationString.packages),
                   DrawerListItemGroup(items: [
                     DrawerListItem(
                       icon: ThemeIconWidget(

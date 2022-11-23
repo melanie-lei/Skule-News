@@ -130,6 +130,9 @@ class _MainScreenState extends State<MainScreen> {
       case MenuType.deactivatedAuthors:
         // do something else
         return const AuthorsList(statusType: AccountStatusType.deactivated);
+      case MenuType.addUsers:
+        // do something else
+        return const AddUsers();
     }
   }
 }

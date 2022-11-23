@@ -27,6 +27,8 @@ enum MenuType {
   deactivatedUsers,
   deactivatedAuthors,
 
+  addUsers,
+
   packages,
   addPackage,
 

@@ -218,6 +218,7 @@ class LocalizationString {
   static String users = 'Users'.tr();
   static String activeUsers = 'Active Users'.tr();
   static String deactivatedUsers = 'De-Activated Users'.tr();
+  static String addUsers = 'Add Users'.tr();
 
   static String authors = 'Authors'.tr();
   static String activeAuthors = 'Active Authors'.tr();
@@ -501,4 +502,8 @@ class LocalizationString {
       'Do you want to remove this article from premium list?'.tr();
   static String wantToAddToPremium =
       'Do you want to add this article to premium articles?'.tr();
+
+  static String usersAdded = "Users added successfully.".tr();
+  static String pleaseUploadUsers = "Please upload CSV file".tr();
+  static String pleaseUseValidCsv = "Please enter a valid CSV file".tr();
 }

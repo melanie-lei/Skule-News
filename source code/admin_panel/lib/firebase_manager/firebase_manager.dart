@@ -5,6 +5,7 @@ import 'package:skule_news_admin_panel/helper/common_import.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart' as p;
+import 'package:http/http.dart' as http;
 
 String getRandString(int len) {
   var random = Random.secure();
@@ -265,6 +266,11 @@ class FirebaseManager {
     });
 
     return list;
+  }
+
+  Future<FirebaseResponse> addUsers(List<List<dynamic>> usersList) async {
+    
+    return FirebaseResponse(true, LocalizationString.usersAdded);
   }
 
   /// Approves a pending blog post.

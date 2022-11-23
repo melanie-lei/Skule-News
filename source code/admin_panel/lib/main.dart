@@ -43,6 +43,7 @@ void main() async {
   Get.put(SupportRequestsController());
   Get.put(SideMenuContainer());
   Get.put(UserController());
+  Get.put(AddUsersController());
 
   setPathUrlStrategy();
 

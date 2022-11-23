@@ -142,7 +142,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
             InputField(
               key: UniqueKey(),
               controller: signUpEmail,
-              hintText: "email",
+              hintText: LocalizationString.email,
               icon: ThemeIcon.email,
               showBorder: true,
               cornerRadius: 5,
@@ -154,7 +154,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
             InputField(
               key: UniqueKey(),
               controller: name,
-              hintText: 'name',
+              hintText: LocalizationString.name,
               icon: ThemeIcon.account,
               showBorder: true,
               cornerRadius: 5,
@@ -167,7 +167,7 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
               onChanged: (txt) {},
               key: UniqueKey(),
               controller: signUpPassword,
-              hintText: 'password',
+              hintText: LocalizationString.password,
               icon: ThemeIcon.lock,
               cornerRadius: 5,
               showBorder: true,
