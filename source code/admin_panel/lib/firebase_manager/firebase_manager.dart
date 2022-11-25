@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart' as p;
 import 'package:http/http.dart' as http;
+import 'package:skule_news_admin_panel/helper/notification_helper.dart';
 
 String getRandString(int len) {
   var random = Random.secure();
@@ -269,7 +270,6 @@ class FirebaseManager {
   }
 
   Future<FirebaseResponse> addUsers(List<List<dynamic>> usersList) async {
-    
     return FirebaseResponse(true, LocalizationString.usersAdded);
   }
 
@@ -331,6 +331,26 @@ class FirebaseManager {
           .update(counterDoc, {'totalBlogPosts': FieldValue.increment(1)});
       transaction
           .update(categoryDoc, {'totalBlogPosts': FieldValue.increment(1)});
+
+      // send out notifications
+
+      List<String> tokens = [];
+      await categoryDoc.get().then((snapshot) {
+        for (String token in snapshot.get('tokens')) {
+          tokens.add(token);
+        }
+      });
+      await authorDoc.get().then((snapshot) {
+        for (String token in snapshot.get('tokens')) {
+          if (!tokens.contains(token)) {
+            tokens.add(token);
+          }
+        }
+        for (String token in tokens) {
+          print(token);
+          NotificationHelper.pushNotification(token);
+        }
+      });
     }).then(
       (value) {
         response = FirebaseResponse(true, null);

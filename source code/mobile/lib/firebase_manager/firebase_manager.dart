@@ -379,6 +379,14 @@ class FirebaseManager {
         'totalFollowers': FieldValue.increment(1),
         'popularityFactor': FieldValue.increment(2)
       });
+
+      String? token = await FirebaseMessaging.instance.getToken();
+
+      authorsCollection.doc(id).get().then((snapshot) {
+        snapshot.reference.update({
+          'tokens': FieldValue.arrayUnion([token])
+        });
+      });
     } else {
       DocumentReference itemDoc = userCollection.doc(id);
       batch.update(itemDoc, {
@@ -419,6 +427,14 @@ class FirebaseManager {
         'popularityFactor': FieldValue.increment(-2)
       });
     }
+
+    String? token = await FirebaseMessaging.instance.getToken();
+
+    authorsCollection.doc(id).get().then((snapshot) {
+      snapshot.reference.update({
+        'tokens': FieldValue.arrayRemove([token])
+      });
+    });
 
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
@@ -884,6 +900,10 @@ class FirebaseManager {
         if (ids.contains(doc.get('id'))) {
           doc.reference.update({
             'tokens': FieldValue.arrayUnion([token])
+          });
+        } else {
+          doc.reference.update({
+            'tokens': FieldValue.arrayRemove([token])
           });
         }
       }

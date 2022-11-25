@@ -88,7 +88,8 @@ class FirebaseManager {
           'status': 1,
           'email': email,
           'keywords': name!.allPossibleSubstrings(),
-          'createdAt': DateTime.now()
+          'createdAt': DateTime.now(),
+          'tokens': []
         })
         .then((value) {})
         .catchError((error) {

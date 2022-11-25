@@ -33,38 +33,6 @@ class _DashboardState extends State<Dashboard> {
           const SizedBox(height: 25),
           cardsGrid(),
           const SizedBox(height: 10),
-          MaterialButton(
-            height: 20,
-            minWidth: 50,
-            color: Colors.red,
-            onPressed: () async {
-              try {
-                //Send  Message
-                http.Response response = await http.post(
-                    Uri.parse('https://fcm.googleapis.com/fcm/send'),
-                    headers: <String, String>{
-                      'Content-Type': 'application/json',
-                      'Authorization':
-                          'key=AAAAbfo6JLA:APA91bGivM2NROvYJqEFQoDgmhCHRjUcP3LgaEyTXMMxLIEzqDjaoQX_j2pIPk0X8oy00QB64mQ6R-kOzD_lnZ3bVkX8QXw3wsDNMfGBF4x_3mBjp1ILWFllbf8hI_nWBwfJBEEHvZfL',
-                    },
-                    body: jsonEncode(
-                      <String, dynamic>{
-                        'notification': <String, dynamic>{
-                          'body': "Hi melanie, cool notification",
-                          'title': "hi!",
-                        },
-                        'to':
-                            "cDW5nNe6TZ2eXcWpWm9MBN:APA91bFbNMgHTM1PAxAFu_eSrm6GFhoLNjARZL0LXu3XJDV7g-ZRxoSUP1JqG4uuegnx70VYrNnzYUjYBB9Rq8YvJvAH7cP2rZpt1sM_1L_yyHjlCRDdJOY_IWjeX29pisBCmBIGZUdP"
-                      },
-                    ));
-                print(
-                    "status: ${response.statusCode} | Message Sent Successfully!");
-              } catch (e) {
-                print("error push notification $e");
-              }
-              print('sending notif');
-            },
-          ),
           Expanded(
               child: Responsive.isDesktop(context)
                   ? dashboardInfoGrid()
