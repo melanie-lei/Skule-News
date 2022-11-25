@@ -5,7 +5,6 @@ import 'package:skule_news_admin_panel/helper/common_import.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart' as p;
-import 'package:http/http.dart' as http;
 import 'package:skule_news_admin_panel/helper/notification_helper.dart';
 
 String getRandString(int len) {
@@ -125,6 +124,31 @@ class FirebaseManager {
         });
       }
     });
+  }
+
+  /// Inserts a regular user into the database.
+  Future<FirebaseResponse> insertUserAccount(
+      String id, String? name, String email) async {
+    final batch = FirebaseFirestore.instance.batch();
+    DocumentReference doc = userCollection.doc(id);
+    DocumentReference counterDoc = counter.doc('counter');
+
+    batch.set(doc, {
+      'id': id,
+      'name': name ?? 'User',
+      'status': 1,
+      'email': email,
+      'keywords': (name ?? 'User').allPossibleSubstrings(),
+      'createdAt': DateTime.now()
+    });
+    batch.update(counterDoc, {'readers': FieldValue.increment(1)});
+
+    await batch.commit().then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error.toString());
+    });
+    return response!;
   }
 
   /// Logs the user in without an account.
@@ -270,7 +294,56 @@ class FirebaseManager {
   }
 
   Future<FirebaseResponse> addUsers(List<List<dynamic>> usersList) async {
-    return FirebaseResponse(true, LocalizationString.usersAdded);
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    response = null;
+
+    for (int i = 1; i < usersList.length; i++) {
+      if (usersList[i].length < 3) {
+        // CSV file does not have enough columns.
+        response = response ??
+            FirebaseResponse(
+                false, '${LocalizationString.pleaseUseValidCsv} [row $i]');
+      }
+
+      var name = usersList[i][0].toString();
+      var email = usersList[i][1].toString();
+      var password = usersList[i][2].toString();
+
+      if (name == '' || email == '' || password == '') {
+        // CSV file is missing data cells.
+        response = response ??
+            FirebaseResponse(
+                false, '${LocalizationString.csvMissingCells} [row $i]');
+      }
+
+      if (password.length < 6) {
+        // password not long enough.
+        print(password);
+        response = response ??
+            FirebaseResponse(
+                false, '${LocalizationString.passwordTooShort} [row $i]');
+      }
+
+      try {
+        UserCredential userCredential =
+            await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        User? user = userCredential.user;
+
+        if (user != null) {
+          await insertUserAccount(user.uid, name, email);
+        }
+      } catch (error) {
+        print(error.toString());
+        if (!error.toString().startsWith('[fireabse_auth/weak-password]')) {
+          response = response ?? FirebaseResponse(false, error.toString());
+        }
+      }
+    }
+    return response ?? FirebaseResponse(true, LocalizationString.usersAdded);
   }
 
   /// Approves a pending blog post.
