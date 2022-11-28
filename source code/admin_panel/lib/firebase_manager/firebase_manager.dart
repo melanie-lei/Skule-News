@@ -260,6 +260,27 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Reactivates an author form the database.
+  /// 
+  /// Opposite of the `deleteAuthor()` method.
+  Future<FirebaseResponse> reactivateAuthor(AuthorsModel model) async {
+    DocumentReference userDoc = authorsCollection.doc(model.id);
+    DocumentReference counterDoc = counter.doc('counter');
+
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+
+    batch.update(userDoc, {'status': 1});
+    batch.update(counterDoc, {'authors': FieldValue.increment(1)});
+
+    await batch.commit().then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error.toString());
+    });
+
+    return response!;
+  }
+
   /// Gets the information for a user/author/admin from the database.
   Future<AuthorsModel?> getSourceDetail(String id) async {
     AuthorsModel? source;
