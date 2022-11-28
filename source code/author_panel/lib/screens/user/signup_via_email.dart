@@ -187,6 +187,9 @@ class _SignupViaEmailState extends State<SignupViaEmail> {
     } else if (signUpEmail.text.isValidEmail() == false) {
       showMessage(LocalizationString.pleaseEnterValidEmail, true);
       return;
+    } else if (signUpEmail.text.contains(RegExp(r'\s'))) {
+      showMessage(LocalizationString.pleaseEnterValidEmail, true);
+      return;
     } else if (signUpPassword.text.isEmpty) {
       showMessage(LocalizationString.pleaseEnterPassword, true);
       return;
