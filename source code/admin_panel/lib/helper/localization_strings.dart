@@ -508,4 +508,6 @@ class LocalizationString {
   static String pleaseUseValidCsv = "Please enter a valid CSV file".tr();
   static String csvMissingCells = "Missing name, email, or password in CSV file.".tr();
   static String passwordTooShort = "Password must be at least 6 characters.".tr();
+
+  static String reactivateUser = "Reactivate User".tr();
 }

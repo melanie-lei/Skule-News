@@ -73,7 +73,11 @@ class _UsersListState extends State<UsersList> {
                         deleteHandler: () {
                           userController
                               .deleteUser(userController.users[index]);
-                        });
+                        },
+                        reactivateHandler: () {
+                          userController
+                              .reactivateUser(userController.users[index]);
+                        },);
                   },
                   separatorBuilder: (BuildContext ctx, int index) {
                     return Container(

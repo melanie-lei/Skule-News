@@ -33,4 +33,9 @@ class UsersController extends GetxController {
     update();
   }
 
+  reactivateUser(UserModel model) {
+    getIt<FirebaseManager>().reactivateUser(model);
+    users.remove(model);
+    update();
+  }
 }
