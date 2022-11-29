@@ -156,6 +156,8 @@ class MainAppState extends State<MainApp> {
     });
 
     getToken();
+    FirebaseManager firebaseManager = FirebaseManager();
+    firebaseManager.updateToken();
   }
 
   late String token;
