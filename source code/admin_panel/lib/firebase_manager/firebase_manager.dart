@@ -421,7 +421,7 @@ class FirebaseManager {
         }
         for (String token in tokens) {
           print(token);
-          NotificationHelper.pushNotification(token);
+          NotificationHelper.pushNotification(token, model);
         }
       });
     }).then(

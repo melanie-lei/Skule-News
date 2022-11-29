@@ -8,7 +8,7 @@ class NotificationHelper {
   static String cfmKey =
       'key=AAAAbfo6JLA:APA91bGivM2NROvYJqEFQoDgmhCHRjUcP3LgaEyTXMMxLIEzqDjaoQX_j2pIPk0X8oy00QB64mQ6R-kOzD_lnZ3bVkX8QXw3wsDNMfGBF4x_3mBjp1ILWFllbf8hI_nWBwfJBEEHvZfL';
 
-  static void pushNotification(String token) async {
+  static void pushNotification(String token, BlogPostModel model) async {
     try {
 //Send  Message
       http.Response response =
@@ -20,11 +20,20 @@ class NotificationHelper {
               body: jsonEncode(
                 <String, dynamic>{
                   'notification': <String, dynamic>{
-                    'body': "A new article has been posted!",
-                    'title': "New Article",
+                    'body':
+                        "A new article, \"${model.title}\", has been posted by ${model.authorName}",
+                    'title': "New Article!",
                   },
-                  'data': <String, dynamic>{'name': 'name'},
-                  'to': token
+                  'android': {'priority': 'high'},
+                  'priority': 10,
+                  'to': token,
+                  'apns': {
+                    'headers': {"apns-priority": '10'}
+                  },
+                  'webpush': {
+                    'headers': {'Urgency': "high"}
+                  },
+                  'sound': 'default'
                 },
               ));
       print("status: ${response.statusCode} | Message Sent Successfully!");
