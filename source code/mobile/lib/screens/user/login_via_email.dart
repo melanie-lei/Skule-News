@@ -273,7 +273,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
             if (credentials?.additionalUserInfo?.isNewUser == true) {
               Get.offAll(() => const ChooseCategories());
             } else {
-              if (getIt<UserProfileManager>().user!.status == 1) {
+              if (getIt<UserProfileManager>().user?.status == 1) {
                 Get.offAll(() => const MainScreen());
               } else {
                 getIt<UserProfileManager>().logout();
