@@ -87,6 +87,7 @@ class FirebaseManager {
           'name': name,
           'status': 1,
           'email': email,
+          'accountType': 2,
           'keywords': name!.allPossibleSubstrings(),
           'createdAt': DateTime.now(),
           'tokens': []

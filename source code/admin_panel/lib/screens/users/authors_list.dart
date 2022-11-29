@@ -84,6 +84,10 @@ class _AuthorsListState extends State<AuthorsList> {
                           authorController
                               .deleteUser(authorController.authors[index]);
                         },
+                        reactivateHandler: () {
+                          authorController
+                              .reactivateAuthor(authorController.authors[index]);
+                        }
                       ),
                     ).round(10);
                   },

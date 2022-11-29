@@ -4,6 +4,7 @@ class AuthorsModel {
   String id;
   String name;
   String? bio;
+  int accountType; // invalid=0, admin=1, author=2
 
   String image;
   int status;
@@ -15,6 +16,7 @@ class AuthorsModel {
     required this.id,
     required this.name,
     this.bio,
+    required this.accountType,
     required this.image,
     required this.status,
     required this.totalPosts,
@@ -26,6 +28,7 @@ class AuthorsModel {
     id: json["id"],
     name: json["name"],
     bio: json["bio"] ?? '',
+    accountType: json["accountType"] ?? 2,
     image: json["image"] ??
         'https://images.unsplash.com/photo-1657558570424-5e5a73d5edb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60',
     status: json["status"],

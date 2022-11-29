@@ -4,6 +4,7 @@ class AuthorsModel {
   String id;
   String name;
   String email;
+  int? accountType;
 
   String? bio;
 
@@ -18,6 +19,7 @@ class AuthorsModel {
     required this.id,
     required this.name,
     required this.email,
+    required this.accountType,
     this.bio,
     required this.image,
     required this.coverImage,
@@ -31,6 +33,7 @@ class AuthorsModel {
         id: json["id"],
         name: json["name"],
         email: json["email"],
+        accountType: json["accountType"] ?? 2,
         bio: json["bio"] ?? '',
         image: json["image"] ??
             'https://images.unsplash.com/photo-1657558570424-5e5a73d5edb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60',

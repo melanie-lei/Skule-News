@@ -224,6 +224,26 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Reactivates a user from the database.
+  /// 
+  /// Inverse of `deleteUser()` method.
+  Future<FirebaseResponse> reactivateUser(UserModel model) async {
+    DocumentReference userDoc = userCollection.doc(model.id);
+    DocumentReference counterDoc = counter.doc('counter');
+
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+
+    batch.update(userDoc, {'status': 1});
+    batch.update(counterDoc, {'users': FieldValue.increment(1)});
+
+    await batch.commit().then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error.toString());
+    });
+    return response!;
+  }
+
   /// Updates the current user's information.
   ///
   /// [image] refers to the profile image, not the cover image.
@@ -257,6 +277,27 @@ class FirebaseManager {
     }).catchError((error) {
       response = FirebaseResponse(false, error.toString());
     });
+    return response!;
+  }
+
+  /// Reactivates an author form the database.
+  /// 
+  /// Opposite of the `deleteAuthor()` method.
+  Future<FirebaseResponse> reactivateAuthor(AuthorsModel model) async {
+    DocumentReference userDoc = authorsCollection.doc(model.id);
+    DocumentReference counterDoc = counter.doc('counter');
+
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+
+    batch.update(userDoc, {'status': 1});
+    batch.update(counterDoc, {'authors': FieldValue.increment(1)});
+
+    await batch.commit().then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error.toString());
+    });
+
     return response!;
   }
 
