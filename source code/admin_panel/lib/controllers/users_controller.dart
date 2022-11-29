@@ -27,7 +27,7 @@ class UsersController extends GetxController {
     });
   }
 
-  deleteUser(UserModel model){
+  deleteUser(UserModel model) {
     getIt<FirebaseManager>().deleteUser(model);
     users.remove(model);
     update();

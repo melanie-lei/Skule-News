@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class UserTile extends StatelessWidget {
   final UserModel model;
   final VoidCallback deleteHandler;
-  final VoidCallback? reactivateHandler;
+  final VoidCallback reactivateHandler;
 
-  const UserTile({Key? key, required this.model, required this.deleteHandler, this.reactivateHandler})
+  const UserTile({Key? key, required this.model, required this.deleteHandler, required this.reactivateHandler})
       : super(key: key);
 
   @override
@@ -76,7 +76,7 @@ class UserTile extends StatelessWidget {
                     ]
                   ).hP16
                 ).round(8).ripple(() {
-                  reactivateHandler!();
+                  reactivateHandler();
                 })
         ],
       ).p16,

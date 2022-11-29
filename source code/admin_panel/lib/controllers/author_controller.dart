@@ -133,4 +133,10 @@ class AuthorController extends GetxController {
     });
     update();
   }
+
+  reactivateAuthor(AuthorsModel model) {
+    getIt<FirebaseManager>().reactivateAuthor(model);
+    authors.removeWhere((element) => element.id == model.id);
+    update();
+  }
 }
