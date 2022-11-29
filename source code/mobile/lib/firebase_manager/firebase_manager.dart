@@ -419,6 +419,16 @@ class FirebaseManager {
           }
         });
       }
+
+      for (String author in snapshot.get('followingProfiles')) {
+        authorsCollection.doc(author).get().then((doc) {
+          if (!doc.get('tokens').contains(token)) {
+            doc.reference.update({
+              'tokens': FieldValue.arrayUnion([token])
+            });
+          }
+        });
+      }
     });
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
