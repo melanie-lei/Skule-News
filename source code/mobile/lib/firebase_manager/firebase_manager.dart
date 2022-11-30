@@ -403,6 +403,41 @@ class FirebaseManager {
     return response!;
   }
 
+  Future<FirebaseResponse> updateToken() async {
+    final batch = FirebaseFirestore.instance.batch();
+    DocumentReference currentUserDoc =
+        userCollection.doc(auth.currentUser!.uid);
+    var token = (await FirebaseMessaging.instance.getToken())!;
+
+    currentUserDoc.get().then((snapshot) {
+      for (String category in snapshot.get('followingCategories')) {
+        categoriesCollection.doc(category).get().then((doc) {
+          if (!doc.get('tokens').contains(token)) {
+            doc.reference.update({
+              'tokens': FieldValue.arrayUnion([token])
+            });
+          }
+        });
+      }
+
+      for (String author in snapshot.get('followingProfiles')) {
+        authorsCollection.doc(author).get().then((doc) {
+          if (!doc.get('tokens').contains(token)) {
+            doc.reference.update({
+              'tokens': FieldValue.arrayUnion([token])
+            });
+          }
+        });
+      }
+    });
+    await batch.commit().then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error.toString());
+    });
+    return response!;
+  }
+
   Future<FirebaseResponse> unFollowUser(
       {required String id, required bool isSource}) async {
     getIt<UserProfileManager>().user!.likedPost.remove(id);
