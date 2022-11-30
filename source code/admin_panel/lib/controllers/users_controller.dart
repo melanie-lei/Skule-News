@@ -38,4 +38,10 @@ class UsersController extends GetxController {
     users.remove(model);
     update();
   }
+
+  convertUser(UserModel model) {
+    getIt<FirebaseManager>().convertUserToAuthor(model);
+    users.remove(model);
+    update();
+  }
 }

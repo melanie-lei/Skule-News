@@ -244,6 +244,14 @@ class FirebaseManager {
     return response!;
   }
 
+  Future<FirebaseResponse> convertUserToAuthor(UserModel model) async {
+    return response!;
+  }
+
+  Future<FirebaseResponse> convertAuthorToUser(AuthorsModel model) async {
+    return response!;
+  }
+
   /// Updates the current user's information.
   ///
   /// [image] refers to the profile image, not the cover image.
@@ -259,6 +267,7 @@ class FirebaseManager {
     });
     return response!;
   }
+
 
   /// Deletes an author from the database.
   ///

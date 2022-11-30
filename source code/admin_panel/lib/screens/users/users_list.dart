@@ -77,6 +77,10 @@ class _UsersListState extends State<UsersList> {
                         reactivateHandler: () {
                           userController
                               .reactivateUser(userController.users[index]);
+                        },
+                        convertHandler: () {
+                          userController
+                              .convertUser(userController.users[index]);
                         },);
                   },
                   separatorBuilder: (BuildContext ctx, int index) {
