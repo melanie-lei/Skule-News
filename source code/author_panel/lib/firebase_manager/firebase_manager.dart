@@ -79,23 +79,30 @@ class FirebaseManager {
 
   /// Inserts the author user into the database.
   insertUser({required String id, String? name, String? email}) async {
+    final batch = FirebaseFirestore.instance.batch();
     DocumentReference doc = authorsCollection.doc(id);
+    DocumentReference counterDoc = counter.doc('counter');
 
-    await doc
-        .set({
-          'id': id,
-          'name': name,
-          'status': 1,
-          'email': email,
-          'accountType': 2,
-          'keywords': name!.allPossibleSubstrings(),
-          'createdAt': DateTime.now(),
-          'tokens': []
-        })
-        .then((value) {})
-        .catchError((error) {
-          // AppUtil.showToast(message: 'insertUser $error', isSuccess: true);
-        });
+    
+    batch.set(doc, {
+      'id': id,
+      'name': name,
+      'status': 1,
+      'email': email,
+      'accountType': 2,
+      'keywords': name!.allPossibleSubstrings(),
+      'createdAt': DateTime.now(),
+      'tokens': []
+    });
+    batch.update(counterDoc, {'readers': FieldValue.increment(1)});
+
+    await batch.commit().then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error.toString());
+    });
+
+  return response!; 
   }
 
   Future<FirebaseResponse> updateUser(
