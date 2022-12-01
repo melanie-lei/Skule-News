@@ -810,6 +810,10 @@ class FirebaseManager {
             }
           }
 
+          docs.sort((a, b) {
+            return b.get('createdAt').compareTo(a.get('createdAt'));
+          });
+
           for (QueryDocumentSnapshot doc in docs) {
             var item =
                 BlogPostModel.fromJson(doc.data() as Map<String, dynamic>);
