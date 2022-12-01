@@ -5,8 +5,11 @@ class UserTile extends StatelessWidget {
   final UserModel model;
   final VoidCallback deleteHandler;
   final VoidCallback reactivateHandler;
+  final VoidCallback? convertHandler;
 
-  const UserTile({Key? key, required this.model, required this.deleteHandler, required this.reactivateHandler})
+  const UserTile(
+    {Key? key, required this.model, required this.deleteHandler, 
+    required this.reactivateHandler, this.convertHandler})
       : super(key: key);
 
   @override
@@ -40,18 +43,46 @@ class UserTile extends StatelessWidget {
           ),
           const Spacer(),
           model.status == 1
-              ? Container(
-                  height: 40,
-                  width: 40,
-                  color: Theme.of(context).primaryColor,
-                  child: const ThemeIconWidget(
-                    ThemeIcon.delete,
-                    size: 20,
-                    color: Colors.white,
+              // active user
+              ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 40,
+                    color: Theme.of(context).primaryColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(LocalizationString.convertToAuthor,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ),
+                      ],
+                    ).hP16,
+                  ).round(8).ripple(() {
+                    convertHandler!();
+                  }),
+                  const SizedBox(
+                    width: 15,
                   ),
-                ).round(8).ripple(() {
-                  deleteHandler();
-                })
+                  Container(
+                    height: 40,
+                    width: 40,
+                    color: Theme.of(context).primaryColor,
+                    child: const ThemeIconWidget(
+                      ThemeIcon.delete,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ).round(8).ripple(() {
+                    deleteHandler();
+                  })
+                ],
+              )
+              // de-activated user
               : Container(
                   height: 40,
                   color: Theme.of(context).primaryColor,
