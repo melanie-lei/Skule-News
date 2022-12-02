@@ -23,6 +23,8 @@ class NotificationHelper {
                     'body':
                         "A new article, \"${model.title}\", has been posted by ${model.authorName}",
                     'title': "New Article!",
+                    'alert': true,
+                    'sound': 'default'
                   },
                   'android': {'priority': 'high'},
                   'priority': 10,
@@ -33,7 +35,6 @@ class NotificationHelper {
                   'webpush': {
                     'headers': {'Urgency': "high"}
                   },
-                  'sound': 'default'
                 },
               ));
       print("status: ${response.statusCode} | Message Sent Successfully!");

@@ -55,11 +55,18 @@ void main() async {
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
+  // foreground notification for ios
   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
     alert: true,
     badge: true,
     sound: true,
   );
+
+  // foreground notifications for android??
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
 
   runApp(
     EasyLocalization(
@@ -85,7 +92,7 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'High Importance Notifications', // title
   description:
       'This channel is used for important notifications.', // description
-  importance: Importance.high,
+  importance: Importance.max,
 );
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
