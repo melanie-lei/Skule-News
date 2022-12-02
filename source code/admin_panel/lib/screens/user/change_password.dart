@@ -46,7 +46,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     controller: changePasswordController.newPassword.value,
                     showBorder: true,
                     cornerRadius: 5,
-                    cursorColor: Colors.white70,
+                    cursorColor: Colors.black12,
                     onChanged: (text) {},
                   )),
               const SizedBox(
@@ -63,7 +63,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     controller: changePasswordController.confirmPassword.value,
                     showBorder: true,
                     cornerRadius: 5,
-                    cursorColor: Colors.white70,
+                    cursorColor: Colors.black12,
                     padding: 15,
                     onChanged: (text) {},
                   )),

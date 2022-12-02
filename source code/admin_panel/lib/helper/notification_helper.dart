@@ -41,6 +41,39 @@ class NotificationHelper {
     } catch (e) {
       print("error push notification $e");
     }
-    print('sending notif');
+  }
+
+  static void pushAlert(String title, String message) async {
+    try {
+//Send  Message
+      http.Response response =
+          await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+              headers: <String, String>{
+                'Content-Type': 'application/json',
+                'Authorization': cfmKey,
+              },
+              body: jsonEncode(
+                <String, dynamic>{
+                  'notification': <String, dynamic>{
+                    'body': message,
+                    'title': title,
+                    'alert': true,
+                    'sound': 'default'
+                  },
+                  'android': {'priority': 'high'},
+                  'priority': 10,
+                  'to': "/topics/all",
+                  'apns': {
+                    'headers': {"apns-priority": '10'}
+                  },
+                  'webpush': {
+                    'headers': {'Urgency': "high"}
+                  },
+                },
+              ));
+      print("status: ${response.statusCode} | Message Sent Successfully!");
+    } catch (e) {
+      print("error push notification $e");
+    }
   }
 }

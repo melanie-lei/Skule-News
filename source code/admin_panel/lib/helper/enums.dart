@@ -20,6 +20,7 @@ enum MenuType {
   pendingApprovalBlogs,
   deactivatedBlogs,
   addBlog,
+  sendAlert,
 
   users,
   authors,

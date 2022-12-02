@@ -109,7 +109,7 @@ class _InputFieldState extends State<InputField> {
     borderColor = widget.borderColor;
     cornerRadius = widget.cornerRadius;
 
-    // cursorColor = widget.cursorColor ?? Theme.of(context).primaryColorDark;
+    cursorColor = widget.cursorColor ?? Theme.of(context).primaryColorDark;
     // textStyle = widget.textStyle ?? Theme.of(context).textTheme.bodySmall!;
 
     super.initState();
@@ -163,6 +163,7 @@ class _InputFieldState extends State<InputField> {
                   style: Theme.of(context).textTheme.titleSmall,
                   onChanged: widget.onChanged,
                   maxLines: maxLines,
+                  cursorColor: widget.cursorColor,
                   decoration: InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: InputBorder.none,
