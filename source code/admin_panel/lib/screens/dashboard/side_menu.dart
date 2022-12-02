@@ -139,6 +139,17 @@ class _SideMenuState extends State<SideMenu> {
                       selectionHandler(MenuType.addBlog);
                       sideMenuContainer.selectMenu(MenuType.addBlog);
                     }),
+                    DrawerListItem(
+                      icon: ThemeIconWidget(ThemeIcon.smsFailed,
+                          color: Theme.of(context).iconTheme.color, size: 20),
+                      title: LocalizationString.sendAlert,
+                      isSelected: sideMenuContainer.selectedMenu.value ==
+                          MenuType.sendAlert,
+                    ).ripple(() {
+                      scaffoldKey.currentState!.openEndDrawer();
+                      selectionHandler(MenuType.sendAlert);
+                      sideMenuContainer.selectMenu(MenuType.sendAlert);
+                    }),
                   ], title: LocalizationString.blogs),
                   DrawerListItemGroup(items: [
                     DrawerListItem(

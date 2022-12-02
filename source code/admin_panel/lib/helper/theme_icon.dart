@@ -16,6 +16,12 @@ class ThemeIconWidget extends StatelessWidget {
 
   Widget getIcon(BuildContext context) {
     switch (icon) {
+      case ThemeIcon.smsFailed:
+        return Icon(
+          Icons.sms_failed,
+          size: size ?? 20,
+          color: color ?? Theme.of(context).iconTheme.color,
+        );
       case ThemeIcon.home:
         return Icon(
           Icons.home_max_outlined,

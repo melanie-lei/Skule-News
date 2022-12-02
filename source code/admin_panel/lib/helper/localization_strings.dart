@@ -506,10 +506,21 @@ class LocalizationString {
   static String usersAdded = "Users added successfully.".tr();
   static String pleaseUploadUsers = "Please upload CSV file".tr();
   static String pleaseUseValidCsv = "Please enter a valid CSV file".tr();
-  static String csvMissingCells = "Missing name, email, or password in CSV file.".tr();
-  static String passwordTooShort = "Password must be at least 6 characters.".tr();
+  static String csvMissingCells =
+      "Missing name, email, or password in CSV file.".tr();
+  static String passwordTooShort =
+      "Password must be at least 6 characters.".tr();
 
   static String reactivateUser = "Reactivate User".tr();
   static String convertToAuthor = "Convert to Author".tr();
   static String convertToUser = "Convert to User".tr();
+
+  static String sendAlert = "Send Alert".tr();
+  static String alertTitle = "Alert Title".tr();
+  static String alertMessage = "Alert Message".tr();
+  static String alertDescription =
+      "Sends an alert notification to all users".tr();
+  static String alertSuccess = "Alert Successfully Sent".tr();
+
+  static String pleaseFillInAllFields = "Please fill in all fields".tr();
 }

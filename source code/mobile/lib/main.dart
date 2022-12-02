@@ -68,6 +68,8 @@ void main() async {
           AndroidFlutterLocalNotificationsPlugin>()
       ?.createNotificationChannel(channel);
 
+  FirebaseMessaging.instance.subscribeToTopic("all");
+
   runApp(
     EasyLocalization(
         useOnlyLangCode: true,

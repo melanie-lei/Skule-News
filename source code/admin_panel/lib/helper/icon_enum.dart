@@ -1,4 +1,5 @@
 enum ThemeIcon {
+  smsFailed,
   home,
   home1,
 
