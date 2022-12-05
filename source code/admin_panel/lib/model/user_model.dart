@@ -22,8 +22,6 @@ class UserModel {
   int totalPosts;
   int totalFollowers;
 
-  bool isPro = false;
-  
   DateTime createdAt;
 
   UserModel({

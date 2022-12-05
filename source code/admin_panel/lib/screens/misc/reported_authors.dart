@@ -45,6 +45,16 @@ class _ReportedAuthorsState extends State<ReportedAuthors> {
                                   Expanded(
                                     child: AuthorTile(
                                       model: authorController.authors[index],
+                                      deleteHandler: () {
+                                        authorController.deleteUser(
+                                          authorController.authors[index]
+                                        );
+                                      },
+                                      reactivateHandler: () {
+                                        authorController.reactivateUser(
+                                          authorController.authors[index]
+                                        );
+                                      },
                                     ),
                                   ),
                                   Container(

@@ -86,8 +86,12 @@ class _AuthorsListState extends State<AuthorsList> {
                         },
                         reactivateHandler: () {
                           authorController
-                              .reactivateAuthor(authorController.authors[index]);
-                        }
+                              .reactivateUser(authorController.authors[index]);
+                        },
+                        convertHandler: () {
+                          authorController
+                              .convertUser(authorController.authors[index]);
+                        },
                       ),
                     ).round(10);
                   },

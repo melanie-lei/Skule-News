@@ -103,6 +103,12 @@ class AuthorController extends GetxController {
     update();
   }
 
+  reactivateUser(AuthorsModel model) {
+    getIt<FirebaseManager>().reactivateAuthor(model);
+    authors.remove(model);
+    update();
+  }
+
   /// Loads all reported authors. Results are stored in [authors.value].
   getReportedAuthors() {
     EasyLoading.show(status: LocalizationString.loading);
@@ -134,9 +140,9 @@ class AuthorController extends GetxController {
     update();
   }
 
-  reactivateAuthor(AuthorsModel model) {
-    getIt<FirebaseManager>().reactivateAuthor(model);
-    authors.removeWhere((element) => element.id == model.id);
+  convertUser(AuthorsModel model) {
+    getIt<FirebaseManager>().convertAuthorToUser(model);
+    authors.remove(model);
     update();
   }
 }

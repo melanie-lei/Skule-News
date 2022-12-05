@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 
 class AuthorTile extends StatelessWidget {
   final AuthorsModel model;
-  final VoidCallback? deleteHandler;
-  final VoidCallback? reactivateHandler;
+  final VoidCallback deleteHandler;
+  final VoidCallback reactivateHandler;
+  final VoidCallback? convertHandler;
 
-  const AuthorTile({Key? key, required this.model, this.deleteHandler, this.reactivateHandler})
+  const AuthorTile(
+    {Key? key, required this.model, required this.deleteHandler, 
+    required this.reactivateHandler, this.convertHandler})
       : super(key: key);
 
   @override
@@ -41,18 +44,44 @@ class AuthorTile extends StatelessWidget {
           ),
           const Spacer(),
           model.status == 1 
-              ? Container(
-                  height: 40,
-                  width: 40,
-                  color: Theme.of(context).primaryColor,
-                  child: const ThemeIconWidget(
-                    ThemeIcon.delete,
-                    size: 20,
-                    color: Colors.white,
+              ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    height: 40,
+                    color: Theme.of(context).primaryColor,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(LocalizationString.convertToUser,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge!
+                                    .copyWith(color: Colors.white),
+                                textAlign: TextAlign.center,
+                              ),
+                      ],
+                    ).hP16,
+                  ).round(8).ripple(() {
+                    convertHandler!();
+                  }),
+                  const SizedBox(
+                    width: 15,
                   ),
-              ).round(8).ripple(() {
-                  deleteHandler!();
-              }) 
+                  Container(
+                    height: 40,
+                    width: 40,
+                    color: Theme.of(context).primaryColor,
+                    child: const ThemeIconWidget(
+                      ThemeIcon.delete,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ).round(8).ripple(() {
+                    deleteHandler();
+                  })
+                ],
+              )
               : Container(
                   height: 40,
                   color: Theme.of(context).primaryColor,
@@ -77,7 +106,7 @@ class AuthorTile extends StatelessWidget {
                     ]
                   ).hP16
                 ).round(8).ripple(() {
-                  reactivateHandler!();
+                  reactivateHandler();
                 })
         ],
       ).p16,

@@ -120,6 +120,7 @@ class FirebaseManager {
           'name': 'Admin',
           'status': 1,
           'email': email,
+          'accountType': 1,
           'createdAt': DateTime.now()
         });
       }
@@ -154,6 +155,33 @@ class FirebaseManager {
   /// Logs the user in without an account.
   loginAnonymously() async {
     await auth.signInAnonymously();
+  }
+
+  /// Inserts an author user into the database.
+  Future<FirebaseResponse> insertAuthor(String id, String? name, String email) async {
+    final batch = FirebaseFirestore.instance.batch();
+    DocumentReference doc = authorsCollection.doc(id);
+    DocumentReference counterDoc = counter.doc('counter');
+
+    batch.set(doc, {
+      'id': id,
+      'name': name,
+      'status': 1,
+      'email': email,
+      'accountType': 2,
+      'keywords': name!.allPossibleSubstrings(),
+      'createdAt': DateTime.now(),
+      'token': []
+    });
+    batch.update(counterDoc, {'authors': FieldValue.increment(1)});
+
+    await batch.commit().then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error.toString());
+    });
+
+    return response!;
   }
 
   /// Changes the current user's password to [pwd].
@@ -244,11 +272,63 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Converts a user account to an author.
+  /// 
+  /// Creates a new author account while keeping existing user account.
   Future<FirebaseResponse> convertUserToAuthor(UserModel model) async {
+    DocumentReference authorDocRef = authorsCollection.doc(model.id);
+    DocumentSnapshot authorDoc = await authorDocRef.get();
+
+    if (authorDoc.exists) {
+      // Check if existing author account is active or not.
+      if (authorDoc.get("status") == 0) {
+        // Reactivate author.
+        authorDocRef.update({'status': 1}).then((value) {
+          response = FirebaseResponse(true, null);
+        }).catchError((error) {
+          response = FirebaseResponse(false, error.toString());
+        });
+      }
+    } else {
+      // Insert a new author account in database.
+      DocumentReference userDocRef = userCollection.doc(model.id);
+      DocumentSnapshot userDoc = await userDocRef.get();
+
+      String id = model.id;
+      String name = model.name!;
+      String email = userDoc.get("email");
+
+      insertAuthor(id, name, email);
+    }
+
     return response!;
   }
 
+  /// Converts an author account to a user.
+  /// 
+  /// Creates a user account if necessary and deactivates author account.
   Future<FirebaseResponse> convertAuthorToUser(AuthorsModel model) async {
+    DocumentReference authorDocRef = authorsCollection.doc(model.id);
+    DocumentReference userDocRef = userCollection.doc(model.id);
+
+    DocumentSnapshot authorDoc = await authorDocRef.get();
+    DocumentSnapshot userDoc = await userDocRef.get();
+
+    if (!userDoc.exists) {
+      // Createa a new user account in database.
+      String id = model.id;
+      String name = model.name;
+      String email = authorDoc.get("email");
+
+      insertUserAccount(id, name, email);
+    } 
+    
+    authorDocRef.update({'status': 0}).then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error.toString());
+    });
+
     return response!;
   }
 
