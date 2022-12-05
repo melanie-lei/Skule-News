@@ -109,7 +109,7 @@ class _InputFieldState extends State<InputField> {
     borderColor = widget.borderColor;
     cornerRadius = widget.cornerRadius;
 
-    cursorColor = widget.cursorColor ?? Theme.of(context).primaryColorDark;
+    // cursorColor = widget.cursorColor ?? Theme.of(context).primaryColorDark;
     // textStyle = widget.textStyle ?? Theme.of(context).textTheme.bodySmall!;
 
     super.initState();
