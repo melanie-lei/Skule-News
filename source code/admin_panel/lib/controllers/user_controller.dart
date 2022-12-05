@@ -46,6 +46,12 @@ class UserController extends GetxController {
     if (result != null) {
       PlatformFile pFile = result.files.first;
 
+      int fileLength = pFile.bytes!.length;
+      if (fileLength > AppConfig.maxFileSize) {
+        AppUtil.showToast(message: LocalizationString.fileTooLarge, isSuccess: false);
+        return;
+      }
+
       thumbnailImageBytes = pFile.bytes!;
       EasyLoading.show(status: LocalizationString.loading);
       getIt<FirebaseManager>()
@@ -58,8 +64,6 @@ class UserController extends GetxController {
         imagePath.value = value;
         updateUser(onlyUploadingProfileImage: true);
       });
-    } else {
-      // User canceled the picker
     }
   }
 

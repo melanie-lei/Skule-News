@@ -39,12 +39,15 @@ class AddCategoryController extends GetxController {
     if (result != null) {
       PlatformFile pFile = result.files.first;
 
+      int fileLength = pFile.bytes!.length;
+      if (fileLength > AppConfig.maxFileSize) {
+        AppUtil.showToast(message: LocalizationString.fileTooLarge, isSuccess: false);
+        return;
+      } 
+
       fileBytes = pFile.bytes!;
       categoryCover.value.text = pFile.name;
-
       update();
-    } else {
-      // User canceled the picker
     }
   }
 

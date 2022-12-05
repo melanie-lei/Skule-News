@@ -193,12 +193,16 @@ class AddBlogController extends GetxController {
     if (result != null) {
       PlatformFile pFile = result.files.first;
 
+      int videoFileLength = pFile.bytes!.length;
+      if (videoFileLength > AppConfig.maxFileSize) {
+        AppUtil.showToast(message: LocalizationString.fileTooLarge, isSuccess: false);
+        return;
+      }
+
       videoFileBytes = pFile.bytes!;
       postFile.value.text = pFile.name;
 
       update();
-    } else {
-      // User canceled the picker
     }
   }
 
@@ -211,15 +215,18 @@ class AddBlogController extends GetxController {
     if (result != null) {
       PlatformFile pFile = result.files.first;
 
+      int thumbnailImageLength = pFile.bytes!.length;
+      if (thumbnailImageLength > AppConfig.maxFileSize) {
+        AppUtil.showToast(message: LocalizationString.fileTooLarge, isSuccess: false);
+        return;
+      }
+
       thumbnailImageBytes = pFile.bytes!;
       thumbnailImage.value.text = pFile.name;
-
       update();
 
       // Callback.
       onComplete();
-    } else {
-      // User canceled the picker.
     }
   }
 }

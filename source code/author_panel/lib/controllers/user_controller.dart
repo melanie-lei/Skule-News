@@ -57,6 +57,12 @@ class UserController extends GetxController {
     if (result != null) {
       PlatformFile pFile = result.files.first;
 
+      int thumbnailImageLength = pFile.bytes!.length;
+      if (thumbnailImageLength > AppConfig.maxFileSize) {
+        AppUtil.showToast(message: LocalizationString.fileTooLarge, isSuccess: false);
+        return;
+      } 
+
       thumbnailImageBytes = pFile.bytes!;
       EasyLoading.show(status: LocalizationString.loading);
       getIt<FirebaseManager>()
@@ -82,6 +88,12 @@ class UserController extends GetxController {
 
     if (result != null) {
       PlatformFile pFile = result.files.first;
+
+      int coverImageLength = pFile.bytes!.length;
+      if (coverImageLength > AppConfig.maxFileSize) {
+        AppUtil.showToast(message: LocalizationString.fileTooLarge, isSuccess: false);
+        return;
+      } 
 
       coverImageBytes = pFile.bytes!;
       EasyLoading.show(status: LocalizationString.loading);

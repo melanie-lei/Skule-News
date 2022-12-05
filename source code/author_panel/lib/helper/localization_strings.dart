@@ -500,4 +500,6 @@ class LocalizationString {
       'Do you want to remove this article from premium list?'.tr();
   static String wantToAddToPremium =
       'Do you want to add this article to premium blogs?'.tr();
+      
+  static String fileTooLarge = "Please enter a file less than 16 mb.".tr();
 }

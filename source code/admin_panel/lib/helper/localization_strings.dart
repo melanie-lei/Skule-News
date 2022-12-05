@@ -523,4 +523,5 @@ class LocalizationString {
   static String alertSuccess = "Alert Successfully Sent".tr();
 
   static String pleaseFillInAllFields = "Please fill in all fields".tr();
+  static String fileTooLarge = "Please enter a file less than 16 mb.".tr();
 }
