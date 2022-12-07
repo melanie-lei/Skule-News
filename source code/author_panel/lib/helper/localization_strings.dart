@@ -104,7 +104,7 @@ class LocalizationString {
   static String alreadyHaveAcc = 'Already have an Account ? '.tr();
   static String signUp = 'Sign up'.tr();
   static String signUpMessage = 'Signup to discover amazing blogs'.tr();
-  static String signInMessage = 'Signin to discover amazing blogs'.tr();
+  static String signInMessage = 'Sign in to author panel'.tr();
   static String createAnAccount = 'Create an account'.tr();
   static String createAccount = 'Create account'.tr();
 
@@ -500,6 +500,6 @@ class LocalizationString {
       'Do you want to remove this article from premium list?'.tr();
   static String wantToAddToPremium =
       'Do you want to add this article to premium blogs?'.tr();
-      
+
   static String fileTooLarge = "Please enter a file less than 16 mb.".tr();
 }

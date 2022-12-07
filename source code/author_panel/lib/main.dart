@@ -76,7 +76,7 @@ class MainApp extends StatelessWidget {
       locale: context.locale,
       builder: EasyLoading.init(),
       home: FirebaseAuth.instance.currentUser?.uid == null
-          ? const AskForLogin()
+          ? const LoginViaEmail()
           : const MainScreen(),
       // home:  const MainScreen(),
     );

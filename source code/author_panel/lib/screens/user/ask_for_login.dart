@@ -102,20 +102,6 @@ class _AskForLoginState extends State<AskForLogin> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
-                      ),
-                      SizedBox(
-                        height: 40,
-                        child: BorderButtonType1(
-                          text: LocalizationString.signUp,
-                          textStyle: Theme.of(context).textTheme.titleMedium,
-                          onPress: () {
-                            Get.to(() => const SignupViaEmail());
-                          },
-                        ),
-                      ),
-
-                      const SizedBox(
                         height: 50,
                       ),
                       // const SocialLogin(),

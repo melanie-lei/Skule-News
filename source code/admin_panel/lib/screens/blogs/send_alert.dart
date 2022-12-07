@@ -89,7 +89,6 @@ class _SendAlertState extends State<SendAlert> {
                     onPress: () {
                       EasyLoading.show(status: LocalizationString.loading);
                       if (title != null && message != null) {
-                        print("send notif");
                         NotificationHelper.pushAlert(title!, message!);
                         AppUtil.showToast(
                             message: LocalizationString.alertSuccess,

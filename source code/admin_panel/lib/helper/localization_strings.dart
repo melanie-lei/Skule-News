@@ -105,7 +105,7 @@ class LocalizationString {
   static String alreadyHaveAcc = 'Already have an Account ? '.tr();
   static String signUp = 'Sign up'.tr();
   static String signUpMessage = 'Signup to discover amazing articles'.tr();
-  static String signInMessage = 'Signin to discover amazing articles'.tr();
+  static String signInMessage = 'Sign in to admin panel'.tr();
   static String createAnAccount = 'Create an account'.tr();
   static String createAccount = 'Create account'.tr();
 
