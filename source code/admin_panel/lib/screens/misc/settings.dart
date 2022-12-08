@@ -22,7 +22,6 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    print('building shit');
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
