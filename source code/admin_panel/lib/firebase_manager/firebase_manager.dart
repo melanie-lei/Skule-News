@@ -92,7 +92,7 @@ class FirebaseManager {
           .get()
           .then((value) {
         accType = value.docs.first.get('accountType');
-        print(accType);
+        // print(accType);
       });
 
       await insertUser(user!.uid, user.email!);
@@ -448,7 +448,6 @@ class FirebaseManager {
 
       if (password.length < 6) {
         // password not long enough.
-        print(password);
         response = response ??
             FirebaseResponse(
                 false, '${LocalizationString.passwordTooShort} [row $i]');
@@ -550,7 +549,7 @@ class FirebaseManager {
           }
         }
         for (String token in tokens) {
-          print(token);
+          // print(token);
           NotificationHelper.pushNotification(token, model);
         }
       });
@@ -587,7 +586,6 @@ class FirebaseManager {
     DocumentReference categoryDoc = categoriesCollection.doc(model.categoryId);
 
     batch.update(postDoc, {'status': 0});
-    print('decrement');
     batch.update(userDoc, {'totalBlogPosts': FieldValue.increment(-1)});
     batch.update(counterDoc, {'totalBlogPosts': FieldValue.increment(-1)});
     batch.update(categoryDoc, {'totalBlogPosts': FieldValue.increment(-1)});
@@ -994,7 +992,6 @@ class FirebaseManager {
     }
     await query.get().then((QuerySnapshot snapshot) {
       for (var doc in snapshot.docs) {
-        print(doc.id);
         list.add(BlogPostModel.fromJson(doc.data() as Map<String, dynamic>));
       }
     }).catchError((error) {
@@ -1225,7 +1222,7 @@ class FirebaseManager {
     List<CommentModel> list = [];
 
     Query query = commentsCollection
-        .where("posId", isEqualTo: postId)
+        .where("postId", isEqualTo: postId)
         .orderBy("createdAt", descending: true);
 
     await query.get().then((QuerySnapshot snapshot) {
