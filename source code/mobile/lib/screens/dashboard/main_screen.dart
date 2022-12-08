@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skule_news_mobile/helper/common_import.dart';
+import 'package:get/get.dart';
 
 //ignore: must_be_immutable
 class MainScreen extends StatefulWidget {
@@ -15,11 +16,11 @@ class MainScreenState extends State<MainScreen> {
   late String? extraData;
 
   int selectedIndex = 0;
+  final loginController = Get.put(LoginController());
 
   @override
   void initState() {
     // TODO: implement initState
-
     super.initState();
   }
 

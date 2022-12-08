@@ -76,7 +76,7 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                 ]))
               ],
             ),
-            const Positioned(left: 0, right: 0, bottom: 0, child: BannerAds()),
+            // const Positioned(left: 0, right: 0, bottom: 0, child: BannerAds()),  // BANNER AD
             Positioned(left: 0, right: 0, top: 0, child: appBar())
           ],
         ),

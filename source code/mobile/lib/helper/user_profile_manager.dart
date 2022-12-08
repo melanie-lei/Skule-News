@@ -25,16 +25,11 @@ class UserProfileManager {
   refreshProfile() async {
     if (auth.currentUser == null) {
       User? firebaseUser = await FirebaseAuth.instance.authStateChanges().first;
-      if (firebaseUser != null && firebaseUser.isAnonymous == false) {
+      if (firebaseUser != null)
         user = await getIt<FirebaseManager>().getCurrentUser(firebaseUser.uid);
-      } else {
-        await getIt<FirebaseManager>().loginAnonymously(() {});
-      }
     } else {
-      if (auth.currentUser!.isAnonymous == false) {
-        user = await getIt<FirebaseManager>()
-            .getCurrentUser(auth.currentUser!.uid);
-      }
+      user =
+          await getIt<FirebaseManager>().getCurrentUser(auth.currentUser!.uid);
     }
   }
 

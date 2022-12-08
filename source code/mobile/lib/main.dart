@@ -200,7 +200,9 @@ class MainAppState extends State<MainApp> {
       builder: EasyLoading.init(),
       // home: FirebaseAuth.instance.currentUser?.uid == null ? const LoginScreen() : const MainScreen(),
       home: widget.onBoardingShown == true
-          ? const MainScreen()
+          ? FirebaseAuth.instance.currentUser?.uid == null
+              ? const LoginViaEmail()
+              : const MainScreen()
           : const OnBoardingScreen(),
     );
   }

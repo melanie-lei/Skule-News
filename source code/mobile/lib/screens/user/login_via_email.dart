@@ -65,13 +65,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const ThemeIconWidget(
-                        ThemeIcon.backArrow,
-                        color: Colors.white,
-                        size: 25,
-                      ).ripple(() {
-                        Get.back();
-                      }),
+                      Container(),
                       Container(
                           height: 40,
                           width: 40,
@@ -111,7 +105,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
               ),
               Container(
                 height: 260,
-                width: MediaQuery.of(context).size.width - 32,
+                width: MediaQuery.of(context).size.width,
                 color: Theme.of(context).backgroundColor.lighten(0.05),
                 child: Column(
                   children: [
@@ -147,10 +141,6 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                     height: 1,
                     width: 100,
                   ),
-                  Text(
-                    'Or connect using',
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ).hP8,
                   Container(
                     color: Theme.of(context).dividerColor,
                     height: 1,
@@ -161,34 +151,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
               const SizedBox(
                 height: 20,
               ),
-              Container(
-                      height: 80,
-                      width: MediaQuery.of(context).size.width - 32,
-                      color: Theme.of(context).backgroundColor.lighten(0.05),
-                      child: const SocialLogin())
-                  .round(20),
               const Spacer(),
-              Column(
-                children: [
-                  Text(
-                    LocalizationString.skip,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(color: Colors.black),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    color: Theme.of(context).dividerColor,
-                    height: 2,
-                    width: 50,
-                  ),
-                ],
-              ).ripple(() {
-                getIt<UserProfileManager>().loginAnonymously();
-              }),
               const SizedBox(
                 height: 30,
               )
@@ -273,6 +236,8 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
             if (credentials?.additionalUserInfo?.isNewUser == true) {
               Get.offAll(() => const ChooseCategories());
             } else {
+              print('asl;dk' +
+                  (getIt<UserProfileManager>().user?.status == 1).toString());
               if (getIt<UserProfileManager>().user?.status == 1) {
                 Get.offAll(() => const MainScreen());
               } else {

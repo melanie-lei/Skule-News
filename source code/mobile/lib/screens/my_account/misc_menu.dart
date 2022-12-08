@@ -225,7 +225,7 @@ class MiscMenusState extends State<MiscMenus> {
         .borderWithRadius(value: 0.5, radius: 5, context: context)
         .ripple(() {
       getIt<FirebaseManager>().logout();
-      Get.to(() => const AskForLogin());
+      Get.to(() => const LoginViaEmail());
     });
   }
 
@@ -238,7 +238,7 @@ class MiscMenusState extends State<MiscMenus> {
         .borderWithRadius(value: 0.5, radius: 5, context: context)
         .ripple(() {
       getIt<UserProfileManager>().logout();
-      Get.to(() => const AskForLogin());
+      Get.to(() => const LoginViaEmail());
     });
   }
 
