@@ -1225,7 +1225,7 @@ class FirebaseManager {
     List<CommentModel> list = [];
 
     Query query = commentsCollection
-        .where("posId", isEqualTo: postId)
+        .where("postId", isEqualTo: postId)
         .orderBy("createdAt", descending: true);
 
     await query.get().then((QuerySnapshot snapshot) {

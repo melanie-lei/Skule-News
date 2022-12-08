@@ -26,7 +26,7 @@ class CommentsController extends GetxController {
       'id': id,
       'postId': postId,
       'comment': commentText,
-      // 'createdAt': FieldValue.serverTimestamp(),
+      'createdAt': DateTime.now(),
       'userId': getIt<UserProfileManager>().user!.id,
       'userName': getIt<UserProfileManager>().user!.name,
       'userPicture': getIt<UserProfileManager>().user!.image,
