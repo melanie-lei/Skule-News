@@ -15,7 +15,7 @@ class AvatarView extends StatelessWidget {
     return SizedBox(
       height: size,
       width: size!,
-      child: url != null
+      child: url != null && url! != ''
           ? CachedNetworkImage(
               imageUrl: url!,
               fit: BoxFit.cover,
@@ -26,7 +26,7 @@ class AvatarView extends StatelessWidget {
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ).round(18).p(2)
           : Image.asset(
-              'assets/user.png',
+              'assets/images/profile.png',
               color: Theme.of(context).primaryColor,
             ).p8,
     ).borderWithRadius(
@@ -49,7 +49,7 @@ class UserAvatarView extends StatelessWidget {
     return SizedBox(
       height: size,
       width: size!,
-      child: user.image != null
+      child: user.image != null && user.image! != ''
           ?
       CachedNetworkImage(
         imageUrl: user.image!,
@@ -63,7 +63,7 @@ class UserAvatarView extends StatelessWidget {
           : Center(
               child: Text(
                 user.getInitials,
-                style: Theme.of(context)
+                  style: Theme.of(context)
                     .textTheme
                     .titleLarge!
                     .copyWith(color: Theme.of(context).primaryColor),
