@@ -69,7 +69,7 @@ class UserController extends GetxController {
           .updateProfileImage(
               bytes: thumbnailImageBytes!,
               fileName:
-                  '${getIt<UserProfileManager>().user!.name}_profileImage')
+                  '${getIt<UserProfileManager>().user!.id}_profileImage')
           .then((value) {
         EasyLoading.dismiss();
         imagePath.value = value;
@@ -100,7 +100,7 @@ class UserController extends GetxController {
       getIt<FirebaseManager>()
           .updateProfileImage(
               bytes: coverImageBytes!,
-              fileName: '${getIt<UserProfileManager>().user!.name}_coverImage')
+              fileName: '${getIt<UserProfileManager>().user!.id}_coverImage')
           .then((value) {
         EasyLoading.dismiss();
         coverImagePath.value = value;
