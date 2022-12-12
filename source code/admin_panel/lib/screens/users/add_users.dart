@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class AddUsers extends StatefulWidget {
   const AddUsers({Key? key}) : super(key: key);
 
-  @override 
+  @override
   _AddUsersState createState() => _AddUsersState();
 }
 
@@ -18,7 +18,7 @@ class _AddUsersState extends State<AddUsers> {
     super.initState();
   }
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
@@ -40,21 +40,25 @@ class _AddUsersState extends State<AddUsers> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        Container(
+          child: Text(
+            LocalizationString.addUsersDescription,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          padding: EdgeInsets.fromLTRB(20.0, 0, 0, 45.0),
+        ),
         postSheetWidget(),
         const SizedBox(height: 40),
         Center(
-          child: SizedBox(
-            width: 150,
-            height: 60,
-            child: FilledButtonType1(
-              enabledTextStyle: Theme.of(context).textTheme.titleMedium,
-              text: LocalizationString.submit,
-              onPress: () {
-                addUsersController.submit();
-              }
-            )
-          )
-        )
+            child: SizedBox(
+                width: 150,
+                height: 60,
+                child: FilledButtonType1(
+                    enabledTextStyle: Theme.of(context).textTheme.titleMedium,
+                    text: LocalizationString.submit,
+                    onPress: () {
+                      addUsersController.submit();
+                    })))
       ],
     ).vP25;
   }
@@ -72,22 +76,20 @@ class _AddUsersState extends State<AddUsers> {
           children: [
             Expanded(
               child: Obx(() => InputField(
-                controller: addUsersController.usersFileName.value,
-                showBorder: true,
-                cornerRadius: 5
-              )),
+                  controller: addUsersController.usersFileName.value,
+                  showBorder: true,
+                  cornerRadius: 5)),
             ),
             const SizedBox(width: 20),
             SizedBox(
-              height: 60,
-              width: 120,
-              child: FilledButtonType1(
-                enabledTextStyle: Theme.of(context).textTheme.titleMedium,
-                text: LocalizationString.choose,
-                onPress: () {
-                  addUsersController.pickUsersFile();
-                })
-            )
+                height: 60,
+                width: 120,
+                child: FilledButtonType1(
+                    enabledTextStyle: Theme.of(context).textTheme.titleMedium,
+                    text: LocalizationString.choose,
+                    onPress: () {
+                      addUsersController.pickUsersFile();
+                    }))
           ],
         ),
       ],
