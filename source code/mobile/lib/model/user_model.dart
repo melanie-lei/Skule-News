@@ -24,65 +24,63 @@ class UserModel {
 
   DateTime? createdAt;
 
-  UserModel({
-    required this.id,
-    required this.name,
-    this.phone,
-    required this.bio,
-    this.image,
-    required this.followingProfiles,
-    required this.followingLocations,
-    required this.followingHashtags,
-    required this.followingCategories,
-    required this.likedPost,
-    required this.savedPost,
-    required this.totalPosts,
-    required this.totalFollowers,
-    required this.status,
-    this.createdAt
-  });
+  UserModel(
+      {required this.id,
+      required this.name,
+      this.phone,
+      required this.bio,
+      this.image,
+      required this.followingProfiles,
+      required this.followingLocations,
+      required this.followingHashtags,
+      required this.followingCategories,
+      required this.likedPost,
+      required this.savedPost,
+      required this.totalPosts,
+      required this.totalFollowers,
+      required this.status,
+      this.createdAt});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json["id"],
-        name: json["name"] ?? '',
-        phone: json["phone"] ?? '',
-        bio: json["bio"] ?? '',
-        image: json["image"],
-        totalPosts: json["totalBlogPosts"] ?? 0,
-        totalFollowers: json["totalFollowers"] ?? 0,
-        followingProfiles: json["followingProfiles"] == null
-            ? []
-            : (json["followingProfiles"] as List<dynamic>)
-                .map((e) => e.toString())
-                .toList(),
-        followingLocations: json["followingLocations"] == null
-            ? []
-            : (json["followingLocations"] as List<dynamic>)
-                .map((e) => e.toString())
-                .toList(),
-        followingHashtags: json["followingHashtags"] == null
-            ? []
-            : (json["followingHashtags"] as List<dynamic>)
-                .map((e) => e.toString())
-                .toList(),
-        followingCategories: json["followingCategories"] == null
-            ? []
-            : (json["followingCategories"] as List<dynamic>)
-                .map((e) => e.toString())
-                .toList(),
-        likedPost: json["likedPosts"] == null
-            ? []
-            : (json["likedPosts"] as List<dynamic>)
-                .map((e) => e.toString())
-                .toList(),
-        savedPost: json["savedPosts"] == null
-            ? []
-            : (json["savedPosts"] as List<dynamic>)
-                .map((e) => e.toString())
-                .toList(),
-        status: json["status"],
-        createdAt: json["createdAt"]?.toDate() ?? DateTime.now()
-      );
+      id: json["id"],
+      name: json["name"] ?? '',
+      phone: json["phone"] ?? '',
+      bio: json["bio"] ?? '',
+      image: json["image"],
+      totalPosts: json["totalBlogPosts"] ?? 0,
+      totalFollowers: json["totalFollowers"] ?? 0,
+      followingProfiles: json["followingProfiles"] == null
+          ? []
+          : (json["followingProfiles"] as List<dynamic>)
+              .map((e) => e.toString())
+              .toList(),
+      followingLocations: json["followingLocations"] == null
+          ? []
+          : (json["followingLocations"] as List<dynamic>)
+              .map((e) => e.toString())
+              .toList(),
+      followingHashtags: json["followingHashtags"] == null
+          ? []
+          : (json["followingHashtags"] as List<dynamic>)
+              .map((e) => e.toString())
+              .toList(),
+      followingCategories: json["followingCategories"] == null
+          ? []
+          : (json["followingCategories"] as List<dynamic>)
+              .map((e) => e.toString())
+              .toList(),
+      likedPost: json["likedPosts"] == null
+          ? []
+          : (json["likedPosts"] as List<dynamic>)
+              .map((e) => e.toString())
+              .toList(),
+      savedPost: json["savedPosts"] == null
+          ? []
+          : (json["savedPosts"] as List<dynamic>)
+              .map((e) => e.toString())
+              .toList(),
+      status: json["status"],
+      createdAt: json["createdAt"]?.toDate() ?? DateTime.now());
 
   isFollowing() {
     if (getIt<UserProfileManager>().user == null) {

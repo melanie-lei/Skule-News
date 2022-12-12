@@ -105,11 +105,6 @@ class _PostTileState extends State<PostTile> {
             maxLines: 2, style: Theme.of(context).textTheme.bodyMedium),
         const Spacer(),
         InkWell(
-          onTap: () {
-            setState(() {
-              postcardController.saveOrDeletePost(widget.model);
-            });
-          },
           child: ThemeIconWidget(
             widget.model.isSaved()
                 ? ThemeIcon.bookMark
@@ -118,6 +113,11 @@ class _PostTileState extends State<PostTile> {
                 ? Theme.of(context).errorColor
                 : Theme.of(context).iconTheme.color,
           ),
+          onTap: () {
+            setState(() {
+              postcardController.saveOrDeletePost(widget.model);
+            });
+          },
         )
       ],
     );
