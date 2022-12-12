@@ -14,7 +14,7 @@ class RecordCounterModel {
   factory RecordCounterModel.fromJson(Map<String, dynamic> json) =>
       RecordCounterModel(
         blogs: json["totalBlogPosts"] ?? 0,
-        readers: json["readers"] ?? 0,
+        readers: json["users"] ?? 0,
         authors: json["authors"] ?? 0,
         featured: json["featured"] ?? 0,
 

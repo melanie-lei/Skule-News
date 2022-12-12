@@ -85,18 +85,7 @@ class FirebaseManager {
         password: password,
       );
 
-      var accType;
-      user = userCredential.user;
-      authorsCollection
-          .where("id", isEqualTo: user?.getIdToken())
-          .get()
-          .then((value) {
-        accType = value.docs.first.get('accountType');
-        // print(accType);
-      });
-
       await insertUser(user!.uid, user.email!);
-      if (accType == 0) {}
 
       response = FirebaseResponse(true, null);
     } catch (error) {
@@ -142,7 +131,7 @@ class FirebaseManager {
       'keywords': (name ?? 'User').allPossibleSubstrings(),
       'createdAt': DateTime.now()
     });
-    batch.update(counterDoc, {'readers': FieldValue.increment(1)});
+    batch.update(counterDoc, {'users': FieldValue.increment(1)});
 
     await batch.commit().then((value) {
       response = FirebaseResponse(true, null);
@@ -276,6 +265,7 @@ class FirebaseManager {
   /// 
   /// Creates a new author account while keeping existing user account.
   Future<FirebaseResponse> convertUserToAuthor(UserModel model) async {
+    DocumentReference counterDocRef = counter.doc('counter');
     DocumentReference authorDocRef = authorsCollection.doc(model.id);
     DocumentSnapshot authorDoc = await authorDocRef.get();
 
@@ -301,6 +291,9 @@ class FirebaseManager {
       insertAuthor(id, name, email);
     }
 
+    counterDocRef.update({'users': FieldValue.increment(-1)});
+    counterDocRef.update({'authors': FieldValue.increment(1)});
+
     return response!;
   }
 
@@ -308,6 +301,7 @@ class FirebaseManager {
   /// 
   /// Creates a user account if necessary and deactivates author account.
   Future<FirebaseResponse> convertAuthorToUser(AuthorsModel model) async {
+    DocumentReference counterDocRef = counter.doc('counter');
     DocumentReference authorDocRef = authorsCollection.doc(model.id);
     DocumentReference userDocRef = userCollection.doc(model.id);
 
@@ -328,6 +322,9 @@ class FirebaseManager {
     }).catchError((error) {
       response = FirebaseResponse(false, error.toString());
     });
+
+    counterDocRef.update({'users': FieldValue.increment(1)});
+    counterDocRef.update({'authors': FieldValue.increment(-1)});
 
     return response!;
   }
@@ -423,16 +420,34 @@ class FirebaseManager {
     return list;
   }
 
+  /// Adds a list of users from a CSV file.
+  /// 
+  /// In the form of 
+  /// ```csv
+  /// name,email,password
+  /// name1,email1,password1
+  /// name2,email2,password2
+  /// ```
+  /// The first row is ignored as a header row.
   Future<FirebaseResponse> addUsers(List<List<dynamic>> usersList) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     response = null;
+    int numNewUsers = usersList.length - 1;
+
+    appendResponse(bool status, String message) {
+      if (response == null) {
+        response = FirebaseResponse(status, message);
+      } else {
+        response!.message = '${response!.message}\n$message';
+        response!.status = response!.status! && status;
+      }
+    }
 
     for (int i = 1; i < usersList.length; i++) {
       if (usersList[i].length < 3) {
         // CSV file does not have enough columns.
-        response = response ??
-            FirebaseResponse(
-                false, '${LocalizationString.pleaseUseValidCsv} [row $i]');
+        appendResponse(false, 
+            '${LocalizationString.pleaseUseValidCsv} [row $i]');
       }
 
       var name = usersList[i][0].toString();
@@ -441,18 +456,21 @@ class FirebaseManager {
 
       if (name == '' || email == '' || password == '') {
         // CSV file is missing data cells.
-        response = response ??
-            FirebaseResponse(
-                false, '${LocalizationString.csvMissingCells} [row $i]');
+        appendResponse(false, 
+            '${LocalizationString.csvMissingCells} [row $i]');
+        numNewUsers--;
+        continue;
       }
 
       if (password.length < 6) {
-        // password not long enough.
-        response = response ??
-            FirebaseResponse(
-                false, '${LocalizationString.passwordTooShort} [row $i]');
+        // Password not long enough.
+        appendResponse(false, 
+            '${LocalizationString.passwordTooShort} [row $i]');
+        numNewUsers--;
+        continue;
       }
 
+      // Try to create user account.
       try {
         UserCredential userCredential =
             await _auth.createUserWithEmailAndPassword(
@@ -466,12 +484,14 @@ class FirebaseManager {
           await insertUserAccount(user.uid, name, email);
         }
       } catch (error) {
+        // Weak password.
         print(error.toString());
         if (!error.toString().startsWith('[fireabse_auth/weak-password]')) {
-          response = response ?? FirebaseResponse(false, error.toString());
+          appendResponse(false, '${error.toString()} [row $i]');
         }
       }
     }
+
     return response ?? FirebaseResponse(true, LocalizationString.usersAdded);
   }
 
@@ -694,6 +714,16 @@ class FirebaseManager {
 
     var downloadUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
     return downloadUrl;
+  }
+
+  /// Gets the firebase storage URL using the file path.
+  Future<String> getFileUrl({required String filePath}) {
+    final _firebaseStorage =
+        FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
+      
+    var fileRef = _firebaseStorage.ref(filePath);
+    var url = fileRef.getDownloadURL();
+    return url;
   }
 
   /// Update the popularity metrics for an author.
