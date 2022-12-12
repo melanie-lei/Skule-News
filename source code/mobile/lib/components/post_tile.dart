@@ -116,7 +116,9 @@ class _PostTileState extends State<PostTile> {
           onTap: () {
             setState(() {
               postcardController.saveOrDeletePost(widget.model);
+              sleep(Duration(milliseconds: 50));
             });
+            setState(() {});
           },
         )
       ],
