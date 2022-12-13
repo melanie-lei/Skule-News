@@ -85,6 +85,7 @@ class FirebaseManager {
         password: password,
       );
 
+      user = userCredential.user;
       await insertUser(user!.uid, user.email!);
 
       response = FirebaseResponse(true, null);
@@ -1287,6 +1288,32 @@ class FirebaseManager {
     }).catchError((error) {
       response = FirebaseResponse(false, error.toString());
     });
+    return response!;
+  }
+  
+  /// Deletes a comment from the database.
+  /// 
+  /// Does not actually delete it, only deactivates it.
+  Future<FirebaseResponse> deleteComment(CommentModel comment) async {
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+
+    DocumentReference commentDoc = commentsCollection.doc(comment.id);
+    DocumentReference postDoc = blogPostsCollection.doc(comment.postId);
+
+    var commentJson = comment.toJson();
+    commentJson['status'] = 0;
+
+    batch.set(commentDoc, commentJson);
+    batch.update(postDoc, {
+      'totalComments': FieldValue.increment(-1),
+    });
+
+    await batch.commit().then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error.toString());
+    });
+
     return response!;
   }
 
