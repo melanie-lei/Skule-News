@@ -96,7 +96,7 @@ class AuthorTile extends StatelessWidget {
                       const SizedBox(
                         width: 10,
                       ),
-                      Text(LocalizationString.reactivateUser,
+                      Text(LocalizationString.reactivateAuthor,
                         style: Theme.of(context)
                             .textTheme
                             .bodyLarge!

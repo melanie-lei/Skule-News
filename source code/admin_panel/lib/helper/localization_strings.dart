@@ -511,6 +511,7 @@ class LocalizationString {
   static String passwordTooShort =
       "Password must be at least 6 characters.".tr();
 
+  static String reactivateAuthor= "Reactivate Author".tr();
   static String reactivateUser = "Reactivate User".tr();
   static String convertToAuthor = "Convert to Author".tr();
   static String convertToUser = "Convert to User".tr();
