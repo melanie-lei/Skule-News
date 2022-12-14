@@ -30,7 +30,7 @@ class AuthorsModel {
     bio: json["bio"] ?? '',
     accountType: json["accountType"] ?? 2,
     image: json["image"] ??
-        'https://images.unsplash.com/photo-1657558570424-5e5a73d5edb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyOHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60',
+        'https://images.unsplash.com/photo-1535953267280-5fd672f9bfa3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=435&q=80',
     status: json["status"],
     totalPosts: json["totalBlogPosts"] ?? 0,
     totalFollowers: json["totalFollowers"] ?? 0,
