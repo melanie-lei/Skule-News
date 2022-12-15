@@ -1,5 +1,6 @@
 import 'package:skule_news_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CommentsController extends GetxController {
   RxList<CommentModel> comments = <CommentModel>[].obs;
@@ -26,7 +27,7 @@ class CommentsController extends GetxController {
       'id': id,
       'postId': postId,
       'comment': commentText,
-      'createdAt': DateTime.now(),
+      'createdAt': Timestamp.now(),
       'userId': getIt<UserProfileManager>().user!.id,
       'userName': getIt<UserProfileManager>().user!.name,
       'userPicture': getIt<UserProfileManager>().user!.image,

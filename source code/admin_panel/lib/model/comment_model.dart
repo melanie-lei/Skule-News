@@ -28,7 +28,7 @@ class CommentModel {
         postId: json["postId"],
         status: json["status"],
         comment: json["comment"],
-        createdAt: json["createdAt"]  == null ? DateTime.now() : json["createdAt"].toDate(),
+        createdAt: json["createdAt"]?.toDate() ?? DateTime.now(),
         userId: json["userId"],
         userPicture: json["userPicture"],
         userName: json["userName"],
