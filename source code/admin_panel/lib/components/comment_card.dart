@@ -8,7 +8,9 @@ class CommentCard extends StatefulWidget {
   final VoidCallback restoreHandler;
 
   const CommentCard(
-      {Key? key, required this.model, required this.deleteHandler,
+      {Key? key,
+      required this.model,
+      required this.deleteHandler,
       required this.restoreHandler})
       : super(key: key);
 
@@ -82,15 +84,15 @@ class CommentCardState extends State<CommentCard> {
                       width: 80,
                       height: 40,
                       child: FilledButtonType1(
-                        text: model.status == 1 ? 
-                            LocalizationString.deleteComment 
+                        text: model.status == 1
+                            ? LocalizationString.deleteComment
                             : LocalizationString.restoreComment,
-                        enabledBackgroundColor:
-                            Theme.of(context).primaryColor,
-                        onPress: model.status == 1 ?
-                            deleteHandler : restoreHandler,
-                      )
-                  )
+                        enabledBackgroundColor: model.status == 1
+                            ? Color(0xff960b02)
+                            : Theme.of(context).primaryColor,
+                        onPress:
+                            model.status == 1 ? deleteHandler : restoreHandler,
+                      ))
                 ],
               )),
             ]));
