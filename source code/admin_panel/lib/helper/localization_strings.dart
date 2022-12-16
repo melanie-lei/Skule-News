@@ -526,8 +526,10 @@ class LocalizationString {
   static String pleaseFillInAllFields = "Please fill in all fields".tr();
   static String fileTooLarge = "Please enter a file less than 16 mb.".tr();
   static String addUsersDescription =
-      "Import a .csv file, can be exported from Google Sheets, Excel, etc.\nFormat: Name | Email | Password\nNote: The first row of the file is ignored"
+      "Import a .csv file, can be exported from Google Sheets, Excel, etc.\nFormat: Name,Email,Password\nNote: The first row of the file is ignored as a header."
           .tr();
   
   static String deleted = "(deleted)".tr();
+  static String deleteComment = "Delete".tr();
+  static String restoreComment = "Restore".tr();
 }

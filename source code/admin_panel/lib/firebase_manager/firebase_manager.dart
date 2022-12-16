@@ -1317,6 +1317,32 @@ class FirebaseManager {
     return response!;
   }
 
+  /// Restores a deleted comment from the database.
+  /// 
+  /// Inverse of the `deleteComment()` method.
+  Future<FirebaseResponse> restoreComment(CommentModel comment) async {
+    WriteBatch batch = FirebaseFirestore.instance.batch();
+
+    DocumentReference commentDoc = commentsCollection.doc(comment.id);
+    DocumentReference postDoc = blogPostsCollection.doc(comment.postId);
+
+    var commentJson = comment.toJson();
+    commentJson['status'] = 1;
+
+    batch.set(commentDoc, commentJson);
+    batch.update(postDoc, {
+      'totalComments': FieldValue.increment(1),
+    });
+
+    await batch.commit().then((value) {
+      response = FirebaseResponse(true, null);
+    }).catchError((error) {
+      response = FirebaseResponse(false, error.toString());
+    });
+
+    return response!;
+  }
+
   Future<List<PackageModel>> getPackages() async {
     List<PackageModel> list = [];
     await packagesCollection.get().then((QuerySnapshot snapshot) {

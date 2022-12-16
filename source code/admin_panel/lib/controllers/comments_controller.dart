@@ -46,6 +46,16 @@ class CommentsController extends GetxController {
   void deleteComment(CommentModel model) {
     getIt<FirebaseManager>().deleteComment(model).then(
       (value) {
+        comments.refresh();
+        update();
+      }
+    );
+  }
+
+  void restoreComment(CommentModel model) {
+    getIt<FirebaseManager>().restoreComment(model).then(
+      (value) {
+        comments.refresh();
         update();
       }
     );

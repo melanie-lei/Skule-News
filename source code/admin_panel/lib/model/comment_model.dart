@@ -42,6 +42,7 @@ class CommentModel {
         'userId': userId,
         'userPicture': userPicture,
         'userName': userName,
+        'createdAt': createdAt,
       };
 
   String get date {

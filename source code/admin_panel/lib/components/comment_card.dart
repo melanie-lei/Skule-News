@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:skule_news_admin_panel/helper/common_import.dart';
 
 class CommentCard extends StatefulWidget {
   final CommentModel model;
   final VoidCallback deleteHandler;
+  final VoidCallback restoreHandler;
 
   const CommentCard(
-      {Key? key, required this.model, required this.deleteHandler})
+      {Key? key, required this.model, required this.deleteHandler,
+      required this.restoreHandler})
       : super(key: key);
 
   @override
@@ -16,12 +19,14 @@ class CommentCard extends StatefulWidget {
 class CommentCardState extends State<CommentCard> {
   late final CommentModel model;
   late final VoidCallback deleteHandler;
+  late final VoidCallback restoreHandler;
 
   @override
   void initState() {
     super.initState();
     model = widget.model;
     deleteHandler = widget.deleteHandler;
+    restoreHandler = widget.restoreHandler;
   }
 
   @override
@@ -57,7 +62,7 @@ class CommentCardState extends State<CommentCard> {
                           ),
                           Text(model.date,
                               style: Theme.of(context).textTheme.bodyMedium),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 5),
                           model.status == 0
                               ? Text(LocalizationString.deleted,
                                   style: Theme.of(context)
@@ -73,22 +78,19 @@ class CommentCardState extends State<CommentCard> {
                       )
                     ],
                   )),
-                  model.status == 1
-                      ? SizedBox(
-                          width: 80,
-                          height: 40,
-                          child: FilledButtonType1(
-                            text: 'Delete',
-                            enabledBackgroundColor:
-                                Theme.of(context).primaryColor,
-                            onPress: deleteHandler,
-                          ))
-                      : FilledButtonType1(
-                          text: 'Restore',
-                          enabledBackgroundColor:
-                              Theme.of(context).primaryColor,
-                          onPress: deleteHandler,
-                        )
+                  SizedBox(
+                      width: 80,
+                      height: 40,
+                      child: FilledButtonType1(
+                        text: model.status == 1 ? 
+                            LocalizationString.deleteComment 
+                            : LocalizationString.restoreComment,
+                        enabledBackgroundColor:
+                            Theme.of(context).primaryColor,
+                        onPress: model.status == 1 ?
+                            deleteHandler : restoreHandler,
+                      )
+                  )
                 ],
               )),
             ]));
