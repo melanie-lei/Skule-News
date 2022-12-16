@@ -28,46 +28,50 @@ class CommentCardState extends State<CommentCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Flexible(
-                  child: InkWell(
-                      onTap: () {
-                        // Get.to(() => OtherUserProfile(userId: model.userId));
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                  child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AvatarView(url: model.userPicture, size: 50),
+                  const SizedBox(width: 10),
+                  Flexible(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 4),
+                      Row(
                         children: [
-                          AvatarView(url: model.userPicture, size: 50),
-                          const SizedBox(width: 10),
-                          Flexible(
-                              child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 4),
-                              Row(
-                                children: [
-                                  Text(
-                                    model.userName,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium!
-                                        .copyWith(fontWeight: FontWeight.w600),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(model.date,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium)
-                                ],
-                              ),
-                              Text(
-                                model.comment,
-                                style: Theme.of(context).textTheme.titleSmall,
-                              )
-                            ],
-                          ))
+                          Text(
+                            model.userName,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Text(model.date,
+                              style: Theme.of(context).textTheme.bodyMedium)
                         ],
-                      ))),
+                      ),
+                      Text(
+                        model.comment,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      )
+                    ],
+                  )),
+                  SizedBox(
+                      width: 80,
+                      height: 40,
+                      child: FilledButtonType1(
+                        text: 'Delete',
+                        enabledBackgroundColor: Theme.of(context).primaryColor,
+                        onPress: () {
+                          // delete comment
+                        },
+                      ))
+                ],
+              )),
             ]));
   }
 }
