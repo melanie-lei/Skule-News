@@ -118,7 +118,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               SharedPrefs().setOnBoardingShown();
-                              Get.to(() => const MainScreen());
+                              Get.to(() => const LoginViaEmail());
                             },
                             child: Text(
                               LocalizationString.start.toUpperCase(),

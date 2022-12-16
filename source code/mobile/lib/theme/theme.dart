@@ -47,7 +47,7 @@ class AppTheme {
       bottomAppBarColor: const Color(0xffffffff),
       brightness: Brightness.dark,
       hoverColor: const Color(0xffffffff),
-      primaryColor: const Color(0xff154874),
+      primaryColor: CommonConfig.primaryColor,
       primaryColorDark: const Color(0xff000000),
       primaryColorLight: const Color(0xff808080),
       shadowColor: Colors.yellow,
@@ -84,15 +84,15 @@ class AppTheme {
       fontFamily: AppTheme.fontName,
       brightness: Brightness.light,
       hoverColor: const Color(0xff000000),
-      primaryColor: const Color(0xff154874),
+      primaryColor: CommonConfig.primaryColor,
       primaryColorDark: const Color(0xff000000),
       primaryColorLight: const Color(0xffecf0f1),
       shadowColor: const Color(0xffa4b0be),
       iconTheme: const IconThemeData(color: Color(0xff808080)),
       bottomAppBarColor: const Color(0xff000000),
       errorColor: const Color(0xffff4757),
-      buttonTheme: const ButtonThemeData(
-        buttonColor: Color(0xff154874),
+      buttonTheme: ButtonThemeData(
+        buttonColor: CommonConfig.primaryColor,
         disabledColor: Color(0xff808080),
       ));
 }

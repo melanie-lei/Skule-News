@@ -68,7 +68,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: Column(
         children: [
           Container(
-            height: 120,
+            padding: EdgeInsets.fromLTRB(20, 45, 0, 0),
             color: Theme.of(context).primaryColor.withOpacity(0.2),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -92,7 +92,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           .copyWith(fontWeight: FontWeight.w900),
                     ),
                   ],
-                ).p16,
+                ),
+                Text(
+                  CommonConfig.schoolName,
+                  style: Theme.of(context)
+                      .textTheme
+                      .displaySmall!
+                      .copyWith(fontWeight: FontWeight.w900),
+                ).setPadding(left: 6.0, bottom: 4.0, right: 6.0),
               ],
             ),
           ),
