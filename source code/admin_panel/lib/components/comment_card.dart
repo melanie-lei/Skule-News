@@ -6,7 +6,8 @@ class CommentCard extends StatefulWidget {
   final VoidCallback deleteHandler;
 
   const CommentCard(
-    {Key? key, required this.model, required this.deleteHandler}) : super(key: key);
+      {Key? key, required this.model, required this.deleteHandler})
+      : super(key: key);
 
   @override
   CommentCardState createState() => CommentCardState();
@@ -56,12 +57,13 @@ class CommentCardState extends State<CommentCard> {
                           ),
                           Text(model.date,
                               style: Theme.of(context).textTheme.bodyMedium),
-                          const SizedBox(
-                            width: 10
-                          ),
-                          model.status == 0 ? 
-                              Text(LocalizationString.deleted, 
-                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontStyle: FontStyle.italic))
+                          const SizedBox(width: 10),
+                          model.status == 0
+                              ? Text(LocalizationString.deleted,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(fontStyle: FontStyle.italic))
                               : Container()
                         ],
                       ),
@@ -71,15 +73,22 @@ class CommentCardState extends State<CommentCard> {
                       )
                     ],
                   )),
-                  model.status == 1 ?
-                    SizedBox(
-                        width: 80,
-                        height: 40,
-                        child: FilledButtonType1(
-                          text: 'Delete',
-                          enabledBackgroundColor: Theme.of(context).primaryColor,
+                  model.status == 1
+                      ? SizedBox(
+                          width: 80,
+                          height: 40,
+                          child: FilledButtonType1(
+                            text: 'Delete',
+                            enabledBackgroundColor:
+                                Theme.of(context).primaryColor,
+                            onPress: deleteHandler,
+                          ))
+                      : FilledButtonType1(
+                          text: 'Restore',
+                          enabledBackgroundColor:
+                              Theme.of(context).primaryColor,
                           onPress: deleteHandler,
-                        )) : Container()
+                        )
                 ],
               )),
             ]));
