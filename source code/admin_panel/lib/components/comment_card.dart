@@ -3,8 +3,10 @@ import 'package:skule_news_admin_panel/helper/common_import.dart';
 
 class CommentCard extends StatefulWidget {
   final CommentModel model;
+  final VoidCallback deleteHandler;
 
-  const CommentCard({Key? key, required this.model}) : super(key: key);
+  const CommentCard(
+    {Key? key, required this.model, required this.deleteHandler}) : super(key: key);
 
   @override
   CommentCardState createState() => CommentCardState();
@@ -12,11 +14,13 @@ class CommentCard extends StatefulWidget {
 
 class CommentCardState extends State<CommentCard> {
   late final CommentModel model;
+  late final VoidCallback deleteHandler;
 
   @override
   void initState() {
     super.initState();
     model = widget.model;
+    deleteHandler = widget.deleteHandler;
   }
 
   @override
@@ -51,7 +55,14 @@ class CommentCardState extends State<CommentCard> {
                             width: 10,
                           ),
                           Text(model.date,
-                              style: Theme.of(context).textTheme.bodyMedium)
+                              style: Theme.of(context).textTheme.bodyMedium),
+                          const SizedBox(
+                            width: 10
+                          ),
+                          model.status == 0 ? 
+                              Text(LocalizationString.deleted, 
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontStyle: FontStyle.italic))
+                              : Container()
                         ],
                       ),
                       Text(
@@ -60,16 +71,15 @@ class CommentCardState extends State<CommentCard> {
                       )
                     ],
                   )),
-                  SizedBox(
-                      width: 80,
-                      height: 40,
-                      child: FilledButtonType1(
-                        text: 'Delete',
-                        enabledBackgroundColor: Theme.of(context).primaryColor,
-                        onPress: () {
-                          // delete comment
-                        },
-                      ))
+                  model.status == 1 ?
+                    SizedBox(
+                        width: 80,
+                        height: 40,
+                        child: FilledButtonType1(
+                          text: 'Delete',
+                          enabledBackgroundColor: Theme.of(context).primaryColor,
+                          onPress: deleteHandler,
+                        )) : Container()
                 ],
               )),
             ]));

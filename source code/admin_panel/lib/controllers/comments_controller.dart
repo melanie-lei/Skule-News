@@ -13,8 +13,8 @@ class CommentsController extends GetxController {
           update();
         });
       } else {
-        // AppUtil.showToast(
-        //     message: LocalizationString.noInternet, isSuccess: true);
+        AppUtil.showToast(
+            message: LocalizationString.noInternet, isSuccess: false);
       }
     });
   }
@@ -41,5 +41,13 @@ class CommentsController extends GetxController {
 
     update();
     getIt<FirebaseManager>().sendComment(commentModel);
+  }
+
+  void deleteComment(CommentModel model) {
+    getIt<FirebaseManager>().deleteComment(model).then(
+      (value) {
+        update();
+      }
+    );
   }
 }

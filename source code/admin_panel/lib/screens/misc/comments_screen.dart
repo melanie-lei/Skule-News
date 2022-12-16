@@ -47,7 +47,11 @@ class CommentsScreenState extends State<CommentsScreen> {
                           controller: _controller,
                           itemBuilder: (context, index) {
                             return CommentCard(
-                                model: commentsController.comments[index]);
+                                model: commentsController.comments[index],
+                                deleteHandler: () {
+                                  commentsController
+                                      .deleteComment(commentsController.comments[index]);
+                                });
                           });
                     })),
             buildMessageTextField().hP25,

@@ -528,4 +528,6 @@ class LocalizationString {
   static String addUsersDescription =
       "Import a .csv file, can be exported from Google Sheets, Excel, etc.\nFormat: Name | Email | Password\nNote: The first row of the file is ignored"
           .tr();
+  
+  static String deleted = "(deleted)".tr();
 }
