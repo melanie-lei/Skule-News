@@ -50,11 +50,11 @@ class CommentsScreenState extends State<CommentsScreen> {
                                 model: commentsController.comments[index],
                                 deleteHandler: () {
                                   commentsController
-                                      .deleteComment(commentsController.comments[index]);
+                                      .deleteComment(index);
                                 },
                                 restoreHandler: () {
                                   commentsController
-                                      .restoreComment(commentsController.comments[index]);
+                                      .restoreComment(index);
                                 });
                           });
                     })),
