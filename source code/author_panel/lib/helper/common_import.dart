@@ -79,3 +79,4 @@ export 'package:skule_news_admin_panel/screens/user/login_via_email.dart';
 export 'package:skule_news_admin_panel/screens/user/forgot_password.dart';
 export 'package:skule_news_admin_panel/controllers/main_screen_controller.dart';
 export 'package:skule_news_admin_panel/screens/user/update_profile.dart';
+export 'package:skule_news_admin_panel/common_config.dart';
