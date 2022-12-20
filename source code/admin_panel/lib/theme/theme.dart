@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skule_news_admin_panel/common_config.dart';
 import 'package:skule_news_admin_panel/helper/common_import.dart';
 
 class AppTheme {
@@ -47,7 +48,7 @@ class AppTheme {
       bottomAppBarColor: const Color(0xffffffff),
       brightness: Brightness.dark,
       hoverColor: Colors.transparent,
-      primaryColor: const Color(0xff154874),
+      primaryColor: CommonConfig.primaryColor,
       primaryColorDark: const Color(0xff000000),
       primaryColorLight: const Color(0xffe8e8e8),
       shadowColor: Colors.yellow,
@@ -84,7 +85,7 @@ class AppTheme {
       fontFamily: AppTheme.fontName,
       brightness: Brightness.light,
       hoverColor: Colors.transparent,
-      primaryColor: const Color(0xff154874),
+      primaryColor: CommonConfig.primaryColor,
       primaryColorDark: const Color(0xff000000),
       primaryColorLight: const Color(0xffecf0f1),
       shadowColor: const Color(0xffa4b0be),
