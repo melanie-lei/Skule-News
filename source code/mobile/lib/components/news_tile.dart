@@ -36,10 +36,8 @@ class BlogPostTile extends StatelessWidget {
                       color: Theme.of(context).primaryColor,
                       child: Center(
                         child: Text(model.category.toUpperCase(),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium!
-                                    .copyWith(color: Colors.white))
+                                style:
+                                    AppTheme.configTheme.textTheme.bodyMedium)
                             .p8,
                       )).round(5))
             ],

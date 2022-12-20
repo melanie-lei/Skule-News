@@ -99,11 +99,11 @@ class _BlogPreviewState extends State<BlogPreview>
                           color: Theme.of(context)
                               .primaryColorDark
                               .withOpacity(0.5),
-                          child: const Center(
+                          child: Center(
                             child: ThemeIconWidget(
                               ThemeIcon.play,
                               size: 100,
-                              color: Colors.white,
+                              color: CommonConfig.buttonTextColor,
                             ),
                           ),
                         ).ripple(() {
@@ -129,10 +129,8 @@ class _BlogPreviewState extends State<BlogPreview>
                             child: Center(
                               child: Text(
                                       widget.model.categoryName.toUpperCase(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(color: Colors.white))
+                                      style: AppTheme
+                                          .configTheme.textTheme.bodyMedium)
                                   .p8,
                             )).round(5),
                         Text(widget.model.title.toUpperCase(),
@@ -204,10 +202,7 @@ class _BlogPreviewState extends State<BlogPreview>
                             color: Theme.of(context).backgroundColor),
                         const SizedBox(width: 5),
                         Text(LocalizationString.comments,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(color: Colors.white))
+                                style: AppTheme.configTheme.textTheme.bodyLarge)
                             .ripple(() {
                           Get.to(() => CommentsScreen(
                                 postId: widget.model.id,

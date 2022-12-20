@@ -43,10 +43,10 @@ class UserTile extends StatelessWidget {
                   height: 40,
                   width: 40,
                   color: Theme.of(context).primaryColor,
-                  child: const ThemeIconWidget(
+                  child: ThemeIconWidget(
                     ThemeIcon.delete,
                     size: 20,
-                    color: Colors.white,
+                    color: CommonConfig.buttonTextColor,
                   ),
                 ).round(8).ripple(() {
                   deleteHandler();

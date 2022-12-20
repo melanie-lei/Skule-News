@@ -39,10 +39,7 @@ class CategoryTile extends StatelessWidget {
           bottom: 10,
           child: Text(
             category.name,
-            style: Theme.of(context)
-                .textTheme
-                .headlineSmall!
-                .copyWith(color: Colors.white),
+            style: AppTheme.configTheme.textTheme.bodyLarge,
           ),
         )
       ],
@@ -53,7 +50,8 @@ class CategoryTile extends StatelessWidget {
 class CategoryHorizontalTile extends StatelessWidget {
   final CategoryModel genre;
 
-  const CategoryHorizontalTile({Key? key, required this.genre}) : super(key: key);
+  const CategoryHorizontalTile({Key? key, required this.genre})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

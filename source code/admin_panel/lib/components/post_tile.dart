@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skule_news_admin_panel/common_config.dart';
 import 'package:skule_news_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
 
@@ -89,12 +90,8 @@ class PendingBlogPostTile extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
                 child: Center(
                   child: Text(model.categoryName.toUpperCase(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600))
+                          style: AppTheme.configTheme.textTheme.bodyMedium!
+                              .copyWith(fontWeight: FontWeight.w600))
                       .p4,
                 )).round(5),
             const SizedBox(
@@ -112,17 +109,14 @@ class PendingBlogPostTile extends StatelessWidget {
             children: [
               ThemeIconWidget(
                 ThemeIcon.checkMark,
-                color: Theme.of(context).primaryColorLight,
+                color: CommonConfig.buttonTextColor,
                 size: 25,
               ),
               const SizedBox(
                 height: 10,
               ),
               Text(LocalizationString.approve,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(color: Colors.white))
+                  style: AppTheme.configTheme.textTheme.bodyLarge)
             ],
           ).p16,
         ).round(5).ripple(() {
@@ -256,11 +250,9 @@ class PostTile extends StatelessWidget {
                             color: Theme.of(context).primaryColor,
                             child: Center(
                               child: Text(model.categoryName.toUpperCase(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
+                                      style: AppTheme
+                                          .configTheme.textTheme.bodyMedium!
                                           .copyWith(
-                                              color: Colors.white,
                                               fontWeight: FontWeight.w600))
                                   .p4,
                             )).round(5),
@@ -283,10 +275,10 @@ class PostTile extends StatelessWidget {
                           height: 30,
                           width: 30,
                           color: Theme.of(context).primaryColor,
-                          child: const ThemeIconWidget(
+                          child: ThemeIconWidget(
                             ThemeIcon.reveal,
                             size: 15,
-                            color: Colors.white,
+                            color: CommonConfig.buttonTextColor,
                           ).p4,
                         ).round(8).ripple(() {
                           Get.to(() => BlogPreview(
@@ -298,10 +290,10 @@ class PostTile extends StatelessWidget {
                           height: 30,
                           width: 30,
                           color: Theme.of(context).primaryColor,
-                          child: const ThemeIconWidget(
+                          child: ThemeIconWidget(
                             ThemeIcon.edit,
                             size: 15,
-                            color: Colors.white,
+                            color: CommonConfig.buttonTextColor,
                           ).p4,
                         ).round(8).ripple(() {
                           Get.to(() => AddBlog(
@@ -313,10 +305,10 @@ class PostTile extends StatelessWidget {
                           height: 30,
                           width: 30,
                           color: Theme.of(context).primaryColor,
-                          child: const ThemeIconWidget(
+                          child: ThemeIconWidget(
                             ThemeIcon.message,
                             size: 15,
-                            color: Colors.white,
+                            color: CommonConfig.buttonTextColor,
                           ).p4,
                         ).round(8).ripple(() {
                           Get.to(() => CommentsScreen(postId: model.id));
@@ -329,9 +321,9 @@ class PostTile extends StatelessWidget {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const ThemeIconWidget(
+                                    ThemeIconWidget(
                                       ThemeIcon.delete,
-                                      color: Colors.white,
+                                      color: CommonConfig.buttonTextColor,
                                       size: 20,
                                     ),
                                     const SizedBox(
@@ -339,10 +331,8 @@ class PostTile extends StatelessWidget {
                                     ),
                                     Text(
                                       LocalizationString.removeFromFeatured,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .copyWith(color: Colors.white),
+                                      style: AppTheme
+                                          .configTheme.textTheme.bodyLarge,
                                       textAlign: TextAlign.center,
                                     )
                                   ],
@@ -357,9 +347,9 @@ class PostTile extends StatelessWidget {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const ThemeIconWidget(
+                                    ThemeIconWidget(
                                       ThemeIcon.add,
-                                      color: Colors.white,
+                                      color: CommonConfig.buttonTextColor,
                                       size: 20,
                                     ),
                                     const SizedBox(
@@ -367,10 +357,8 @@ class PostTile extends StatelessWidget {
                                     ),
                                     Text(
                                       LocalizationString.markAsFeatured,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge!
-                                          .copyWith(color: Colors.white),
+                                      style: AppTheme
+                                          .configTheme.textTheme.bodyLarge,
                                       textAlign: TextAlign.center,
                                     )
                                   ],

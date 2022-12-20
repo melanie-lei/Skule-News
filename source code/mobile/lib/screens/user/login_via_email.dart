@@ -92,10 +92,7 @@ class _LoginViaEmailState extends State<LoginViaEmail> {
                   ),
                   Text(
                     LocalizationString.signInMessage,
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall!
-                        .copyWith(color: Colors.white),
+                    style: AppTheme.configTheme.textTheme.titleSmall,
                     textAlign: TextAlign.center,
                   )
                 ],

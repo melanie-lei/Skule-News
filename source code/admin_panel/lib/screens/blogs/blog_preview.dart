@@ -125,10 +125,8 @@ class _BlogPreviewState extends State<BlogPreview>
                             child: Center(
                               child: Text(
                                       widget.model.categoryName.toUpperCase(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge!
-                                          .copyWith(color: Colors.white))
+                                      style: AppTheme
+                                          .configTheme.textTheme.titleMedium)
                                   .p8,
                             )).round(5),
                         Text(widget.model.title.toUpperCase(),

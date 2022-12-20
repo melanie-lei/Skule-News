@@ -8,8 +8,11 @@ class AuthorTile extends StatelessWidget {
   final VoidCallback? convertHandler;
 
   const AuthorTile(
-    {Key? key, required this.model, required this.deleteHandler, 
-    required this.reactivateHandler, this.convertHandler})
+      {Key? key,
+      required this.model,
+      required this.deleteHandler,
+      required this.reactivateHandler,
+      this.convertHandler})
       : super(key: key);
 
   @override
@@ -31,7 +34,10 @@ class AuthorTile extends StatelessWidget {
             children: [
               Text(
                 model.name,
-                style: Theme.of(context).textTheme.titleSmall!.copyWith(fontWeight: FontWeight.w900),
+                style: Theme.of(context)
+                    .textTheme
+                    .titleSmall!
+                    .copyWith(fontWeight: FontWeight.w900),
               ),
               const SizedBox(
                 height: 5,
@@ -43,69 +49,65 @@ class AuthorTile extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          model.status == 1 
+          model.status == 1
               ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 40,
-                    color: Theme.of(context).primaryColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(LocalizationString.convertToUser,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(color: Colors.white),
-                                textAlign: TextAlign.center,
-                              ),
-                      ],
-                    ).hP16,
-                  ).round(8).ripple(() {
-                    convertHandler!();
-                  }),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    color: Theme.of(context).primaryColor,
-                    child: const ThemeIconWidget(
-                      ThemeIcon.delete,
-                      color: Colors.white,
-                      size: 20,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 40,
+                      color: Theme.of(context).primaryColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            LocalizationString.convertToUser,
+                            style: AppTheme.configTheme.textTheme.bodyLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ).hP16,
+                    ).round(8).ripple(() {
+                      convertHandler!();
+                    }),
+                    const SizedBox(
+                      width: 15,
                     ),
-                  ).round(8).ripple(() {
-                    deleteHandler();
-                  })
-                ],
-              )
-              : Container(
-                  height: 40,
-                  color: Theme.of(context).primaryColor,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const ThemeIconWidget(
-                        ThemeIcon.add,
+                    Container(
+                      height: 40,
+                      width: 40,
+                      color: Theme.of(context).primaryColor,
+                      child: const ThemeIconWidget(
+                        ThemeIcon.delete,
                         color: Colors.white,
                         size: 20,
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(LocalizationString.reactivateAuthor,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
-                    ]
-                  ).hP16
-                ).round(8).ripple(() {
+                    ).round(8).ripple(() {
+                      deleteHandler();
+                    })
+                  ],
+                )
+              : Container(
+                      height: 40,
+                      color: Theme.of(context).primaryColor,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const ThemeIconWidget(
+                              ThemeIcon.add,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              LocalizationString.reactivateAuthor,
+                              style: AppTheme.configTheme.textTheme.bodyLarge,
+                              textAlign: TextAlign.center,
+                            ),
+                          ]).hP16)
+                  .round(8)
+                  .ripple(() {
                   reactivateHandler();
                 })
         ],

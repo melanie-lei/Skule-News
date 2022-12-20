@@ -55,10 +55,7 @@ class _AskForLoginState extends State<AskForLogin> {
               ),
               Text(
                 AppConfig.projectName,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge
-                    ?.copyWith(color: Colors.white),
+                style: AppTheme.configTheme.textTheme.titleLarge,
               ),
               const SizedBox(
                 height: 40,

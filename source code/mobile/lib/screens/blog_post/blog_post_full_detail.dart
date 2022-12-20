@@ -144,10 +144,8 @@ class _BlogPostFullDetailState extends State<BlogPostFullDetail>
                                 Theme.of(context).primaryColor.withOpacity(.75),
                             child: Center(
                               child: Text(widget.model.category.toUpperCase(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
-                                          .copyWith(color: Colors.white))
+                                      style: AppTheme
+                                          .configTheme.textTheme.bodyMedium)
                                   .p8,
                             )).round(5),
                         Container(

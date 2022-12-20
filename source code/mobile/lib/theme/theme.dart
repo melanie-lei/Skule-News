@@ -20,6 +20,21 @@ class AppTheme {
   static double iconSize = 20;
   static Font fontType = Font.openSans;
 
+  static ThemeData configTheme = ThemeData(
+      backgroundColor: Colors.black,
+      fontFamily: AppTheme.fontName,
+      textTheme: TextTheme(
+        titleSmall: TextStyle(
+            fontSize: FontSizes.title, color: CommonConfig.buttonTextColor),
+        bodyLarge: TextStyle(
+            fontSize: FontSizes.body, color: CommonConfig.buttonTextColor),
+        bodyMedium: TextStyle(
+            fontSize: FontSizes.bodySm, color: CommonConfig.buttonTextColor),
+        bodySmall: TextStyle(
+            fontSize: FontSizes.bodyExtraSm,
+            color: CommonConfig.buttonTextColor),
+      ));
+
   static ThemeData darkTheme = ThemeData(
       backgroundColor: Colors.black,
       fontFamily: AppTheme.fontName,

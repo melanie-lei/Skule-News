@@ -93,10 +93,7 @@ class _RecommendedSourceSectionState extends State<RecommendedSourceSection> {
                   ? LocalizationString.following
                   : LocalizationString.follow,
               textStyle: !item.isFollowing()
-                  ? Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(color: Colors.white)
+                  ? AppTheme.configTheme.textTheme.bodyLarge
                   : Theme.of(context).textTheme.bodyLarge,
               backgroundColor: !item.isFollowing()
                   ? Theme.of(context).primaryColor
@@ -205,10 +202,7 @@ class _RecommendedProfilesSectionState
                   ? LocalizationString.following
                   : LocalizationString.follow,
               textStyle: !item.isFollowing()
-                  ? Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(color: Colors.white)
+                  ? AppTheme.configTheme.textTheme.bodyLarge
                   : Theme.of(context).textTheme.bodyLarge,
               backgroundColor: !item.isFollowing()
                   ? Theme.of(context).primaryColor
@@ -314,10 +308,7 @@ class _RecommendedHashtagSectionState extends State<RecommendedHashtagSection> {
                   ? LocalizationString.following
                   : LocalizationString.follow,
               textStyle: !item.isFollowing()
-                  ? Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(color: Colors.white)
+                  ? AppTheme.configTheme.textTheme.bodyLarge
                   : Theme.of(context).textTheme.bodyLarge,
               backgroundColor: !item.isFollowing()
                   ? Theme.of(context).primaryColor

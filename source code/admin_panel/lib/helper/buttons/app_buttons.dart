@@ -50,11 +50,7 @@ class FilledButtonType1 extends StatelessWidget {
             child: Text(
               text!,
               style: isEnabled == true
-                  ? enabledTextStyle?.copyWith(color: Colors.white) ??
-                      Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(color: Colors.white)
+                  ? enabledTextStyle ?? AppTheme.configTheme.textTheme.bodyLarge
                   : disabledTextStyle ?? Theme.of(context).textTheme.bodyLarge,
             ),
           ),

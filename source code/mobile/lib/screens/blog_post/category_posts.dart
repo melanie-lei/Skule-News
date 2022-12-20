@@ -96,10 +96,7 @@ class _CategoryPostsState extends State<CategoryPosts> {
                           : LocalizationString.follow,
                       textStyle: categoryController.selectedCategories
                               .contains(widget.category)
-                          ? Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.white)
+                          ? AppTheme.configTheme.textTheme.bodyLarge
                           : Theme.of(context).textTheme.bodyLarge,
                       backgroundColor: categoryController.selectedCategories
                               .contains(widget.category)

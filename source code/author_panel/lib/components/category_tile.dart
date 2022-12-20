@@ -46,14 +46,14 @@ class CategoryTile extends StatelessWidget {
           ),
         ),
         category.isAdminCategory
-            ? const Positioned(
+            ? Positioned(
                 left: 10,
                 right: 10,
                 bottom: 10,
                 top: 0,
                 child: ThemeIconWidget(
                   ThemeIcon.lock,
-                  color: Colors.white,
+                  color: CommonConfig.buttonTextColor,
                   size: 80,
                 ),
               )

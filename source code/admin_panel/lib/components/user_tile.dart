@@ -8,8 +8,11 @@ class UserTile extends StatelessWidget {
   final VoidCallback? convertHandler;
 
   const UserTile(
-    {Key? key, required this.model, required this.deleteHandler, 
-    required this.reactivateHandler, this.convertHandler})
+      {Key? key,
+      required this.model,
+      required this.deleteHandler,
+      required this.reactivateHandler,
+      this.convertHandler})
       : super(key: key);
 
   @override
@@ -45,68 +48,64 @@ class UserTile extends StatelessWidget {
           model.status == 1
               // active user
               ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 40,
-                    color: Theme.of(context).primaryColor,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(LocalizationString.convertToAuthor,
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge!
-                                    .copyWith(color: Colors.white),
-                                textAlign: TextAlign.center,
-                              ),
-                      ],
-                    ).hP16,
-                  ).round(8).ripple(() {
-                    convertHandler!();
-                  }),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    color: Theme.of(context).primaryColor,
-                    child: const ThemeIconWidget(
-                      ThemeIcon.delete,
-                      color: Colors.white,
-                      size: 20,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 40,
+                      color: Theme.of(context).primaryColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            LocalizationString.convertToAuthor,
+                            style: AppTheme.configTheme.textTheme.bodyLarge,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ).hP16,
+                    ).round(8).ripple(() {
+                      convertHandler!();
+                    }),
+                    const SizedBox(
+                      width: 15,
                     ),
-                  ).round(8).ripple(() {
-                    deleteHandler();
-                  })
-                ],
-              )
-              // de-activated user
-              : Container(
-                  height: 40,
-                  color: Theme.of(context).primaryColor,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const ThemeIconWidget(
-                        ThemeIcon.add,
+                    Container(
+                      height: 40,
+                      width: 40,
+                      color: Theme.of(context).primaryColor,
+                      child: const ThemeIconWidget(
+                        ThemeIcon.delete,
                         color: Colors.white,
                         size: 20,
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(LocalizationString.reactivateUser,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .copyWith(color: Colors.white),
-                        textAlign: TextAlign.center,
-                      ),
-                    ]
-                  ).hP16
-                ).round(8).ripple(() {
+                    ).round(8).ripple(() {
+                      deleteHandler();
+                    })
+                  ],
+                )
+              // de-activated user
+              : Container(
+                      height: 40,
+                      color: Theme.of(context).primaryColor,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const ThemeIconWidget(
+                              ThemeIcon.add,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
+                              LocalizationString.reactivateUser,
+                              style: AppTheme.configTheme.textTheme.bodyLarge,
+                              textAlign: TextAlign.center,
+                            ),
+                          ]).hP16)
+                  .round(8)
+                  .ripple(() {
                   reactivateHandler();
                 })
         ],

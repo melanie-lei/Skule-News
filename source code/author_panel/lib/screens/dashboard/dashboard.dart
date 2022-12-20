@@ -44,9 +44,7 @@ class _DashboardState extends State<Dashboard> {
             children: [
               Text(
                 LocalizationString.recentBlogs,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
+                style: AppTheme.configTheme.textTheme.titleLarge!
                     .copyWith(fontWeight: FontWeight.w600),
               ),
               const SizedBox(

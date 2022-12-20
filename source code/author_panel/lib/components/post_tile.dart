@@ -79,12 +79,8 @@ class PendingBlogPostTile extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
                 child: Center(
                   child: Text(model.categoryName.toUpperCase(),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium!
-                              .copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600))
+                          style: AppTheme.configTheme.textTheme.bodyMedium!
+                              .copyWith(fontWeight: FontWeight.w600))
                       .p4,
                 )).round(5),
             const SizedBox(
@@ -190,11 +186,9 @@ class PostTile extends StatelessWidget {
                             color: Theme.of(context).primaryColor,
                             child: Center(
                               child: Text(model.categoryName.toUpperCase(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium!
+                                      style: AppTheme
+                                          .configTheme.textTheme.bodyMedium!
                                           .copyWith(
-                                              color: Colors.white,
                                               fontWeight: FontWeight.w600))
                                   .p4,
                             )).round(5),
@@ -215,10 +209,10 @@ class PostTile extends StatelessWidget {
                           height: 30,
                           width: 30,
                           color: Theme.of(context).primaryColor,
-                          child: const ThemeIconWidget(
+                          child: ThemeIconWidget(
                             ThemeIcon.reveal,
                             size: 15,
-                            color: Colors.white,
+                            color: CommonConfig.buttonTextColor,
                           ).p4,
                         ).round(8).ripple(() {
                           Get.to(() => BlogPreview(
@@ -230,10 +224,10 @@ class PostTile extends StatelessWidget {
                           height: 30,
                           width: 30,
                           color: Theme.of(context).primaryColor,
-                          child: const ThemeIconWidget(
+                          child: ThemeIconWidget(
                             ThemeIcon.edit,
                             size: 15,
-                            color: Colors.white,
+                            color: CommonConfig.buttonTextColor,
                           ).p4,
                         ).round(8).ripple(() {
                           Get.to(() => AddBlog(
@@ -245,10 +239,10 @@ class PostTile extends StatelessWidget {
                           height: 30,
                           width: 30,
                           color: Theme.of(context).primaryColor,
-                          child: const ThemeIconWidget(
+                          child: ThemeIconWidget(
                             ThemeIcon.message,
                             size: 15,
-                            color: Colors.white,
+                            color: CommonConfig.buttonTextColor,
                           ).p4,
                         ).round(8).ripple(() {
                           Get.to(() => CommentsScreen(postId: model.id));

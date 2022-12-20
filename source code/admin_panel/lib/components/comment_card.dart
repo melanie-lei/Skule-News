@@ -84,6 +84,12 @@ class CommentCardState extends State<CommentCard> {
                       width: 80,
                       height: 40,
                       child: FilledButtonType1(
+                        enabledTextStyle: model.status == 1
+                            ? Theme.of(context)
+                                .textTheme
+                                .bodyLarge!
+                                .copyWith(color: Colors.white)
+                            : AppTheme.configTheme.textTheme.bodyLarge,
                         text: model.status == 1
                             ? LocalizationString.deleteComment
                             : LocalizationString.restoreComment,
