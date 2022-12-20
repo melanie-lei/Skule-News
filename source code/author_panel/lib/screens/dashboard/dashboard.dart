@@ -24,11 +24,23 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: blogsList(
-              width: MediaQuery.of(context).size.width, height: double.infinity)
-          .p25,
-    );
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          const SizedBox(height: 25),
+          Container(
+            child: Text(
+              CommonConfig.schoolName,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontWeight: FontWeight.w900),
+            ),
+          ),
+          blogsList(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height - 102)
+              .p25,
+        ]));
   }
 
   Widget blogsList({required double width, required double height}) {
@@ -44,8 +56,8 @@ class _DashboardState extends State<Dashboard> {
             children: [
               Text(
                 LocalizationString.recentBlogs,
-                style: AppTheme.configTheme.textTheme.titleLarge!
-                    .copyWith(fontWeight: FontWeight.w600),
+                style: AppTheme.configTheme.textTheme.titleLarge!.copyWith(
+                    fontSize: FontSizes.sizeXl, fontWeight: FontWeight.w600),
               ),
               const SizedBox(
                 height: 5,
