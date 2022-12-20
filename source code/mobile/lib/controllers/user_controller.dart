@@ -105,13 +105,25 @@ class UserController extends GetxController {
     final image_picker.XFile? image =
     await _picker.pickImage(source: image_picker.ImageSource.gallery);
 
-    if (image != null) {
-      getIt<FirebaseManager>()
-          .updateProfileImage(File(image.path))
-          .then((value) {
+    if (image == null) {
+      return;
+    }
+
+    EasyLoading.show(status: LocalizationString.loading);
+    int imageLength = await image.length();
+
+    if (imageLength > AppConfig.maxFileSize) {
+      AppUtil.showToast(message: LocalizationString.fileTooLarge, isSuccess: false);
+      EasyLoading.dismiss();
+      return;
+    }
+
+    getIt<FirebaseManager>()
+      .updateProfileImage(File(image.path))
+      .then((value) {
+        EasyLoading.dismiss();
         imagePath.value = value;
         update();
-      });
-    }
+    });
   }
 }

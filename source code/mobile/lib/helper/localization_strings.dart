@@ -337,4 +337,6 @@ class LocalizationString {
   static String onBoardingDescription1 = 'onBoardingDescription1'.tr();
   static String onBoardingDescription2 = 'onBoardingDescription2'.tr();
   static String onBoardingDescription3 = 'onBoardingDescription3'.tr();
+
+  static String fileTooLarge = "Please enter a file less than 16 mb.".tr();
 }

@@ -6,6 +6,7 @@ import 'package:skule_news_mobile/helper/common_import.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:skule_news_mobile/model/setting.dart';
+import 'package:path/path.dart' as p;
 
 String getRandString(int len) {
   var random = Random.secure();
@@ -261,7 +262,7 @@ class FirebaseManager {
   Future<String> updateProfileImage(File imageFile) async {
     final storageRef = FirebaseStorage.instance.ref();
     final imageRef =
-        storageRef.child("${FirebaseAuth.instance.currentUser!.uid}.jpg");
+        storageRef.child("blogmaster/profileImage/${FirebaseAuth.instance.currentUser!.uid}");
 
     await imageRef.putFile(imageFile);
     String path = await imageRef.getDownloadURL();
