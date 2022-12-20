@@ -5,6 +5,8 @@ import 'package:skule_news_admin_panel/helper/common_import.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import '../../common_config.dart';
+
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
 
@@ -30,6 +32,16 @@ class _DashboardState extends State<Dashboard> {
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: [
+          const SizedBox(height: 25),
+          Container(
+            child: Text(
+              CommonConfig.schoolName,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontWeight: FontWeight.w900),
+            ),
+          ),
           const SizedBox(height: 25),
           cardsGrid(),
           const SizedBox(height: 10),
