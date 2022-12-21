@@ -1,5 +1,8 @@
 export 'dart:async';
 
+/// Common configuration.
+export 'package:skule_news_admin_panel/common_config.dart';
+
 /// Style data.
 export 'package:skule_news_admin_panel/theme/theme.dart';
 export 'package:skule_news_admin_panel/theme/text_styles.dart';

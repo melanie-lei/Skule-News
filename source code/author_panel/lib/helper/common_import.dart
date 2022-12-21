@@ -1,3 +1,6 @@
+/// Common configuration.
+export 'package:skule_news_admin_panel/common_config.dart';
+
 export 'dart:async';
 export 'package:skule_news_admin_panel/theme/theme.dart';
 export 'package:skule_news_admin_panel/theme/text_styles.dart';
