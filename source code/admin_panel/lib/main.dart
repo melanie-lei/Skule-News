@@ -8,14 +8,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await Firebase.initializeApp(
     // Replace with actual values
-    options: const FirebaseOptions(
-        apiKey: "AIzaSyC7C-de4bewAn2W7I8p9cIB3Q_y7Cef0Sc",
-        authDomain: "skule-news.firebaseapp.com",
-        projectId: "skule-news",
-        storageBucket: "skule-news.appspot.com",
-        messagingSenderId: "472349549744",
-        appId: "1:472349549744:web:2f3177dc0ef7c496f40775",
-        measurementId: "G-ZVTL9XD6EX"),
+    options: CommonConfig.options
   );
 
   await FirebaseAuth.instance.authStateChanges().first;

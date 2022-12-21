@@ -16,4 +16,14 @@ class CommonConfig {
   static String messagingSenderId = "";
   static String appId = "";
   static String measurementId = "";
+
+  static FirebaseOptions options = const FirebaseOptions(
+    apiKey: "",
+    authDomain: "",
+    projectId: "",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: "",
+    measurementId: ""
+  );
 }
