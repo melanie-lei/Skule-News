@@ -9,6 +9,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
 }
 
+// kjhhjkhkjh
 // comment
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
