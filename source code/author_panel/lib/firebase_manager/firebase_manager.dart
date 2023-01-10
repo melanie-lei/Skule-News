@@ -78,16 +78,16 @@ class FirebaseManager {
   }
 
   /// Inserts an author user into the database.
-  Future<FirebaseResponse> insertUser({required String id, String? name, String? email}) async {
+  Future<FirebaseResponse> insertUser(
+      {required String id, String? name}) async {
     final batch = FirebaseFirestore.instance.batch();
     DocumentReference doc = authorsCollection.doc(id);
     DocumentReference counterDoc = counter.doc('counter');
-    
+
     batch.set(doc, {
       'id': id,
       'name': name,
       'status': 1,
-      'email': email,
       'accountType': 2,
       'keywords': name!.allPossibleSubstrings(),
       'createdAt': DateTime.now(),
@@ -101,7 +101,7 @@ class FirebaseManager {
       response = FirebaseResponse(false, error.toString());
     });
 
-    return response!; 
+    return response!;
   }
 
   Future<FirebaseResponse> updateUser(
@@ -175,7 +175,7 @@ class FirebaseManager {
 
       if (user != null) {
         response = FirebaseResponse(true, null);
-        await insertUser(id: user.uid, name: name, email: email);
+        await insertUser(id: user.uid, name: name);
       }
     } catch (error) {
       print(error);

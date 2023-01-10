@@ -67,7 +67,7 @@ class FirebaseManager {
   }
 
   Future<FirebaseResponse> insertUser(
-      {required String id, String? name, String? phone, String? email}) async {
+      {required String id, String? name, String? phone}) async {
     final batch = FirebaseFirestore.instance.batch();
     DocumentReference doc = userCollection.doc(id);
     DocumentReference counterDoc = counter.doc('counter');
@@ -77,7 +77,6 @@ class FirebaseManager {
       'name': name,
       'phone': phone,
       'status': 1,
-      'email': email,
       'createdAt': DateTime.now()
     });
     batch.update(counterDoc, {'readers': FieldValue.increment(1)});
@@ -127,7 +126,7 @@ class FirebaseManager {
       user = userCredential.user;
 
       if (user != null) {
-        await insertUser(id: user.uid, name: name, email: email);
+        await insertUser(id: user.uid, name: name);
         response = FirebaseResponse(true, null);
       }
     } catch (error) {
@@ -200,7 +199,6 @@ class FirebaseManager {
         await insertUser(
             id: userCredential.user!.uid,
             name: '',
-            email: '',
             phone: userCredential.user!.phoneNumber!);
 
         callback(true, true);
@@ -261,8 +259,8 @@ class FirebaseManager {
 
   Future<String> updateProfileImage(File imageFile) async {
     final storageRef = FirebaseStorage.instance.ref();
-    final imageRef =
-        storageRef.child("blogmaster/profileImage/${FirebaseAuth.instance.currentUser!.uid}");
+    final imageRef = storageRef.child(
+        "blogmaster/profileImage/${FirebaseAuth.instance.currentUser!.uid}");
 
     await imageRef.putFile(imageFile);
     String path = await imageRef.getDownloadURL();

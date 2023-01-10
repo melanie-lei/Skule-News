@@ -150,7 +150,7 @@ class _SocialLoginState extends State<SocialLogin> {
       String? email}) async {
     if (credentials.additionalUserInfo!.isNewUser == true) {
       getIt<FirebaseManager>()
-          .insertUser(id: userId, name: name, email: email)
+          .insertUser(id: userId, name: name)
           .then((response) async {
         if (response.status == true) {
           await getIt<UserProfileManager>().refreshProfile();
