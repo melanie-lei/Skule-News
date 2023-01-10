@@ -47,12 +47,10 @@ class AuthorController extends GetxController {
     List<CategoryModel> allCategories = [];
 
     var responses = await Future.wait([
-      getAuthorCategories(id: id),
       getAdminCategories(),
     ]);
 
     allCategories.addAll(responses[0]);
-    allCategories.addAll(responses[1]);
 
     categories.value = allCategories
         .where((element) => author.value!.usedCategories.contains(element.id))
@@ -67,18 +65,6 @@ class AuthorController extends GetxController {
     update();
   }
 
-  Future<List<CategoryModel>> getAuthorCategories({required String id}) async {
-    List<CategoryModel> list = [];
-    await AppUtil.checkInternet().then((value) async {
-      if (value) {
-        await getIt<FirebaseManager>().getAuthorCategories(id).then((result) {
-          list = result;
-        });
-      } else {}
-    });
-    return list;
-  }
-
   Future<List<CategoryModel>> getAdminCategories() async {
     List<CategoryModel> list = [];
 
@@ -91,19 +77,6 @@ class AuthorController extends GetxController {
     });
     return list;
   }
-
-  // getAuthorCategories({required String id}) {
-  //   isLoading = true;
-  //   getIt<FirebaseManager>().getAuthorCategories(id).then((result) {
-  //     categories.value = result;
-  //     print(categories.length);
-  //     isLoading = false;
-  //     if (result.isNotEmpty) {
-  //       loadAuthorPosts(authorId: id, categoryId: result.first.id);
-  //     }
-  //     update();
-  //   });
-  // }
 
   loadAuthorPosts({
     String? categoryId,

@@ -293,25 +293,7 @@ class FirebaseManager {
 
     return source;
   }
-
-  Future<List<CategoryModel>> getAuthorCategories(String id) async {
-    List<CategoryModel> list = [];
-    await authorsCollection
-        .doc(id)
-        .collection('categories')
-        .where('status', isEqualTo: 1)
-        .get()
-        .then((QuerySnapshot snapshot) {
-      for (var doc in snapshot.docs) {
-        list.add(CategoryModel.fromJson(doc.data() as Map<String, dynamic>));
-      }
-    }).catchError((error) {
-      response = FirebaseResponse(false, error.toString());
-    });
-
-    return list;
-  }
-
+  
   // --------------FOLLOW LIKE SAVE POSTS USERS HASHTAGS--------------------------
 
   Future<FirebaseResponse> likePost(String id) async {
