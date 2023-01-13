@@ -98,14 +98,14 @@ class ForgotPasswordState extends State<ForgotPassword> {
                       height: 50,
                     ),
                     Obx(() => InputField(
-                      icon: ThemeIcon.email,
-                      cornerRadius: 5,
-                      hintText: 'email',
-                      controller: loginController.email.value,
-                      onChanged: (phone) {},
-                      showBorder: true,
-                      backgroundColor: Colors.black.withOpacity(0.05),
-                    )).hP4,
+                          icon: ThemeIcon.email,
+                          cornerRadius: 5,
+                          hintText: 'email',
+                          controller: loginController.email.value,
+                          onChanged: (phone) {},
+                          showBorder: true,
+                          backgroundColor: Colors.black.withOpacity(0.05),
+                        )).hP4,
                     const SizedBox(
                       height: 20,
                     ),
@@ -113,12 +113,8 @@ class ForgotPasswordState extends State<ForgotPassword> {
                       height: 40,
                       child: FilledButtonType1(
                         text: LocalizationString.submit,
-                        enabledTextStyle: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600),
+                        enabledTextStyle:
+                            AppTheme.configTheme.textTheme.titleMedium,
                         onPress: () {
                           forgotPassword();
                         },

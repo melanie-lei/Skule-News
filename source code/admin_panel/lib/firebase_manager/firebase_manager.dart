@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mime/mime.dart';
 import 'package:path/path.dart' as p;
 import 'package:skule_news_admin_panel/helper/notification_helper.dart';
+import 'package:get/get.dart';
 
 String getRandString(int len) {
   var random = Random.secure();
@@ -86,14 +87,23 @@ class FirebaseManager {
       );
 
       user = userCredential.user;
-      await insertUser(user!.uid, user.email!);
 
-      response = FirebaseResponse(true, null);
+      await authorsCollection
+          .where("email", isEqualTo: email)
+          .limit(1)
+          .get()
+          .then((snap) {
+        if (snap.docs.first.get("accountType") != 1) {
+          getIt<UserProfileManager>().logout();
+          response = FirebaseResponse(false, "Not an admin account");
+        } else {
+          insertUser(user!.uid, user.email!);
+          response = FirebaseResponse(true, null);
+        }
+      });
     } catch (error) {
-      response =
-          FirebaseResponse(false, LocalizationString.userNameOrPasswordIsWrong);
+      response = FirebaseResponse(false, error.toString());
     }
-
     return response!;
   }
 
@@ -148,7 +158,8 @@ class FirebaseManager {
   }
 
   /// Inserts an author user into the database.
-  Future<FirebaseResponse> insertAuthor(String id, String? name, String email) async {
+  Future<FirebaseResponse> insertAuthor(
+      String id, String? name, String email, int accountType) async {
     final batch = FirebaseFirestore.instance.batch();
     DocumentReference doc = authorsCollection.doc(id);
     DocumentReference counterDoc = counter.doc('counter');
@@ -158,7 +169,7 @@ class FirebaseManager {
       'name': name,
       'status': 1,
       'email': email,
-      'accountType': 2,
+      'accountType': accountType,
       'keywords': name!.allPossibleSubstrings(),
       'createdAt': DateTime.now(),
       'token': []
@@ -243,7 +254,7 @@ class FirebaseManager {
   }
 
   /// Reactivates a user from the database.
-  /// 
+  ///
   /// Inverse of `deleteUser()` method.
   Future<FirebaseResponse> reactivateUser(UserModel model) async {
     DocumentReference userDoc = userCollection.doc(model.id);
@@ -263,9 +274,10 @@ class FirebaseManager {
   }
 
   /// Converts a user account to an author.
-  /// 
+  ///
   /// Creates a new author account while keeping existing user account.
-  Future<FirebaseResponse> convertUserToAuthor(UserModel model) async {
+  Future<FirebaseResponse> convertUserToAuthor(
+      UserModel model, int accountType) async {
     DocumentReference counterDocRef = counter.doc('counter');
     DocumentReference authorDocRef = authorsCollection.doc(model.id);
     DocumentSnapshot authorDoc = await authorDocRef.get();
@@ -289,7 +301,7 @@ class FirebaseManager {
       String name = model.name!;
       String email = userDoc.get("email");
 
-      insertAuthor(id, name, email);
+      insertAuthor(id, name, email, accountType);
     }
 
     counterDocRef.update({'users': FieldValue.increment(-1)});
@@ -299,7 +311,7 @@ class FirebaseManager {
   }
 
   /// Converts an author account to a user.
-  /// 
+  ///
   /// Creates a user account if necessary and deactivates author account.
   Future<FirebaseResponse> convertAuthorToUser(AuthorsModel model) async {
     DocumentReference counterDocRef = counter.doc('counter');
@@ -316,8 +328,8 @@ class FirebaseManager {
       String email = authorDoc.get("email");
 
       insertUserAccount(id, name, email);
-    } 
-    
+    }
+
     authorDocRef.update({'status': 0}).then((value) {
       response = FirebaseResponse(true, null);
     }).catchError((error) {
@@ -346,7 +358,6 @@ class FirebaseManager {
     return response!;
   }
 
-
   /// Deletes an author from the database.
   ///
   /// Does not actually remove the author, only "deactivates" it.
@@ -368,7 +379,7 @@ class FirebaseManager {
   }
 
   /// Reactivates an author form the database.
-  /// 
+  ///
   /// Opposite of the `deleteAuthor()` method.
   Future<FirebaseResponse> reactivateAuthor(AuthorsModel model) async {
     DocumentReference userDoc = authorsCollection.doc(model.id);
@@ -422,8 +433,8 @@ class FirebaseManager {
   }
 
   /// Adds a list of users from a CSV file.
-  /// 
-  /// In the form of 
+  ///
+  /// In the form of
   /// ```csv
   /// name,email,password
   /// name1,email1,password1
@@ -447,8 +458,8 @@ class FirebaseManager {
     for (int i = 1; i < usersList.length; i++) {
       if (usersList[i].length < 3) {
         // CSV file does not have enough columns.
-        appendResponse(false, 
-            '${LocalizationString.pleaseUseValidCsv} [row $i]');
+        appendResponse(
+            false, '${LocalizationString.pleaseUseValidCsv} [row $i]');
       }
 
       var name = usersList[i][0].toString();
@@ -457,16 +468,15 @@ class FirebaseManager {
 
       if (name == '' || email == '' || password == '') {
         // CSV file is missing data cells.
-        appendResponse(false, 
-            '${LocalizationString.csvMissingCells} [row $i]');
+        appendResponse(false, '${LocalizationString.csvMissingCells} [row $i]');
         numNewUsers--;
         continue;
       }
 
       if (password.length < 6) {
         // Password not long enough.
-        appendResponse(false, 
-            '${LocalizationString.passwordTooShort} [row $i]');
+        appendResponse(
+            false, '${LocalizationString.passwordTooShort} [row $i]');
         numNewUsers--;
         continue;
       }
@@ -493,6 +503,31 @@ class FirebaseManager {
       }
     }
 
+    return response ?? FirebaseResponse(true, LocalizationString.usersAdded);
+  }
+
+  Future<FirebaseResponse> addAdmin(String email, String password) async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    response = null;
+
+    // Try to create user account.
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      User? user = userCredential.user;
+
+      if (user != null) {
+        await insertUser(user.uid, email);
+      }
+    } catch (error) {
+      // Weak password.
+      print(error.toString());
+      if (!error.toString().startsWith('[fireabse_auth/weak-password]')) {}
+    }
     return response ?? FirebaseResponse(true, LocalizationString.usersAdded);
   }
 
@@ -721,7 +756,7 @@ class FirebaseManager {
   Future<String> getFileUrl({required String filePath}) {
     final _firebaseStorage =
         FirebaseStorageWeb(bucket: AppConfig.firebaseStorageBucketUrl);
-      
+
     var fileRef = _firebaseStorage.ref(filePath);
     var url = fileRef.getDownloadURL();
     return url;
@@ -1290,9 +1325,9 @@ class FirebaseManager {
     });
     return response!;
   }
-  
+
   /// Deletes a comment from the database.
-  /// 
+  ///
   /// Does not actually delete it, only deactivates it.
   Future<FirebaseResponse> deleteComment(CommentModel comment) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();
@@ -1318,7 +1353,7 @@ class FirebaseManager {
   }
 
   /// Restores a deleted comment from the database.
-  /// 
+  ///
   /// Inverse of the `deleteComment()` method.
   Future<FirebaseResponse> restoreComment(CommentModel comment) async {
     WriteBatch batch = FirebaseFirestore.instance.batch();

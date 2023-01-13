@@ -136,6 +136,8 @@ class _MainScreenState extends State<MainScreen> {
       case MenuType.sendAlert:
         // do something else
         return const SendAlert();
+      case MenuType.addAdmin:
+        return const AddAdmin();
     }
   }
 }

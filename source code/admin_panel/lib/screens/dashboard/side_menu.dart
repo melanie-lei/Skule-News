@@ -223,6 +223,17 @@ class _SideMenuState extends State<SideMenu> {
                       sideMenuContainer.selectMenu(MenuType.deactivatedUsers);
                     }),
                     DrawerListItem(
+                      icon: ThemeIconWidget(ThemeIcon.add,
+                          color: Theme.of(context).iconTheme.color, size: 20),
+                      title: LocalizationString.addUsers,
+                      isSelected: sideMenuContainer.selectedMenu.value ==
+                          MenuType.addUsers,
+                    ).ripple(() {
+                      scaffoldKey.currentState!.openEndDrawer();
+                      selectionHandler(MenuType.addUsers);
+                      sideMenuContainer.selectMenu(MenuType.addUsers);
+                    }),
+                    DrawerListItem(
                       icon: ThemeIconWidget(
                         ThemeIcon.author,
                         color: Theme.of(context).iconTheme.color,
@@ -250,13 +261,13 @@ class _SideMenuState extends State<SideMenu> {
                     DrawerListItem(
                       icon: ThemeIconWidget(ThemeIcon.add,
                           color: Theme.of(context).iconTheme.color, size: 20),
-                      title: LocalizationString.addUsers,
+                      title: LocalizationString.addAdmin,
                       isSelected: sideMenuContainer.selectedMenu.value ==
-                          MenuType.addUsers,
+                          MenuType.addAdmin,
                     ).ripple(() {
                       scaffoldKey.currentState!.openEndDrawer();
-                      selectionHandler(MenuType.addUsers);
-                      sideMenuContainer.selectMenu(MenuType.addUsers);
+                      selectionHandler(MenuType.addAdmin);
+                      sideMenuContainer.selectMenu(MenuType.addAdmin);
                     }),
                   ], title: LocalizationString.users),
                   DrawerListItemGroup(items: [

@@ -19,8 +19,8 @@ class UsersController extends GetxController {
   getAllUsers() {
     getIt<FirebaseManager>()
         .searchUserProfiles(
-        searchText: (searchText ?? '').isNotEmpty ? searchText : null,
-        type: accountStatusType == AccountStatusType.active ? 1 : 0)
+            searchText: (searchText ?? '').isNotEmpty ? searchText : null,
+            type: accountStatusType == AccountStatusType.active ? 1 : 0)
         .then((result) {
       users.value = result;
       update();
@@ -39,9 +39,11 @@ class UsersController extends GetxController {
     update();
   }
 
-  convertUser(UserModel model) {
-    getIt<FirebaseManager>().convertUserToAuthor(model);
+  convertUser(UserModel model, int accountType) {
+    getIt<FirebaseManager>().convertUserToAuthor(model, accountType);
     users.remove(model);
     update();
   }
+
+  addAdmin(String email, String password) {}
 }

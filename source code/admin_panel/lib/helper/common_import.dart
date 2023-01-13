@@ -112,5 +112,6 @@ export 'package:skule_news_admin_panel/components/user_tile.dart';
 export 'package:skule_news_admin_panel/screens/blogs/send_alert.dart';
 export 'package:skule_news_admin_panel/helper/notification_helper.dart';
 
+export 'package:skule_news_admin_panel/screens/users/add_admin.dart';
 export 'package:skule_news_admin_panel/screens/users/add_users.dart';
 export 'package:skule_news_admin_panel/controllers/add_users_controller.dart';

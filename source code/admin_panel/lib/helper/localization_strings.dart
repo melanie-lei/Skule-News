@@ -511,7 +511,7 @@ class LocalizationString {
   static String passwordTooShort =
       "Password must be at least 6 characters.".tr();
 
-  static String reactivateAuthor= "Reactivate Author".tr();
+  static String reactivateAuthor = "Reactivate Author".tr();
   static String reactivateUser = "Reactivate User".tr();
   static String convertToAuthor = "Convert to Author".tr();
   static String convertToUser = "Convert to User".tr();
@@ -528,8 +528,10 @@ class LocalizationString {
   static String addUsersDescription =
       "Import a .csv file, can be exported from Google Sheets, Excel, etc.\nFormat: Name,Email,Password\nNote: The first row of the file is ignored as a header."
           .tr();
-  
+
   static String deleted = "(deleted)".tr();
   static String deleteComment = "Delete".tr();
   static String restoreComment = "Restore".tr();
+
+  static String addAdmin = "Add Admin".tr();
 }

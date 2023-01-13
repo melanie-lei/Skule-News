@@ -34,6 +34,8 @@ class AppTheme {
         bodySmall: TextStyle(
             fontSize: FontSizes.bodyExtraSm,
             color: CommonConfig.buttonTextColor),
+        titleMedium: TextStyle(
+            fontSize: FontSizes.titleM, color: CommonConfig.buttonTextColor),
       ));
 
   static ThemeData darkTheme = ThemeData(

@@ -7,12 +7,19 @@ import 'dart:convert';
 
 class AddUsersController extends GetxController {
   Rx<TextEditingController> usersFileName = TextEditingController().obs;
+  Rx<TextEditingController> newAdminEmail = TextEditingController().obs;
+  Rx<TextEditingController> newAdminPassword = TextEditingController().obs;
 
   List<List<dynamic>>? usersList;
 
+  addAdmin() async {
+    getIt<FirebaseManager>()
+        .addAdmin(newAdminEmail.value.text, newAdminPassword.value.text);
+  }
+
   pickUsersFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.custom, 
+      type: FileType.custom,
       allowedExtensions: ['csv'],
       allowMultiple: false,
     );
@@ -31,16 +38,13 @@ class AddUsersController extends GetxController {
   submit() async {
     if (usersList == null) {
       AppUtil.showToast(
-        message: LocalizationString.pleaseUploadUsers,
-        isSuccess: false);
+          message: LocalizationString.pleaseUploadUsers, isSuccess: false);
       return;
     }
 
     EasyLoading.show(status: LocalizationString.loading);
 
-    getIt<FirebaseManager>()
-    .addUsers(usersList!)
-    .then((response) {
+    getIt<FirebaseManager>().addUsers(usersList!).then((response) {
       EasyLoading.dismiss();
       if (response.status == true) {
         // Reset all user list values.
@@ -48,10 +52,10 @@ class AddUsersController extends GetxController {
         usersFileName.value.text = '';
 
         AppUtil.showToast(
-          message: LocalizationString.usersAdded,
-          isSuccess: true);
+            message: LocalizationString.usersAdded, isSuccess: true);
       } else {
-        AppUtil.showToast(message: response.message ?? 'Bad Response', isSuccess: false);
+        AppUtil.showToast(
+            message: response.message ?? 'Bad Response', isSuccess: false);
       }
     });
   }

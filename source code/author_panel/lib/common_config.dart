@@ -1,3 +1,5 @@
+/* RENAME TO common_config.dart */
+
 import 'package:flutter/material.dart';
 import 'helper/common_import.dart';
 

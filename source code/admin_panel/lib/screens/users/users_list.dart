@@ -65,32 +65,35 @@ class _UsersListState extends State<UsersList> {
           child: GetBuilder<UsersController>(
               init: userController,
               builder: (ctx) {
-                return userController.users.isNotEmpty ? ListView.separated(
-                  itemCount: userController.users.length,
-                  itemBuilder: (BuildContext ctx, int index) {
-                    return UserTile(
-                        model: userController.users[index],
-                        deleteHandler: () {
-                          userController
-                              .deleteUser(userController.users[index]);
+                return userController.users.isNotEmpty
+                    ? ListView.separated(
+                        itemCount: userController.users.length,
+                        itemBuilder: (BuildContext ctx, int index) {
+                          return UserTile(
+                            model: userController.users[index],
+                            deleteHandler: () {
+                              userController
+                                  .deleteUser(userController.users[index]);
+                            },
+                            reactivateHandler: () {
+                              userController
+                                  .reactivateUser(userController.users[index]);
+                            },
+                            convertHandler: () {
+                              userController.convertUser(
+                                  userController.users[index], 2);
+                            },
+                          );
                         },
-                        reactivateHandler: () {
-                          userController
-                              .reactivateUser(userController.users[index]);
+                        separatorBuilder: (BuildContext ctx, int index) {
+                          return Container(
+                            height: 0.2,
+                            color: Theme.of(context).dividerColor,
+                            width: double.infinity,
+                          ).vP8;
                         },
-                        convertHandler: () {
-                          userController
-                              .convertUser(userController.users[index]);
-                        },);
-                  },
-                  separatorBuilder: (BuildContext ctx, int index) {
-                    return Container(
-                      height: 0.2,
-                      color: Theme.of(context).dividerColor,
-                      width: double.infinity,
-                    ).vP8;
-                  },
-                ).vP25 : noDataFound(context);
+                      ).vP25
+                    : noDataFound(context);
               }),
         ),
       ],
