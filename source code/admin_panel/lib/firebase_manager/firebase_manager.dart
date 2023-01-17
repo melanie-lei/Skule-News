@@ -89,7 +89,7 @@ class FirebaseManager {
       user = userCredential.user;
 
       await authorsCollection
-          .where("email", isEqualTo: email)
+          .where("id", isEqualTo: user!.uid)
           .limit(1)
           .get()
           .then((snap) {
@@ -97,7 +97,7 @@ class FirebaseManager {
           getIt<UserProfileManager>().logout();
           response = FirebaseResponse(false, "Not an admin account");
         } else {
-          insertUser(user!.uid, user.email!);
+          insertUser(user!.uid, user.displayName!);
           response = FirebaseResponse(true, null);
         }
       });
@@ -108,7 +108,7 @@ class FirebaseManager {
   }
 
   /// Inserts the admin user into the database.
-  insertUser(String id, String email) async {
+  insertUser(String id, String name) async {
     await firestore.runTransaction((transaction) async {
       DocumentReference doc = authorsCollection.doc(id);
       final snapshot = await transaction.get(doc);
@@ -117,9 +117,8 @@ class FirebaseManager {
       if (!snapshot.exists) {
         transaction.set(doc, {
           'id': id,
-          'name': 'Admin',
+          'name': name,
           'status': 1,
-          'email': email,
           'accountType': 1,
           'createdAt': DateTime.now()
         });

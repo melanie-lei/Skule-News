@@ -68,7 +68,19 @@ class FirebaseManager {
 
       user = userCredential.user;
 
-      response = FirebaseResponse(true, null);
+      await authorsCollection
+          .where("id", isEqualTo: user!.uid)
+          .limit(1)
+          .get()
+          .then((snap) {
+        if (snap.docs.isEmpty) {
+          getIt<UserProfileManager>().logout();
+          response = FirebaseResponse(false, "Not an author account");
+        } else {
+          insertUser(id: user!.uid, name: user.displayName!);
+          response = FirebaseResponse(true, null);
+        }
+      });
     } catch (error) {
       response =
           FirebaseResponse(false, LocalizationString.userNameOrPasswordIsWrong);

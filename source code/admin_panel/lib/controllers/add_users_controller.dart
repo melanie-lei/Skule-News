@@ -13,8 +13,12 @@ class AddUsersController extends GetxController {
   List<List<dynamic>>? usersList;
 
   addAdmin() async {
+    EasyLoading.show(status: LocalizationString.loading);
     getIt<FirebaseManager>()
         .addAdmin(newAdminEmail.value.text, newAdminPassword.value.text);
+    newAdminPassword.value.clear();
+    newAdminEmail.value.clear();
+    EasyLoading.dismiss();
   }
 
   pickUsersFile() async {
