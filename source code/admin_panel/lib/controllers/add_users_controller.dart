@@ -9,15 +9,23 @@ class AddUsersController extends GetxController {
   Rx<TextEditingController> usersFileName = TextEditingController().obs;
   Rx<TextEditingController> newAdminEmail = TextEditingController().obs;
   Rx<TextEditingController> newAdminPassword = TextEditingController().obs;
+  Rx<TextEditingController> adminPassword = TextEditingController().obs;
 
   List<List<dynamic>>? usersList;
 
   addAdmin() async {
     EasyLoading.show(status: LocalizationString.loading);
     getIt<FirebaseManager>()
-        .addAdmin(newAdminEmail.value.text, newAdminPassword.value.text);
+        .addAdmin(newAdminEmail.value.text, newAdminPassword.value.text,
+            adminPassword.value.text)
+        .then((response) {
+      AppUtil.showToast(
+          message: response.message ?? 'Bad Response',
+          isSuccess: response.status ?? false);
+    });
     newAdminPassword.value.clear();
     newAdminEmail.value.clear();
+    adminPassword.value.clear();
     EasyLoading.dismiss();
   }
 
@@ -48,7 +56,9 @@ class AddUsersController extends GetxController {
 
     EasyLoading.show(status: LocalizationString.loading);
 
-    getIt<FirebaseManager>().addUsers(usersList!).then((response) {
+    getIt<FirebaseManager>()
+        .addUsers(usersList!, adminPassword.value.text)
+        .then((response) {
       EasyLoading.dismiss();
       if (response.status == true) {
         // Reset all user list values.

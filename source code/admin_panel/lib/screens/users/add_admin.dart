@@ -99,6 +99,22 @@ class _AddAdminState extends State<AddAdmin> {
             const SizedBox(width: 20),
           ],
         ),
+        Text(
+          "Admin Password",
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            Expanded(
+              child: Obx(() => InputField(
+                  controller: addUsersController.adminPassword.value,
+                  showBorder: true,
+                  cornerRadius: 5)),
+            ),
+            const SizedBox(width: 20),
+          ],
+        ),
       ],
     );
   }

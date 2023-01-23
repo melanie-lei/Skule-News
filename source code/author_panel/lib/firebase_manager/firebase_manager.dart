@@ -77,7 +77,7 @@ class FirebaseManager {
           getIt<UserProfileManager>().logout();
           response = FirebaseResponse(false, "Not an author account");
         } else {
-          insertUser(id: user!.uid, name: user.displayName!);
+          insertUser(id: user!.uid, name: snap.docs.first.get("name"));
           response = FirebaseResponse(true, null);
         }
       });

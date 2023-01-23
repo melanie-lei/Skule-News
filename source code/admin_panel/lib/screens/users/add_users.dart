@@ -92,6 +92,20 @@ class _AddUsersState extends State<AddUsers> {
                     }))
           ],
         ),
+        Text(
+          "Admin Password",
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+        const SizedBox(height: 10),
+        Row(children: [
+          Expanded(
+            child: Obx(() => InputField(
+                controller: addUsersController.adminPassword.value,
+                showBorder: true,
+                cornerRadius: 5)),
+          ),
+          const SizedBox(width: 20),
+        ]),
       ],
     );
   }

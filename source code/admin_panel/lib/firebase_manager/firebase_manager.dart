@@ -97,7 +97,7 @@ class FirebaseManager {
           getIt<UserProfileManager>().logout();
           response = FirebaseResponse(false, "Not an admin account");
         } else {
-          insertUser(user!.uid, user.displayName!);
+          insertUser(user!.uid, snap.docs.first.get("name"));
           response = FirebaseResponse(true, null);
         }
       });
@@ -440,7 +440,8 @@ class FirebaseManager {
   /// name2,email2,password2
   /// ```
   /// The first row is ignored as a header row.
-  Future<FirebaseResponse> addUsers(List<List<dynamic>> usersList) async {
+  Future<FirebaseResponse> addUsers(
+      List<List<dynamic>> usersList, String adminPassword) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     response = null;
     int numNewUsers = usersList.length - 1;
@@ -479,7 +480,7 @@ class FirebaseManager {
         numNewUsers--;
         continue;
       }
-
+      String? adminEmail = _auth.currentUser!.email;
       // Try to create user account.
       try {
         UserCredential userCredential =
@@ -489,6 +490,8 @@ class FirebaseManager {
         );
 
         User? user = userCredential.user;
+        await logout();
+        await login(adminEmail!, adminPassword);
 
         if (user != null) {
           await insertUserAccount(user.uid, name, email);
@@ -505,9 +508,11 @@ class FirebaseManager {
     return response ?? FirebaseResponse(true, LocalizationString.usersAdded);
   }
 
-  Future<FirebaseResponse> addAdmin(String email, String password) async {
+  Future<FirebaseResponse> addAdmin(
+      String email, String password, String adminPassword) async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     response = null;
+    String? adminEmail = _auth.currentUser?.email;
 
     // Try to create user account.
     try {
@@ -518,6 +523,8 @@ class FirebaseManager {
       );
 
       User? user = userCredential.user;
+      await logout();
+      await login(adminEmail!, adminPassword);
 
       if (user != null) {
         await insertUser(user.uid, email);
@@ -525,9 +532,10 @@ class FirebaseManager {
     } catch (error) {
       // Weak password.
       print(error.toString());
-      if (!error.toString().startsWith('[fireabse_auth/weak-password]')) {}
+      response = FirebaseResponse(false, error.toString());
     }
-    return response ?? FirebaseResponse(true, LocalizationString.usersAdded);
+
+    return FirebaseResponse(true, LocalizationString.usersAdded);
   }
 
   /// Approves a pending blog post.
